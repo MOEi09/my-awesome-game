@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visual Novel Game</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      background-color: #07070a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Sarabun', 'Segoe UI', Tahoma, sans-serif;
+    }
+
+    /* กล่องควบคุมสัดส่วนหน้าจอเกม 16:9 (1920x1080) */
+    #game-container {
+      position: relative;
+      width: 100vw;
+      height: 56.25vw; /* 16:9 Aspect Ratio */
+      max-height: 100vh;
+      max-width: 177.78vh;
+      background-color: #000;
+      overflow: hidden;
+      box-shadow: 0 0 45px rgba(0, 0, 0, 0.95);
+    }
+
+    /* แถบ HUD วัดความรู้ด้านบนแบบโมเดิร์นคลีน */
+    .hud-header {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(18, 18, 30, 0.78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 8px 24px;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
+      transition: all 0.4s ease;
+    }
+
+    .hud-icon {
+      font-size: 22px;
+      color: #ffd700;
+      display: flex;
+      align-items: center;
+      filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.5));
+    }
+
+    .progress-bar-container {
+      width: 220px;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .progress-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #a855f7, #ec4899, #3b82f6);
+      border-radius: 10px;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .info-btn-wrapper {
+      position: relative;
+    }
+
+    .info-btn {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-weight: bold;
+      font-size: 13px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .info-btn:hover {
+      background: #ec4899;
+      transform: scale(1.15);
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.8);
+    }
+
+    .tooltip {
+      position: absolute;
+      top: 34px;
+      right: 0;
+      background: rgba(15, 15, 25, 0.95);
+      color: #fff;
+      padding: 9px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-6px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .info-btn-wrapper:hover .tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    /* ข้อความ ( แตะ ) ลางๆ อ่านง่ายตรงกลางจอ เมื่อค้างเกิน 4 วินาที */
+    .center-tap-hint {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.95);
+      z-index: 95;
+      font-size: 26px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.72);
+      letter-spacing: 5px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95), 0 0 22px rgba(236, 72, 153, 0.7);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+    }
+
+    .center-tap-hint.active {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      animation: tapSoftPulse 2.4s infinite ease-in-out;
+    }
+
+    @keyframes tapSoftPulse {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(0.97);
+        opacity: 0.65;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 0.95;
+      }
+    }
+
+    /* เลเยอร์ฉากหลัง พร้อมระบบครอสเฟดอย่างสมูทนุ่มนวล */
+    .scene-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transform: scale(1.01);
+      transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1), transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+      will-change: opacity, transform;
+    }
+
+    .scene-bg.active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    .scene-bg.instant-change {
+      transition: none !important;
+    }
+
+    /* หน้าเลือกเพศ */
+    .gender-select-container {
+      position: absolute;
+      bottom: 6%;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 15;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .gender-select-container.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .gender-select-wrapper {
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .gender-btn {
+      width: 250px;
+      height: auto;
+      max-width: 38%;
+      cursor: pointer;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
+    }
+
+    .gender-btn:hover {
+      transform: scale(1.12);
+      filter: drop-shadow(0 12px 28px rgba(236, 72, 153, 0.75));
+    }
+
+    .gender-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* แถบข้อความด้านล่าง (1920x430) */
+    .textbox-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 39.8%; /* 430/1080 */
+      z-index: 30;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .textbox-container.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .textbox-img {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      display: block;
+      transition: opacity 0.25s ease;
+    }
+
+    /* ปุ่มควบคุมทิศทางกึ่งกลางล่าง (ขยายใหญ่ขึ้น เด่นชัด และสมูทนุ่มนวล) */
+    .nav-buttons-container {
+      position: absolute;
+      bottom: 5%;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 40;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+
+    .nav-buttons-container.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .nav-btn-slot {
+      width: 33.33%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .nav-btn {
+      max-width: 220px;
+      width: 80%;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
+      filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 18px rgba(255, 255, 255, 0.65));
+      animation: btnSmoothGlow 2.5s infinite ease-in-out;
+    }
+
+    @keyframes btnSmoothGlow {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 14px rgba(236, 72, 153, 0.55));
+      }
+      50% {
+        transform: scale(1.08);
+        filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 25px rgba(255, 255, 255, 0.95));
+      }
+    }
+
+    .nav-btn:hover {
+      transform: scale(1.22) !important;
+      filter: drop-shadow(0 12px 28px rgba(236, 72, 153, 0.95)) drop-shadow(0 0 32px rgba(255, 255, 255, 1)) !important;
+    }
+
+    .nav-btn:active {
+      transform: scale(0.93) !important;
+    }
+
+    /* ปุ่มพูดคุย (Talk Button) */
+    .talk-btn {
+      position: absolute;
+      top: 36.41%; /* Y: 393.2 จาก 1080 */
+      left: 42.35%; /* X: 813.2 จาก 1920 */
+      width: 14%;
+      max-width: 220px;
+      height: auto;
+      z-index: 45;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+      filter: drop-shadow(0 6px 15px rgba(0, 0, 0, 0.6));
+    }
+
+    .talk-btn.visible-disabled {
+      opacity: 0.75;
+      pointer-events: none;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5)) grayscale(0.2);
+    }
+
+    .talk-btn.interactive {
+      opacity: 1;
+      pointer-events: auto;
+      animation: talkPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes talkPulse {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 8px 20px rgba(236, 72, 153, 0.7)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
+      }
+      50% {
+        transform: scale(1.08);
+        filter: drop-shadow(0 12px 28px rgba(236, 72, 153, 0.95)) drop-shadow(0 0 25px rgba(255, 255, 255, 1));
+      }
+    }
+
+    /* ตัวละคร ปกรณ์ (Pakorn Layer - 960x1080 ชิดขวาสุด) */
+    .character-pakorn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%; /* 960/1920 */
+      height: 100%;
+      object-fit: fill;
+      z-index: 25;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .character-pakorn.active {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    
+    <!-- แถบ HUD วัดความรู้ด้านบน -->
+    <div class="hud-header">
+      <div class="hud-icon">📖</div>
+      <div class="progress-bar-container">
+        <div id="knowledge-bar" class="progress-bar-fill"></div>
+      </div>
+      <div class="info-btn-wrapper">
+        <div class="info-btn">!</div>
+        <div class="tooltip">แก้ปัญหาภายในเกมได้ แถบวัดความรู้จะขยับขึ้น</div>
+      </div>
+    </div>
+
+    <!-- ข้อความ ( แตะ ) ลางๆ กลางจอเมื่อผู้เล่นค้างเกิน 4 วินาที -->
+    <div id="center-tap-hint" class="center-tap-hint">( แตะ )</div>
+
+    <!-- ฉากที่ 1: ปกเปิดเกม -->
+    <div id="scene-1" class="scene-bg active" style="background-image: url('https://lh3.googleusercontent.com/d/1Lk0CVOXS70d9zYJ-lg2F5glhiQ_YOWiT'); cursor: pointer;"></div>
+
+    <!-- ฉากที่ 1.5: ฉากค้าง 2 วินาที -->
+    <div id="scene-1-5" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1Kuzs9rpu0M5NScCdeTSl9dAZEa2aLmjP');"></div>
+
+    <!-- ฉากที่ 2: หน้าเลือกเพศ -->
+    <div id="scene-2" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1l0LxDM6bw6FYo4xN_cWEOzM8UfIOyvS4');">
+      <div id="gender-select" class="gender-select-container">
+        <div class="gender-select-wrapper">
+          <img src="https://lh3.googleusercontent.com/d/1_kb6brYLqRotQ1OS0Z-DHF5_ybcRouY4" class="gender-btn" alt="เพศชาย" onclick="selectGender('male')">
+        </div>
+        <div class="gender-select-wrapper">
+          <img src="https://lh3.googleusercontent.com/d/1yT_wmTzzaZWrcXI1vRfB8zlxxqABtdxM" class="gender-btn" alt="เพศหญิง" onclick="selectGender('female')">
+        </div>
+      </div>
+    </div>
+
+    <!-- ฉากที่ 3: ฉากห้องเรียน 1 -->
+    <div id="scene-3" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1XitV2u7G101fAkArm4iZja-E-Zn1sIte'); cursor: pointer;"></div>
+
+    <!-- ฉากหลักไดนามิก (สวนสาธารณะ / ป่าเทพนิยาย / โทรศัพท์) -->
+    <div id="scene-main" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/15oeCLgAdkJHeW4dsvLaSkrLCjR0H-_Z3'); cursor: pointer;"></div>
+
+    <!-- เลเยอร์ตัวละคร ปกรณ์ (ชิดขวาสุด) -->
+    <img id="char-pakorn" class="character-pakorn" src="" alt="ปกรณ์">
+
+    <!-- ปุ่มพูดคุย -->
+    <img id="btn-talk" class="talk-btn" src="https://lh3.googleusercontent.com/d/1crku-NyMGhzzsVN8bSb8BoFs3RNaqXN4" alt="พูดคุย" onclick="handleTalkButtonClick(event)">
+
+    <!-- แถบข้อความด้านล่าง -->
+    <div id="textbox" class="textbox-container" onclick="handleTextboxClick(event)">
+      <img id="textbox-img" class="textbox-img" src="" alt="Textbox">
+    </div>
+
+    <!-- ปุ่มควบคุมซ้าย-กลาง-ขวา -->
+    <div id="nav-buttons" class="nav-buttons-container">
+      <div class="nav-btn-slot">
+        <!-- ปุ่มซ้าย -->
+        <img id="btn-left" class="nav-btn" src="https://lh3.googleusercontent.com/d/1rXg5ZP84frpJ8wSdmE7s4dk2yiVEA2Y6" alt="Left" onclick="handleLeftButtonClick(event)">
+      </div>
+      <div class="nav-btn-slot">
+        <!-- ปุ่มกลาง -->
+        <img id="btn-middle" class="nav-btn" src="https://lh3.googleusercontent.com/d/1xkl3-rlYm4JcyIjCpK9l1JWNQ0JWuQ8E" alt="Middle" onclick="handleMiddleButtonClick(event)">
+      </div>
+      <div class="nav-btn-slot">
+        <!-- ปุ่มขวา -->
+        <img id="btn-right" class="nav-btn" src="https://lh3.googleusercontent.com/d/12V_5iFWXQzVEtNexCig5EbJ4-2MKr4BW" alt="Right">
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentStep = 0;
+    let selectedGender = '';
+    let isTransitioning = false;
+    let idleTimer = null;
+
+    const gameContainer = document.getElementById('game-container');
+    const centerTapHint = document.getElementById('center-tap-hint');
+    const scene1 = document.getElementById('scene-1');
+    const scene1_5 = document.getElementById('scene-1-5');
+    const scene2 = document.getElementById('scene-2');
+    const scene3 = document.getElementById('scene-3');
+    const sceneMain = document.getElementById('scene-main');
+    const charPakorn = document.getElementById('char-pakorn');
+    const btnTalk = document.getElementById('btn-talk');
+    const genderSelect = document.getElementById('gender-select');
+    const textbox = document.getElementById('textbox');
+    const textboxImg = document.getElementById('textbox-img');
+    const navButtons = document.getElementById('nav-buttons');
+    const btnLeft = document.getElementById('btn-left');
+    const btnRight = document.getElementById('btn-right');
+
+    // Preload รูปภาพทั้งหมด
+    const imageList = [
+      'https://lh3.googleusercontent.com/d/1Lk0CVOXS70d9zYJ-lg2F5glhiQ_YOWiT',
+      'https://lh3.googleusercontent.com/d/1Kuzs9rpu0M5NScCdeTSl9dAZEa2aLmjP',
+      'https://lh3.googleusercontent.com/d/1l0LxDM6bw6FYo4xN_cWEOzM8UfIOyvS4',
+      'https://lh3.googleusercontent.com/d/1_kb6brYLqRotQ1OS0Z-DHF5_ybcRouY4',
+      'https://lh3.googleusercontent.com/d/1yT_wmTzzaZWrcXI1vRfB8zlxxqABtdxM',
+      'https://lh3.googleusercontent.com/d/1XitV2u7G101fAkArm4iZja-E-Zn1sIte',
+      'https://lh3.googleusercontent.com/d/1wAa-IMb7559wyuJp2yoAM1Je4ePmzws9',
+      'https://lh3.googleusercontent.com/d/1vKgnY25GF7ayPdywSG7pY7tLH0c3kwVH',
+      'https://lh3.googleusercontent.com/d/15oeCLgAdkJHeW4dsvLaSkrLCjR0H-_Z3',
+      'https://lh3.googleusercontent.com/d/1ipIgMhd9gXq1ibn_VioVclhVSvqnmdFt',
+      'https://lh3.googleusercontent.com/d/1r0j3uFS_hw_np35jVKFFsp9lBWPBg4HP',
+      'https://lh3.googleusercontent.com/d/1gNsteHUVNCqlTG5UBX2fVVG2OWV2kdja',
+      'https://lh3.googleusercontent.com/d/1MkVKMxnON9c0BBO0B544jEeUgx6AHzC-',
+      'https://lh3.googleusercontent.com/d/1aUIvEEm4WdVxR6a34qSuKUP9t5p7lUuP',
+      'https://lh3.googleusercontent.com/d/1zN3SmFzX0ScbeXLZCWOGk9p-rEjCVuCT',
+      'https://lh3.googleusercontent.com/d/1UejuctKbYKqiwwDNj-95z4ObYyp3kR_U',
+      'https://lh3.googleusercontent.com/d/1rXg5ZP84frpJ8wSdmE7s4dk2yiVEA2Y6',
+      'https://lh3.googleusercontent.com/d/1xkl3-rlYm4JcyIjCpK9l1JWNQ0JWuQ8E',
+      'https://lh3.googleusercontent.com/d/12V_5iFWXQzVEtNexCig5EbJ4-2MKr4BW',
+      'https://lh3.googleusercontent.com/d/1JXQa4HTXdUYG7ou90LBHsRZ1PTcF9B9b',
+      'https://lh3.googleusercontent.com/d/19vPu5aoFrebQdm1DtzvciBHaySg4OJxt',
+      'https://lh3.googleusercontent.com/d/1crku-NyMGhzzsVN8bSb8BoFs3RNaqXN4',
+      'https://lh3.googleusercontent.com/d/1cmQ3NOW0uOvHLVMcyT0SsQVPZKO7kFl_',
+      'https://lh3.googleusercontent.com/d/1R8i9bZv4Gpqyvv5972rX8UDL-IkKpJOF',
+      'https://lh3.googleusercontent.com/d/1xVCyF9HMPpbvZclyNluabIAGK5FbvF2_',
+      'https://lh3.googleusercontent.com/d/1yHF95n424Lzsd6ttJsF6RaySVGExQvoQ',
+      'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm',
+      'https://lh3.googleusercontent.com/d/1BT7DatalObAp3W1o726jQyn_hPdVBYbx',
+      'https://lh3.googleusercontent.com/d/1AuQQJlo1B1og7hNEoUBFP5j0TzcanwBB',
+      'https://lh3.googleusercontent.com/d/1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA',
+      'https://lh3.googleusercontent.com/d/1uMBohQwM_n512oPv4hizsD0S7si7zYYi',
+      'https://lh3.googleusercontent.com/d/1lP2e_ZiwEHh36SGCPpvJCjJRR2RyxhzV',
+      'https://lh3.googleusercontent.com/d/1FeW5eMcocC8iBIfFfxEnLZTWuBcnDi3d'
+    ];
+
+    imageList.forEach(url => {
+      const img = new Image();
+      img.src = url;
+    });
+
+    // ระบบนับเวลาจับการแตะ
+    function resetIdleTimer() {
+      centerTapHint.classList.remove('active');
+      clearTimeout(idleTimer);
+      if (!isTransitioning && currentStep !== 'GENDER_STAGE' && currentStep !== 'END_STAGE') {
+        idleTimer = setTimeout(() => {
+          centerTapHint.classList.add('active');
+        }, 4000);
+      }
+    }
+
+    gameContainer.addEventListener('click', () => {
+      resetIdleTimer();
+    });
+
+    // 1. ฉากที่ 1 ➔ ฉากที่ 1.5 ➔ ฉากเลือกเพศ
+    scene1.addEventListener('click', () => {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      resetIdleTimer();
+      scene1.classList.remove('active');
+      scene1_5.classList.add('active');
+
+      setTimeout(() => {
+        scene1_5.classList.remove('active');
+        scene2.classList.add('active');
+        setTimeout(() => {
+          genderSelect.classList.add('active');
+          currentStep = 'GENDER_STAGE';
+          isTransitioning = false;
+          resetIdleTimer();
+        }, 400);
+      }, 2000);
+    });
+
+    // 2. เลือกเพศ
+    function selectGender(gender) {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      selectedGender = gender;
+      genderSelect.classList.remove('active');
+      
+      setTimeout(() => {
+        scene2.classList.remove('active');
+        scene3.classList.add('active');
+        currentStep = 0;
+        isTransitioning = false;
+        resetIdleTimer();
+      }, 600);
+    }
+
+    scene3.addEventListener('click', () => {
+      if (currentStep === 0 && !isTransitioning) {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1wAa-IMb7559wyuJp2yoAM1Je4ePmzws9';
+        textbox.classList.add('active');
+        currentStep = 1;
+        resetIdleTimer();
+      }
+    });
+
+    function handleTextboxClick(event) {
+      event.stopPropagation();
+      if (isTransitioning) return;
+      resetIdleTimer();
+
+      if (currentStep === 1) {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1vKgnY25GF7ayPdywSG7pY7tLH0c3kwVH';
+        currentStep = 2;
+      } 
+      else if (currentStep === 2) {
+        textbox.classList.remove('active');
+        scene3.classList.remove('active');
+        sceneMain.style.backgroundImage = "url('https://lh3.googleusercontent.com/d/15oeCLgAdkJHeW4dsvLaSkrLCjR0H-_Z3')";
+        sceneMain.classList.add('active');
+        currentStep = 3;
+      } 
+      else if (currentStep === 4) {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1r0j3uFS_hw_np35jVKFFsp9lBWPBg4HP';
+        currentStep = 5;
+      } 
+      else if (currentStep === 5) {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1gNsteHUVNCqlTG5UBX2fVVG2OWV2kdja';
+        currentStep = 6;
+      } 
+      else if (currentStep === 6) {
+        sceneMain.style.backgroundImage = "url('https://lh3.googleusercontent.com/d/1MkVKMxnON9c0BBO0B544jEeUgx6AHzC-')";
+        currentStep = 7;
+      } 
+      else if (currentStep === 7) {
+        sceneMain.classList.add('instant-change');
+        sceneMain.style.backgroundImage = "url('https://lh3.googleusercontent.com/d/1aUIvEEm4WdVxR6a34qSuKUP9t5p7lUuP')";
+        setTimeout(() => sceneMain.classList.remove('instant-change'), 50);
+
+        textbox.classList.remove('active');
+        isTransitioning = true;
+
+        setTimeout(() => {
+          textboxImg.src = 'https://lh3.googleusercontent.com/d/1zN3SmFzX0ScbeXLZCWOGk9p-rEjCVuCT';
+          textbox.classList.add('active');
+          currentStep = 9;
+          isTransitioning = false;
+          resetIdleTimer();
+        }, 3000);
+      } 
+      else if (currentStep === 9) {
+        sceneMain.style.backgroundImage = "url('https://lh3.googleusercontent.com/d/1MkVKMxnON9c0BBO0B544jEeUgx6AHzC-')";
+        currentStep = 10;
+      } 
+      else if (currentStep === 10) {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1UejuctKbYKqiwwDNj-95z4ObYyp3kR_U';
+        currentStep = 11;
+      } 
+      else if (currentStep === 11) {
+        sceneMain.style.backgroundImage = "url('https://lh3.googleusercontent.com/d/15oeCLgAdkJHeW4dsvLaSkrLCjR0H-_Z3')";
+        currentStep = 12;
+      } 
+      else if (currentStep === 12) {
+        textbox.classList.remove('active');
+        btnLeft.style.display = 'block';
+        btnRight.style.display = 'block';
+        navButtons.classList.add('active');
+        currentStep = 'NAV_STAGE';
+      }
+      // ดำเนินเรื่องฝั่งซ้าย
+      else if (currentStep === 'LEFT_BRANCH_2') {
+        textbox.classList.remove('active');
+        btnTalk.classList.remove('visible-disabled');
+        btnTalk.classList.add('interactive');
+        currentStep = 'LEFT_BRANCH_3';
+      }
+      else if (currentStep === 'LEFT_BRANCH_5') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1yHF95n424Lzsd6ttJsF6RaySVGExQvoQ';
+        currentStep = 'LEFT_BRANCH_6';
+      }
+      else if (currentStep === 'LEFT_BRANCH_6') {
+        textbox.classList.remove('active');
+        charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm';
+        charPakorn.classList.add('active');
+        currentStep = 'LEFT_BRANCH_7';
+      }
+      else if (currentStep === 'LEFT_BRANCH_8') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1AuQQJlo1B1og7hNEoUBFP5j0TzcanwBB';
+        currentStep = 'LEFT_BRANCH_9';
+      }
+      else if (currentStep === 'LEFT_BRANCH_9') {
+        textbox.classList.remove('active');
+        charPakorn.src = 'https://lh3.googleusercontent.com/d/1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA';
+        currentStep = 'LEFT_BRANCH_10';
+      }
+      else if (currentStep === 'LEFT_BRANCH_11') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1lP2e_ZiwEHh36SGCPpvJCjJRR2RyxhzV';
+        currentStep = 'LEFT_BRANCH_12';
+      }
+      else if (currentStep === 'LEFT_BRANCH_12') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1FeW5eMcocC8iBIfFfxEnLZTWuBcnDi3d';
+        currentStep = 'LEFT_BRANCH_13';
+      }
+    }
+
+    // คลิกบนฉากหลัก
+    sceneMain.addEventListener('click', () => {
+      if (isTransitioning) return;
+
+      if (currentStep === 3) {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1ipIgMhd9gXq1ibn_VioVclhVSvqnmdFt';
+        textbox.classList.add('active');
+        currentStep = 4;
+        resetIdleTimer();
+      }
+      else if (currentStep === 'LEFT_BRANCH_1') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1cmQ3NOW0uOvHLVMcyT0SsQVPZKO7kFl_';
+        textbox.classList.add('active');
+        currentStep = 'LEFT_BRANCH_2';
+        resetIdleTimer();
+      }
+      else if (currentStep === 'LEFT_BRANCH_4') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1xVCyF9HMPpbvZclyNluabIAGK5FbvF2_';
+        textbox.classList.add('active');
+        currentStep = 'LEFT_BRANCH_5';
+        resetIdleTimer();
+      }
+      else if (currentStep === 'LEFT_BRANCH_7') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1BT7DatalObAp3W1o726jQyn_hPdVBYbx';
+        textbox.classList.add('active');
+        currentStep = 'LEFT_BRANCH_8';
+        resetIdleTimer();
+      }
+      else if (currentStep === 'LEFT_BRANCH_10') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1uMBohQwM_n512oPv4hizsD0S7si7zYYi';
+        textbox.classList.add('active');
+        currentStep = 'LEFT_BRANCH_11';
+        resetIdleTimer();
+      }
+    });
+
+    // คลิกปุ่มทางซ้าย
+    function handleLeftButtonClick(event) {
+      event.stopPropagation();
+      if (isTransitioning) return;
+      isTransitioning = true;
+      resetIdleTimer();
+
+      navButtons.classList.remove('active');
+      sceneMain.classList.remove('active');
+
+      setTimeout(() => {
+        sceneMain.style.backgroundImage = "url('https://lh3.googleusercontent.com/d/19vPu5aoFrebQdm1DtzvciBHaySg4OJxt')";
+        sceneMain.classList.add('active');
+        btnTalk.classList.add('visible-disabled');
+        currentStep = 'LEFT_BRANCH_1';
+        isTransitioning = false;
+        resetIdleTimer();
+      }, 400);
+    }
+
+    // คลิกปุ่มพูดคุย
+    function handleTalkButtonClick(event) {
+      event.stopPropagation();
+      if (isTransitioning || currentStep !== 'LEFT_BRANCH_3') return;
+      isTransitioning = true;
+      resetIdleTimer();
+
+      btnTalk.classList.remove('interactive');
+      btnTalk.classList.remove('visible-disabled');
+      sceneMain.classList.remove('active');
+
+      setTimeout(() => {
+        sceneMain.style.backgroundImage = "url('https://lh3.googleusercontent.com/d/1R8i9bZv4Gpqyvv5972rX8UDL-IkKpJOF')";
+        sceneMain.classList.add('active');
+        currentStep = 'LEFT_BRANCH_4';
+        isTransitioning = false;
+        resetIdleTimer();
+      }, 400);
+    }
+
+    // คลิกปุ่มตรงกลาง
+    function handleMiddleButtonClick(event) {
+      event.stopPropagation();
+      resetIdleTimer();
+      navButtons.classList.remove('active');
+      sceneMain.classList.remove('active');
+
+      setTimeout(() => {
+        sceneMain.style.backgroundImage = "url('https://lh3.googleusercontent.com/d/1JXQa4HTXdUYG7ou90LBHsRZ1PTcF9B9b')";
+        sceneMain.classList.add('active');
+        currentStep = 'END_STAGE';
+      }, 400);
+    }
+
+    resetIdleTimer();
+  </script>
+</body>
+</html>
