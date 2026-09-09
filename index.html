@@ -36,7 +36,7 @@
       box-shadow: 0 0 45px rgba(0, 0, 0, 0.95);
     }
 
-    /* แถบ HUD วัดความรู้ด้านบนแบบโมเดิร์นคลีน */
+    /* แถบ HUD วัดความรู้ด้านบน */
     .hud-header {
       position: absolute;
       top: 18px;
@@ -182,6 +182,7 @@
       transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1), transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
       pointer-events: none;
       will-change: opacity, transform;
+      z-index: 10;
     }
 
     .scene-bg.active {
@@ -243,6 +244,144 @@
       transform: scale(0.95);
     }
 
+    /* ตัวละคร ปกรณ์ (Pakorn Layer - 960x1080 ชิดขวาสุด) */
+    .character-pakorn {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%; /* 960 / 1920 */
+      height: 100%;
+      object-fit: fill;
+      z-index: 25;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .character-pakorn.active {
+      opacity: 1;
+    }
+
+    /* เลเยอร์จอมือถือ (ครอบทับฉาก) */
+    .phone-screen-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .phone-screen-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* กริดวางแอปบนจอมือถือฝั่งซ้าย */
+    .app-icons-grid {
+      position: absolute;
+      top: 38%;
+      left: 5.2%;
+      width: 29.5%;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px 12px;
+      justify-items: center;
+      align-items: center;
+    }
+
+    .app-icon {
+      width: 68%;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));
+    }
+
+    .app-icon:hover {
+      transform: scale(1.15);
+      filter: drop-shadow(0 6px 18px rgba(255, 255, 255, 0.95));
+    }
+
+    .app-icon:active {
+      transform: scale(0.92);
+    }
+
+    /* จอน้อย Pop-up เด้งขึ้นมาจากล่าง */
+    .popup-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: 60;
+      opacity: 0;
+      transform: translateY(12%);
+      pointer-events: none;
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .popup-screen.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    /* กลุ่มปุ่มเลือกตัวเลือก ตล.1 และ ตล.2 */
+    .tl-choices-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      z-index: 70;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tl-choices-container.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .tl-choice-btn {
+      width: 900px;
+      max-width: 68vw;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease, opacity 0.3s ease;
+      filter: drop-shadow(0 8px 22px rgba(0, 0, 0, 0.65));
+    }
+
+    .tl-choice-btn:hover {
+      transform: scale(1.08);
+      filter: drop-shadow(0 12px 30px rgba(236, 72, 153, 0.85));
+    }
+
+    .tl-choice-btn:active {
+      transform: scale(0.95);
+    }
+
+    .tl-choice-btn.disabled {
+      opacity: 0.45;
+      pointer-events: none;
+      filter: grayscale(0.85) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+    }
+
     /* แถบข้อความด้านล่าง (1920x430) */
     .textbox-container {
       position: absolute;
@@ -250,7 +389,7 @@
       left: 0;
       width: 100%;
       height: 39.8%; /* 430/1080 */
-      z-index: 60;
+      z-index: 80;
       cursor: pointer;
       opacity: 0;
       pointer-events: none;
@@ -367,144 +506,6 @@
         filter: drop-shadow(0 12px 28px rgba(236, 72, 153, 0.95)) drop-shadow(0 0 25px rgba(255, 255, 255, 1));
       }
     }
-
-    /* ตัวละคร ปกรณ์ (Pakorn Layer - 960x1080 ชิดขวาสุด) */
-    .character-pakorn {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 50%; /* 960 / 1920 */
-      height: 100%;
-      object-fit: fill;
-      z-index: 25;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .character-pakorn.active {
-      opacity: 1;
-    }
-
-    /* */
-    /* กลุ่มปุ่มเลือกตัวเลือก ตล.1 และ ตล.2 (เรียงตรงกลางลงมา) */
-    .tl-choices-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 32px;
-      z-index: 50;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .tl-choices-container.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .tl-choice-btn {
-      width: 900px;
-      max-width: 68vw;
-      height: auto;
-      cursor: pointer;
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease, opacity 0.3s ease;
-      filter: drop-shadow(0 8px 22px rgba(0, 0, 0, 0.65));
-    }
-
-    .tl-choice-btn:hover {
-      transform: scale(1.08);
-      filter: drop-shadow(0 10px 25px rgba(236, 72, 153, 0.8));
-    }
-
-    .tl-choice-btn:active {
-      transform: scale(0.95);
-    }
-
-    .tl-choice-btn.disabled {
-      opacity: 0.45;
-      pointer-events: none;
-      filter: grayscale(0.8) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
-    }
-
-    /* เลเยอร์จอมือถือ (ครอบทับฉาก) */
-    .phone-screen-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-size: 100% 100%;
-      background-position: center;
-      background-repeat: no-repeat;
-      z-index: 35;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .phone-screen-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    /* กริดวางแอปบนจอมือถือฝั่งซ้าย */
-    .app-icons-grid {
-      position: absolute;
-      top: 34%;
-      left: 5.2%;
-      width: 29.5%;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px 12px;
-      justify-items: center;
-      align-items: center;
-    }
-
-    .app-icon {
-      width: 68%;
-      height: auto;
-      cursor: pointer;
-      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease;
-      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));
-    }
-
-    .app-icon:hover {
-      transform: scale(1.15);
-      filter: drop-shadow(0 6px 16px rgba(255, 255, 255, 0.9));
-    }
-
-    .app-icon:active {
-      transform: scale(0.92);
-    }
-
-    /* จอน้อย Pop-up เด้งขึ้นมาจากล่าง */
-    .popup-screen {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-size: 100% 100%;
-      background-position: center;
-      background-repeat: no-repeat;
-      z-index: 38;
-      opacity: 0;
-      transform: translateY(12%);
-      pointer-events: none;
-      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .popup-screen.active {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
   </style>
 </head>
 <body>
@@ -567,9 +568,9 @@
       </div>
     </div>
 
-    <!-- จอน้อย Pop-up 1 & 2 -->
-    <div id="popup-screen-1" class="popup-screen" style="background-image: url('https://lh3.googleusercontent.com/d/1LNkuEzI1QjwZ8nPo0H1sugzR-3-LN1LQ');"></div>
-    <div id="popup-screen-2" class="popup-screen" style="background-image: url('https://lh3.googleusercontent.com/d/1s-hsVrRE8J-Hu5XrZBzp39GLAyB7SNbr');"></div>
+    <!-- จอน้อย Pop-up 1 & 2 (คลิกเพื่อแสดงบทสนทนา) -->
+    <div id="popup-screen-1" class="popup-screen" style="background-image: url('https://lh3.googleusercontent.com/d/1LNkuEzI1QjwZ8nPo0H1sugzR-3-LN1LQ');" onclick="handlePopupClick(1)"></div>
+    <div id="popup-screen-2" class="popup-screen" style="background-image: url('https://lh3.googleusercontent.com/d/1s-hsVrRE8J-Hu5XrZBzp39GLAyB7SNbr');" onclick="handlePopupClick(2)"></div>
 
     <!-- ปุ่มเลือกตัวเลือก ตล.1 และ ตล.2 -->
     <div id="tl-choices" class="tl-choices-container">
@@ -614,8 +615,8 @@
     let idleTimer = null;
     let wrongAppTimer = null;
 
-    // ฟังก์ชันป้องกันการกดรัว (Cooldown 450ms)
-    function applyClickCooldown(ms = 450) {
+    // ระบบป้องกันการกดรัว (Cooldown 300ms)
+    function applyClickCooldown(ms = 300) {
       isClickCooldown = true;
       setTimeout(() => {
         isClickCooldown = false;
@@ -753,7 +754,6 @@
       sceneSp1.classList.add('active');
       currentStep = 'WAIT_AUTO_SP1';
 
-      // ค้างฉากพิเศษ 1 ไว้ 4 วินาทีแล้วเลือนเปลี่ยนไปฉากพิเศษ 2
       setTimeout(() => {
         sceneSp1.classList.remove('active');
         sceneSp2.classList.add('active');
@@ -1014,10 +1014,6 @@
           checkChoiceCompletion();
         }, 500);
       }
-      // แถบข้อความสุดท้ายก่อนขึ้น 2 ตัวเลือกถัดไป
-      else if (currentStep === 'FINAL_TXT_BEFORE_CHOICES') {
-        // จบตามขอบเขตที่ระบุ
-      }
     }
 
     // แสดงปุ่ม ตล.1 และ ตล.2
@@ -1064,7 +1060,21 @@
       if (branch === 1) { // สาขา ตล.1
         if (appNum === 3) { // แอป 3 คือแอปที่ถูกต้อง
           popupScreen1.classList.add('active');
-          textboxImg.src = 'https://lh3.googleusercontent.com/d/1pnhZ0aiy7JYPgEF-JiuTsUxA5Tk7djdK';
+          currentStep = 'WAIT_TAP_FOR_POPUP1_TEXTBOX';
+        } else { // แอป 1 และ 2 เลือกผิด
+          showWrongAppNotice();
+        }
+      } 
+      else if (branch === 2) { // สาขา ตล.2
+        if (appNum === 2) { // แอป 2 คือแอปที่ถูกต้อง
+          popupScreen2.classList.add('active');
+          currentStep = 'WAIT_TAP_FOR_POPUP2_TEXTBOX';
+        } else { // แอป 1 และ 3 เลือกผิด
+          showWrongAppNotice();
+        }
+      }
+    }
+
     // เมื่อกดแตะที่จอน้อยเพื่อแสดงแถบข้อความถัดไป
     function handlePopupClick(popupNum) {
       if (isTransitioning || isClickCooldown) return;
@@ -1101,12 +1111,10 @@
     // ตรวจสอบสถานะการทำครบทั้งสองทาง
     function checkChoiceCompletion() {
       if (completedChoice1 && completedChoice2) {
-        // เมื่อทำครบทั้ง ตล.1 และ ตล.2 แล้ว แสดงแถบข้อความสุดท้าย
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1CBfWBhQVU9kPGLcTGsK9v_K6NB5xvKdn';
         textbox.classList.add('active');
         currentStep = 'FINAL_TXT_BEFORE_CHOICES';
       } else {
-        // หากยังทำไม่ครบ วนกลับไปหน้าเลือกปุ่ม ตล.1/ตล.2 อีกครั้ง
         showTLChoices();
       }
     }
@@ -1123,7 +1131,7 @@
     function handleMiddleButtonClick(event) {
       event.stopPropagation();
       if (isTransitioning || isClickCooldown || currentStep !== 'SCENE_2_MIDDLE_BTN') return;
-      applyClickCooldown(800);
+      applyClickCooldown(600);
       isTransitioning = true;
       resetIdleTimer();
 
@@ -1150,7 +1158,7 @@
     function handleLeftButtonClick(event) {
       event.stopPropagation();
       if (isTransitioning || isClickCooldown || currentStep !== 'SCENE_6_BRANCH') return;
-      applyClickCooldown(800);
+      applyClickCooldown(600);
       isTransitioning = true;
       resetIdleTimer();
 
@@ -1174,7 +1182,7 @@
     function handleTalkButtonClick(event) {
       event.stopPropagation();
       if (isTransitioning || isClickCooldown || currentStep !== 'TALK_BTN_READY') return;
-      applyClickCooldown(700);
+      applyClickCooldown(600);
       isTransitioning = true;
       resetIdleTimer();
 
