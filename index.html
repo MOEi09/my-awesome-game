@@ -408,8 +408,8 @@
     }
 
     .tl-choice-btn {
-      width: 500px;
-      max-width: 48vw;
+      width: 720px;
+      max-width: 55vw;
       height: auto;
       cursor: pointer;
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease, opacity 0.3s ease;
@@ -452,25 +452,25 @@
       pointer-events: auto;
     }
 
-    /* กริดวางแอปบนจอมือถือฝั่งซ้าย (ปรับพิกัดให้เข้ากลางหน้าจอมือถือพอดี) */
+    /* กริดวางแอปบนจอมือถือฝั่งซ้าย (ปรับพิกัดและขนาดให้ขยายเต็มจอมือถือพอดี) */
     .app-icons-grid {
       position: absolute;
-      top: 34.5%;
-      left: 5.6%;
-      width: 13.8%;
+      top: 28%;
+      left: 5.2%;
+      width: 29.5%;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 16px 12px;
+      gap: 24px 20px;
       justify-items: center;
       align-items: center;
     }
 
     .app-icon {
-      width: 86%;
+      width: 82%;
       height: auto;
       cursor: pointer;
       transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease;
-      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));
     }
 
     .app-icon:hover {
