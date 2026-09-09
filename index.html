@@ -386,7 +386,8 @@
       opacity: 1;
     }
 
-    /* กลุ่มปุ่มเลือกตัวเลือก ตล.1 และ ตล.2 (ขยายขนาดให้สมดุลกับ 1920x1080) */
+    /* */
+    /* กลุ่มปุ่มเลือกตัวเลือก ตล.1 และ ตล.2 (เรียงตรงกลางลงมา) */
     .tl-choices-container {
       position: absolute;
       top: 50%;
@@ -395,7 +396,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 28px;
+      gap: 32px;
       z-index: 50;
       opacity: 0;
       pointer-events: none;
@@ -408,8 +409,8 @@
     }
 
     .tl-choice-btn {
-      width: 720px;
-      max-width: 55vw;
+      width: 900px;
+      max-width: 68vw;
       height: auto;
       cursor: pointer;
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease, opacity 0.3s ease;
@@ -418,7 +419,7 @@
 
     .tl-choice-btn:hover {
       transform: scale(1.08);
-      filter: drop-shadow(0 12px 30px rgba(236, 72, 153, 0.85));
+      filter: drop-shadow(0 10px 25px rgba(236, 72, 153, 0.8));
     }
 
     .tl-choice-btn:active {
@@ -428,7 +429,7 @@
     .tl-choice-btn.disabled {
       opacity: 0.45;
       pointer-events: none;
-      filter: grayscale(0.85) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+      filter: grayscale(0.8) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
     }
 
     /* เลเยอร์จอมือถือ (ครอบทับฉาก) */
@@ -452,10 +453,10 @@
       pointer-events: auto;
     }
 
-    /* กริดวางแอปบนจอมือถือฝั่งซ้าย (ปรับพิกัดและขนาดให้ขยายเต็มจอมือถือพอดี) */
+    /* กริดวางแอปบนจอมือถือฝั่งซ้าย */
     .app-icons-grid {
       position: absolute;
-      top: 38%;
+      top: 34%;
       left: 5.2%;
       width: 29.5%;
       display: grid;
@@ -466,7 +467,7 @@
     }
 
     .app-icon {
-      width: 82%;
+      width: 68%;
       height: auto;
       cursor: pointer;
       transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease;
@@ -475,7 +476,7 @@
 
     .app-icon:hover {
       transform: scale(1.15);
-      filter: drop-shadow(0 6px 18px rgba(255, 255, 255, 0.95));
+      filter: drop-shadow(0 6px 16px rgba(255, 255, 255, 0.9));
     }
 
     .app-icon:active {
@@ -566,9 +567,9 @@
       </div>
     </div>
 
-    <!-- จอน้อย Pop-up 1 & 2 (คลิกแล้วเพื่อแสดงบทสนทนา) -->
-    <div id="popup-screen-1" class="popup-screen" style="background-image: url('https://lh3.googleusercontent.com/d/1LNkuEzI1QjwZ8nPo0H1sugzR-3-LN1LQ');" onclick="handlePopupClick(1)"></div>
-    <div id="popup-screen-2" class="popup-screen" style="background-image: url('https://lh3.googleusercontent.com/d/1s-hsVrRE8J-Hu5XrZBzp39GLAyB7SNbr');" onclick="handlePopupClick(2)"></div>
+    <!-- จอน้อย Pop-up 1 & 2 -->
+    <div id="popup-screen-1" class="popup-screen" style="background-image: url('https://lh3.googleusercontent.com/d/1LNkuEzI1QjwZ8nPo0H1sugzR-3-LN1LQ');"></div>
+    <div id="popup-screen-2" class="popup-screen" style="background-image: url('https://lh3.googleusercontent.com/d/1s-hsVrRE8J-Hu5XrZBzp39GLAyB7SNbr');"></div>
 
     <!-- ปุ่มเลือกตัวเลือก ตล.1 และ ตล.2 -->
     <div id="tl-choices" class="tl-choices-container">
@@ -609,8 +610,17 @@
     let currentStep = 'SCENE_0';
     let selectedGender = '';
     let isTransitioning = false;
+    let isClickCooldown = false;
     let idleTimer = null;
     let wrongAppTimer = null;
+
+    // ฟังก์ชันป้องกันการกดรัว (Cooldown 450ms)
+    function applyClickCooldown(ms = 450) {
+      isClickCooldown = true;
+      setTimeout(() => {
+        isClickCooldown = false;
+      }, ms);
+    }
 
     // ระบบบันทึกการทำภารกิจ
     let completedChoice1 = false;
@@ -734,7 +744,8 @@
 
     // 1. ฉาก 0 ➔ ฉากพิเศษ 1 ➔ ฉากพิเศษ 2 (เลือกเพศ)
     scene0.addEventListener('click', () => {
-      if (isTransitioning || currentStep !== 'SCENE_0') return;
+      if (isTransitioning || isClickCooldown || currentStep !== 'SCENE_0') return;
+      applyClickCooldown();
       isTransitioning = true;
       resetIdleTimer();
 
@@ -758,7 +769,8 @@
 
     // 2. เลือกเพศ
     function selectGender(gender) {
-      if (isTransitioning) return;
+      if (isTransitioning || isClickCooldown) return;
+      applyClickCooldown();
       isTransitioning = true;
       selectedGender = gender;
       genderSelect.classList.remove('active');
@@ -774,7 +786,8 @@
 
     // คลิกบนฉาก 1
     scene1.addEventListener('click', () => {
-      if (currentStep === 'SCENE_1_START' && !isTransitioning) {
+      if (currentStep === 'SCENE_1_START' && !isTransitioning && !isClickCooldown) {
+        applyClickCooldown();
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1wAa-IMb7559wyuJp2yoAM1Je4ePmzws9';
         textbox.classList.add('active');
         currentStep = 'TXT_1';
@@ -784,7 +797,8 @@
 
     // คลิกบนฉาก 4
     scene4.addEventListener('click', () => {
-      if (currentStep === 'SCENE_4_WAIT' && !isTransitioning) {
+      if (currentStep === 'SCENE_4_WAIT' && !isTransitioning && !isClickCooldown) {
+        applyClickCooldown();
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1zN3SmFzX0ScbeXLZCWOGk9p-rEjCVuCT';
         textbox.classList.add('active');
         currentStep = 'TXT_6';
@@ -794,7 +808,8 @@
 
     // คลิกบนฉากซ้าย 1
     sceneLeft1.addEventListener('click', () => {
-      if (currentStep === 'LEFT_BRANCH_START' && !isTransitioning) {
+      if (currentStep === 'LEFT_BRANCH_START' && !isTransitioning && !isClickCooldown) {
+        applyClickCooldown();
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1cmQ3NOW0uOvHLVMcyT0SsQVPZKO7kFl_';
         textbox.classList.add('active');
         currentStep = 'TXT_LEFT_1';
@@ -804,13 +819,17 @@
 
     // คลิกบนฉากซ้าย 2
     sceneLeft2.addEventListener('click', () => {
-      if (currentStep === 'LEFT_BRANCH_2_START' && !isTransitioning) {
+      if (isClickCooldown || isTransitioning) return;
+
+      if (currentStep === 'LEFT_BRANCH_2_START') {
+        applyClickCooldown();
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1yHF95n424Lzsd6ttJsF6RaySVGExQvoQ';
         textbox.classList.add('active');
         currentStep = 'TXT_LEFT_3';
         resetIdleTimer();
       }
       else if (currentStep === 'LEFT_BRANCH_PAKORN_NORMAL_1') {
+        applyClickCooldown();
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1BT7DatalObAp3W1o726jQyn_hPdVBYbx';
         textbox.classList.add('active');
         currentStep = 'TXT_LEFT_4';
@@ -821,7 +840,8 @@
     // ระบบจัดการคลิกแถบข้อความ (Textbox Click Event)
     function handleTextboxClick(event) {
       event.stopPropagation();
-      if (isTransitioning) return;
+      if (isTransitioning || isClickCooldown) return;
+      applyClickCooldown();
       resetIdleTimer();
 
       if (currentStep === 'TXT_1') {
@@ -873,7 +893,6 @@
         currentStep = 'TXT_7';
       }
       else if (currentStep === 'TXT_7') {
-        // ฉากเปลี่ยนกลับเป็นฉาก 3 ทันที โดยตัดฉาก 4 ออกทันทีไม่จางซ้อน
         scene4.classList.add('instant-change');
         scene4.classList.remove('active');
         scene3.classList.add('instant-change');
@@ -995,6 +1014,10 @@
           checkChoiceCompletion();
         }, 500);
       }
+      // แถบข้อความสุดท้ายก่อนขึ้น 2 ตัวเลือกถัดไป
+      else if (currentStep === 'FINAL_TXT_BEFORE_CHOICES') {
+        // จบตามขอบเขตที่ระบุ
+      }
     }
 
     // แสดงปุ่ม ตล.1 และ ตล.2
@@ -1018,10 +1041,11 @@
 
     // เลือกปุ่ม ตล.1 หรือ ตล.2
     function handleChoiceTL(choiceNum) {
-      if (isTransitioning) return;
+      if (isTransitioning || isClickCooldown) return;
       if (choiceNum === 1 && completedChoice1) return;
       if (choiceNum === 2 && completedChoice2) return;
 
+      applyClickCooldown();
       activeChoiceBranch = choiceNum;
       tlChoices.classList.remove('active');
 
@@ -1034,36 +1058,25 @@
 
     // จัดการการคลิกเลือกแอปบนจอมือถือ
     function handleAppClick(branch, appNum) {
-      if (isTransitioning || currentStep !== 'WAIT_APP_SELECTION') return;
+      if (isTransitioning || isClickCooldown || currentStep !== 'WAIT_APP_SELECTION') return;
+      applyClickCooldown();
 
       if (branch === 1) { // สาขา ตล.1
         if (appNum === 3) { // แอป 3 คือแอปที่ถูกต้อง
-          // แสดงเฉพาะจอน้อย (Popup) ขึ้นมาก่อน โดยยังไม่โชว์แถบข้อความ
           popupScreen1.classList.add('active');
-          currentStep = 'WAIT_TAP_FOR_POPUP1_TEXTBOX';
-        } else { // แอป 1 และ 2 เลือกผิด
-          showWrongAppNotice();
-        }
-      } 
-      else if (branch === 2) { // สาขา ตล.2
-        if (appNum === 2) { // แอป 2 คือแอปที่ถูกต้อง
-          // แสดงเฉพาะจอน้อย (Popup) ขึ้นมาก่อน โดยยังไม่โชว์แถบข้อความ
-          popupScreen2.classList.add('active');
-          currentStep = 'WAIT_TAP_FOR_POPUP2_TEXTBOX';
-        } else { // แอป 1 และ 3 เลือกผิด
-          showWrongAppNotice();
-        }
-      }
-    }
-
+          textboxImg.src = 'https://lh3.googleusercontent.com/d/1pnhZ0aiy7JYPgEF-JiuTsUxA5Tk7djdK';
     // เมื่อกดแตะที่จอน้อยเพื่อแสดงแถบข้อความถัดไป
     function handlePopupClick(popupNum) {
+      if (isTransitioning || isClickCooldown) return;
+
       if (popupNum === 1 && currentStep === 'WAIT_TAP_FOR_POPUP1_TEXTBOX') {
+        applyClickCooldown();
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1pnhZ0aiy7JYPgEF-JiuTsUxA5Tk7djdK';
         textbox.classList.add('active');
         currentStep = 'TXT_TL1_CORRECT_1';
       }
       else if (popupNum === 2 && currentStep === 'WAIT_TAP_FOR_POPUP2_TEXTBOX') {
+        applyClickCooldown();
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1RLnopjABjKI5OtN42fucpA8fZ1SC9zr3';
         textbox.classList.add('active');
         currentStep = 'TXT_TL2_CORRECT_1';
@@ -1109,7 +1122,8 @@
     // คลิกปุ่มตรงกลาง (ในฉาก 2) ➔ ซูมเลือนหายไปฉาก 6
     function handleMiddleButtonClick(event) {
       event.stopPropagation();
-      if (isTransitioning || currentStep !== 'SCENE_2_MIDDLE_BTN') return;
+      if (isTransitioning || isClickCooldown || currentStep !== 'SCENE_2_MIDDLE_BTN') return;
+      applyClickCooldown(800);
       isTransitioning = true;
       resetIdleTimer();
 
@@ -1135,7 +1149,8 @@
     // คลิกปุ่มทางซ้าย (ในฉาก 6) ➔ ซูมเลือนหายไปฉากซ้าย 1
     function handleLeftButtonClick(event) {
       event.stopPropagation();
-      if (isTransitioning || currentStep !== 'SCENE_6_BRANCH') return;
+      if (isTransitioning || isClickCooldown || currentStep !== 'SCENE_6_BRANCH') return;
+      applyClickCooldown(800);
       isTransitioning = true;
       resetIdleTimer();
 
@@ -1158,7 +1173,8 @@
     // คลิกปุ่มพูดคุย ➔ ฉากซ้าย 1 เลือนหายไปฉากซ้าย 2 (แสดงปกรณ์หน้าเศร้า)
     function handleTalkButtonClick(event) {
       event.stopPropagation();
-      if (isTransitioning || currentStep !== 'TALK_BTN_READY') return;
+      if (isTransitioning || isClickCooldown || currentStep !== 'TALK_BTN_READY') return;
+      applyClickCooldown(700);
       isTransitioning = true;
       resetIdleTimer();
 
