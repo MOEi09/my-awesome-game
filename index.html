@@ -250,7 +250,7 @@
       left: 0;
       width: 100%;
       height: 39.8%; /* 430/1080 */
-      z-index: 30;
+      z-index: 60;
       cursor: pointer;
       opacity: 0;
       pointer-events: none;
@@ -385,6 +385,126 @@
     .character-pakorn.active {
       opacity: 1;
     }
+
+    /* */
+    /* กลุ่มปุ่มเลือกตัวเลือก ตล.1 และ ตล.2 (เรียงตรงกลางลงมา) */
+    .tl-choices-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tl-choices-container.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .tl-choice-btn {
+      width: 360px;
+      max-width: 80vw;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease, opacity 0.3s ease;
+      filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.6));
+    }
+
+    .tl-choice-btn:hover {
+      transform: scale(1.08);
+      filter: drop-shadow(0 10px 25px rgba(236, 72, 153, 0.8));
+    }
+
+    .tl-choice-btn:active {
+      transform: scale(0.95);
+    }
+
+    .tl-choice-btn.disabled {
+      opacity: 0.45;
+      pointer-events: none;
+      filter: grayscale(0.8) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+    }
+
+    /* เลเยอร์จอมือถือ (ครอบทับฉาก) */
+    .phone-screen-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: 35;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .phone-screen-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* กริดวางแอปบนจอมือถือฝั่งซ้าย */
+    .app-icons-grid {
+      position: absolute;
+      top: 31%;
+      left: 4.8%;
+      width: 15.5%;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px 12px;
+      justify-items: center;
+      align-items: center;
+    }
+
+    .app-icon {
+      width: 88%;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+    }
+
+    .app-icon:hover {
+      transform: scale(1.15);
+      filter: drop-shadow(0 6px 16px rgba(255, 255, 255, 0.9));
+    }
+
+    .app-icon:active {
+      transform: scale(0.92);
+    }
+
+    /* จอน้อย Pop-up เด้งขึ้นมาจากล่าง */
+    .popup-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: 38;
+      opacity: 0;
+      transform: translateY(12%);
+      pointer-events: none;
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .popup-screen.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
   </style>
 </head>
 <body>
@@ -430,6 +550,33 @@
     <div id="scene-left1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/19vPu5aoFrebQdm1DtzvciBHaySg4OJxt'); cursor: pointer;"></div>
     <div id="scene-left2" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1R8i9bZv4Gpqyvv5972rX8UDL-IkKpJOF'); cursor: pointer;"></div>
 
+    <!-- เลเยอร์จอมือถือ 1 & 2 -->
+    <div id="phone-screen-1" class="phone-screen-overlay" style="background-image: url('https://lh3.googleusercontent.com/d/12a9H6WrV2NlJoaPaEsNX0WXhUtxBrG7e');">
+      <div class="app-icons-grid">
+        <img src="https://lh3.googleusercontent.com/d/1EjoRnJHXniqpZkq8VYo1yKPKb6e0d9Uh" class="app-icon" alt="แอพ 1" onclick="handleAppClick(1, 1)">
+        <img src="https://lh3.googleusercontent.com/d/1YGMwfzN7KmiZqot1m-E4gjKCKk4LNOu0" class="app-icon" alt="แอพ 2" onclick="handleAppClick(1, 2)">
+        <img src="https://lh3.googleusercontent.com/d/1w7xHtqSxAsCqY16Kk08Jp_g_ECC8HUNt" class="app-icon" alt="แอพ 3" onclick="handleAppClick(1, 3)">
+      </div>
+    </div>
+
+    <div id="phone-screen-2" class="phone-screen-overlay" style="background-image: url('https://lh3.googleusercontent.com/d/1lMlokBOI3y44xGSx95igFu3dSJAfAGiu');">
+      <div class="app-icons-grid">
+        <img src="https://lh3.googleusercontent.com/d/1EjoRnJHXniqpZkq8VYo1yKPKb6e0d9Uh" class="app-icon" alt="แอพ 1" onclick="handleAppClick(2, 1)">
+        <img src="https://lh3.googleusercontent.com/d/1YGMwfzN7KmiZqot1m-E4gjKCKk4LNOu0" class="app-icon" alt="แอพ 2" onclick="handleAppClick(2, 2)">
+        <img src="https://lh3.googleusercontent.com/d/1w7xHtqSxAsCqY16Kk08Jp_g_ECC8HUNt" class="app-icon" alt="แอพ 3" onclick="handleAppClick(2, 3)">
+      </div>
+    </div>
+
+    <!-- จอน้อย Pop-up 1 & 2 -->
+    <div id="popup-screen-1" class="popup-screen" style="background-image: url('https://lh3.googleusercontent.com/d/1LNkuEzI1QjwZ8nPo0H1sugzR-3-LN1LQ');"></div>
+    <div id="popup-screen-2" class="popup-screen" style="background-image: url('https://lh3.googleusercontent.com/d/1s-hsVrRE8J-Hu5XrZBzp39GLAyB7SNbr');"></div>
+
+    <!-- ปุ่มเลือกตัวเลือก ตล.1 และ ตล.2 -->
+    <div id="tl-choices" class="tl-choices-container">
+      <img id="btn-tl1" class="tl-choice-btn" src="https://lh3.googleusercontent.com/d/1pdC6RZNLfS0dA_zFpwOSd_-vNgUhANuf" alt="ปุ่ม ตล.1" onclick="handleChoiceTL(1)">
+      <img id="btn-tl2" class="tl-choice-btn" src="https://lh3.googleusercontent.com/d/1YLSZv1BSIGshI026uZTUl9W6TKVJQMVh" alt="ปุ่ม ตล.2" onclick="handleChoiceTL(2)">
+    </div>
+
     <!-- เลเยอร์ตัวละคร ปกรณ์ (ชิดขวาสุด) -->
     <img id="char-pakorn" class="character-pakorn" src="" alt="ปกรณ์">
 
@@ -464,9 +611,16 @@
     let selectedGender = '';
     let isTransitioning = false;
     let idleTimer = null;
+    let wrongAppTimer = null;
+
+    // ระบบบันทึกการทำภารกิจ
+    let completedChoice1 = false;
+    let completedChoice2 = false;
+    let activeChoiceBranch = 0; // 1 หรือ 2
 
     const gameContainer = document.getElementById('game-container');
     const centerTapHint = document.getElementById('center-tap-hint');
+    const knowledgeBar = document.getElementById('knowledge-bar');
     
     // Scenes
     const scene0 = document.getElementById('scene-0');
@@ -479,6 +633,15 @@
     const scene6 = document.getElementById('scene-6');
     const sceneLeft1 = document.getElementById('scene-left1');
     const sceneLeft2 = document.getElementById('scene-left2');
+
+    // Choice UI & Overlays
+    const tlChoices = document.getElementById('tl-choices');
+    const btnTl1 = document.getElementById('btn-tl1');
+    const btnTl2 = document.getElementById('btn-tl2');
+    const phoneScreen1 = document.getElementById('phone-screen-1');
+    const phoneScreen2 = document.getElementById('phone-screen-2');
+    const popupScreen1 = document.getElementById('popup-screen-1');
+    const popupScreen2 = document.getElementById('popup-screen-2');
 
     // UI & Characters
     const charPakorn = document.getElementById('char-pakorn');
@@ -529,7 +692,25 @@
       'https://lh3.googleusercontent.com/d/1IlNHrs-Y3-KGzqYFLhPfrLsZsLrHlboy',
       'https://lh3.googleusercontent.com/d/1uMBohQwM_n512oPv4hizsD0S7si7zYYi',
       'https://lh3.googleusercontent.com/d/1lP2e_ZiwEHh36SGCPpvJCjJRR2RyxhzV',
-      'https://lh3.googleusercontent.com/d/1FeW5eMcocC8iBIfFfxEnLZTWuBcnDi3d'
+      'https://lh3.googleusercontent.com/d/1FeW5eMcocC8iBIfFfxEnLZTWuBcnDi3d',
+      'https://lh3.googleusercontent.com/d/1pdC6RZNLfS0dA_zFpwOSd_-vNgUhANuf',
+      'https://lh3.googleusercontent.com/d/1YLSZv1BSIGshI026uZTUl9W6TKVJQMVh',
+      'https://lh3.googleusercontent.com/d/1gOxGQtSOnjKIQ8GmGt14PrZCrb57-QgE',
+      'https://lh3.googleusercontent.com/d/1gCxxcGNJww9_a8wVNveWP63PCd3x570U',
+      'https://lh3.googleusercontent.com/d/12a9H6WrV2NlJoaPaEsNX0WXhUtxBrG7e',
+      'https://lh3.googleusercontent.com/d/1EjoRnJHXniqpZkq8VYo1yKPKb6e0d9Uh',
+      'https://lh3.googleusercontent.com/d/1YGMwfzN7KmiZqot1m-E4gjKCKk4LNOu0',
+      'https://lh3.googleusercontent.com/d/1w7xHtqSxAsCqY16Kk08Jp_g_ECC8HUNt',
+      'https://lh3.googleusercontent.com/d/10cfQvccibUCVWX3dsS8DXqeenMqDRgzx',
+      'https://lh3.googleusercontent.com/d/1LNkuEzI1QjwZ8nPo0H1sugzR-3-LN1LQ',
+      'https://lh3.googleusercontent.com/d/1pnhZ0aiy7JYPgEF-JiuTsUxA5Tk7djdK',
+      'https://lh3.googleusercontent.com/d/19s4BKLbNuOqJEw6SSfKmEEVY2_Mi25c-',
+      'https://lh3.googleusercontent.com/d/1lMlokBOI3y44xGSx95igFu3dSJAfAGiu',
+      'https://lh3.googleusercontent.com/d/1s-hsVrRE8J-Hu5XrZBzp39GLAyB7SNbr',
+      'https://lh3.googleusercontent.com/d/1RLnopjABjKI5OtN42fucpA8fZ1SC9zr3',
+      'https://lh3.googleusercontent.com/d/1n3Uhf75eITtQeE9Eayd8OqhNFJ2LsIlX',
+      'https://lh3.googleusercontent.com/d/17ViaK3xMirpKrlYKVNGEc03Db-s82v4m',
+      'https://lh3.googleusercontent.com/d/1CBfWBhQVU9kPGLcTGsK9v_K6NB5xvKdn'
     ];
 
     imageList.forEach(url => {
@@ -541,7 +722,7 @@
     function resetIdleTimer() {
       centerTapHint.classList.remove('active');
       clearTimeout(idleTimer);
-      if (!isTransitioning && currentStep !== 'GENDER_STAGE' && currentStep !== 'WAIT_AUTO_SP1' && currentStep !== 'WAIT_AUTO_SCENE_4') {
+      if (!isTransitioning && currentStep !== 'GENDER_STAGE' && currentStep !== 'WAIT_AUTO_SP1' && currentStep !== 'WAIT_AUTO_SCENE_4' && currentStep !== 'WAIT_APP_SELECTION' && currentStep !== 'SHOW_TL_CHOICES') {
         idleTimer = setTimeout(() => {
           centerTapHint.classList.add('active');
         }, 4000);
@@ -646,7 +827,6 @@
 
       if (currentStep === 'TXT_1') {
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1vKgnY25GF7ayPdywSG7pY7tLH0c3kwVH';
-        // สลับฉากหลังเป็นฉาก 2 โดยแถบข้อความค้างไว้จนสลับฉากเสร็จ
         scene1.classList.remove('active');
         scene2.classList.add('active');
         currentStep = 'TXT_2';
@@ -660,7 +840,6 @@
         currentStep = 'TXT_4';
       } 
       else if (currentStep === 'TXT_4') {
-        // เปลี่ยนเป็นฉาก 3 ทันทีแบบไม่กระพริบ
         scene2.classList.add('instant-change');
         scene2.classList.remove('active');
         scene3.classList.add('instant-change');
@@ -678,7 +857,6 @@
         currentStep = 'TXT_5';
       }
       else if (currentStep === 'TXT_5') {
-        // แถบข้อความและฉาก 3 เลือนหายไปพร้อมกัน ขึ้นฉาก 4 ค้างไว้ 4 วินาที
         textbox.classList.remove('active');
         scene3.classList.remove('active');
         scene4.classList.add('active');
@@ -696,7 +874,6 @@
         currentStep = 'TXT_7';
       }
       else if (currentStep === 'TXT_7') {
-        // ฉากเปลี่ยนกลับเป็นฉาก 3 ทันที
         scene4.classList.add('instant-change');
         scene4.classList.remove('active');
         scene3.classList.add('instant-change');
@@ -710,7 +887,6 @@
         currentStep = 'TXT_7_SCENE_3';
       }
       else if (currentStep === 'TXT_7_SCENE_3') {
-        // แถบข้อความเลือนหายไปเป็นฉาก 2 พร้อมขึ้นปุ่มกลางตรงกลางล่าง
         textbox.classList.remove('active');
         scene3.classList.remove('active');
         scene2.classList.add('active');
@@ -735,19 +911,16 @@
       }
       else if (currentStep === 'TXT_LEFT_3') {
         textbox.classList.remove('active');
-        // เปลี่ยนเป็นปกรณ์หน้าปกติ
         charPakorn.src = 'https://lh3.googleusercontent.com/d/1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA';
         currentStep = 'LEFT_BRANCH_PAKORN_NORMAL_1';
       }
       else if (currentStep === 'TXT_LEFT_4') {
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1AuQQJlo1B1og7hNEoUBFP5j0TzcanwBB';
-        // สลับปกรณ์กลับมาหน้าเศร้า
         charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm';
         currentStep = 'TXT_LEFT_5';
       }
       else if (currentStep === 'TXT_LEFT_5') {
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1uMBohQwM_n512oPv4hizsD0S7si7zYYi';
-        // สลับปกรณ์กลับมาหน้าปกติ
         charPakorn.src = 'https://lh3.googleusercontent.com/d/1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA';
         currentStep = 'TXT_LEFT_6';
       }
@@ -759,6 +932,170 @@
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1FeW5eMcocC8iBIfFfxEnLZTWuBcnDi3d';
         currentStep = 'TXT_LEFT_END';
       }
+      else if (currentStep === 'TXT_LEFT_END') {
+        textbox.classList.remove('active');
+        showTLChoices();
+      }
+      // แถบคำถามตล.1 หรือ ตล.2
+      else if (currentStep === 'TXT_QUESTION_TL') {
+        textbox.classList.remove('active');
+        charPakorn.classList.remove('active');
+
+        if (activeChoiceBranch === 1) {
+          phoneScreen1.classList.add('active');
+        } else if (activeChoiceBranch === 2) {
+          phoneScreen2.classList.add('active');
+        }
+
+        currentStep = 'WAIT_APP_SELECTION';
+      }
+      // ปิดแถบข้อความแจ้งเตือนเลือกแอปผิด
+      else if (currentStep === 'WRONG_APP_MSG') {
+        clearTimeout(wrongAppTimer);
+        textbox.classList.remove('active');
+        currentStep = 'WAIT_APP_SELECTION';
+      }
+      // ทางเดินเลือกแอปถูกสำหรับ ตล.1
+      else if (currentStep === 'TXT_TL1_CORRECT_1') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/19s4BKLbNuOqJEw6SSfKmEEVY2_Mi25c-';
+        currentStep = 'TXT_TL1_CORRECT_2';
+      }
+      else if (currentStep === 'TXT_TL1_CORRECT_2') {
+        textbox.classList.remove('active');
+        popupScreen1.classList.remove('active');
+        phoneScreen1.classList.remove('active');
+
+        completedChoice1 = true;
+        updateKnowledgeBar();
+
+        setTimeout(() => {
+          charPakorn.classList.add('active');
+          checkChoiceCompletion();
+        }, 500);
+      }
+      // ทางเดินเลือกแอปถูกสำหรับ ตล.2
+      else if (currentStep === 'TXT_TL2_CORRECT_1') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1n3Uhf75eITtQeE9Eayd8OqhNFJ2LsIlX';
+        currentStep = 'TXT_TL2_CORRECT_2';
+      }
+      else if (currentStep === 'TXT_TL2_CORRECT_2') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/17ViaK3xMirpKrlYKVNGEc03Db-s82v4m';
+        currentStep = 'TXT_TL2_CORRECT_3';
+      }
+      else if (currentStep === 'TXT_TL2_CORRECT_3') {
+        textbox.classList.remove('active');
+        popupScreen2.classList.remove('active');
+        phoneScreen2.classList.remove('active');
+
+        completedChoice2 = true;
+        updateKnowledgeBar();
+
+        setTimeout(() => {
+          charPakorn.classList.add('active');
+          checkChoiceCompletion();
+        }, 500);
+      }
+      // แถบข้อความสุดท้ายก่อนขึ้น 2 ตัวเลือกถัดไป
+      else if (currentStep === 'FINAL_TXT_BEFORE_CHOICES') {
+        // จบตามขอบเขตที่ระบุ
+      }
+    }
+
+    // แสดงปุ่ม ตล.1 และ ตล.2
+    function showTLChoices() {
+      currentStep = 'SHOW_TL_CHOICES';
+      
+      if (completedChoice1) {
+        btnTl1.classList.add('disabled');
+      } else {
+        btnTl1.classList.remove('disabled');
+      }
+
+      if (completedChoice2) {
+        btnTl2.classList.add('disabled');
+      } else {
+        btnTl2.classList.remove('disabled');
+      }
+
+      tlChoices.classList.add('active');
+    }
+
+    // เลือกปุ่ม ตล.1 หรือ ตล.2
+    function handleChoiceTL(choiceNum) {
+      if (isTransitioning) return;
+      if (choiceNum === 1 && completedChoice1) return;
+      if (choiceNum === 2 && completedChoice2) return;
+
+      activeChoiceBranch = choiceNum;
+      tlChoices.classList.remove('active');
+
+      setTimeout(() => {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1gCxxcGNJww9_a8wVNveWP63PCd3x570U';
+        textbox.classList.add('active');
+        currentStep = 'TXT_QUESTION_TL';
+      }, 400);
+    }
+
+    // จัดการการคลิกเลือกแอปบนจอมือถือ
+    function handleAppClick(branch, appNum) {
+      if (isTransitioning || currentStep !== 'WAIT_APP_SELECTION') return;
+
+      if (branch === 1) { // สาขา ตล.1
+        if (appNum === 3) { // แอป 3 คือแอปที่ถูกต้อง
+          popupScreen1.classList.add('active');
+          textboxImg.src = 'https://lh3.googleusercontent.com/d/1pnhZ0aiy7JYPgEF-JiuTsUxA5Tk7djdK';
+          textbox.classList.add('active');
+          currentStep = 'TXT_TL1_CORRECT_1';
+        } else { // แอป 1 และ 2 เลือกผิด
+          showWrongAppNotice();
+        }
+      } 
+      else if (branch === 2) { // สาขา ตล.2
+        if (appNum === 2) { // แอป 2 คือแอปที่ถูกต้อง
+          popupScreen2.classList.add('active');
+          textboxImg.src = 'https://lh3.googleusercontent.com/d/1RLnopjABjKI5OtN42fucpA8fZ1SC9zr3';
+          textbox.classList.add('active');
+          currentStep = 'TXT_TL2_CORRECT_1';
+        } else { // แอป 1 และ 3 เลือกผิด
+          showWrongAppNotice();
+        }
+      }
+    }
+
+    // แสดงการแจ้งเตือนเมื่อเลือกแอปผิด ค้างไว้ 2 วินาที
+    function showWrongAppNotice() {
+      textboxImg.src = 'https://lh3.googleusercontent.com/d/10cfQvccibUCVWX3dsS8DXqeenMqDRgzx';
+      textbox.classList.add('active');
+      currentStep = 'WRONG_APP_MSG';
+
+      clearTimeout(wrongAppTimer);
+      wrongAppTimer = setTimeout(() => {
+        if (currentStep === 'WRONG_APP_MSG') {
+          textbox.classList.remove('active');
+          currentStep = 'WAIT_APP_SELECTION';
+        }
+      }, 2000);
+    }
+
+    // ตรวจสอบสถานะการทำครบทั้งสองทาง
+    function checkChoiceCompletion() {
+      if (completedChoice1 && completedChoice2) {
+        // เมื่อทำครบทั้ง ตล.1 และ ตล.2 แล้ว แสดงแถบข้อความสุดท้าย
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1CBfWBhQVU9kPGLcTGsK9v_K6NB5xvKdn';
+        textbox.classList.add('active');
+        currentStep = 'FINAL_TXT_BEFORE_CHOICES';
+      } else {
+        // หากยังทำไม่ครบ วนกลับไปหน้าเลือกปุ่ม ตล.1/ตล.2 อีกครั้ง
+        showTLChoices();
+      }
+    }
+
+    // ปรับเพิ่มความจุหลอดความรู้ HUD
+    function updateKnowledgeBar() {
+      let percent = 0;
+      if (completedChoice1) percent += 50;
+      if (completedChoice2) percent += 50;
+      knowledgeBar.style.width = percent + '%';
     }
 
     // คลิกปุ่มตรงกลาง (ในฉาก 2) ➔ ซูมเลือนหายไปฉาก 6
@@ -776,7 +1113,6 @@
         scene2.classList.remove('zoom-out-fade');
         scene6.classList.add('active');
 
-        // แสดง 2 ปุ่ม (ซ้าย และ ขวา) ในฉาก 6
         btnLeft.style.display = 'block';
         btnRight.style.display = 'block';
         btnMiddle.style.display = 'none';
@@ -803,7 +1139,6 @@
         scene6.classList.remove('zoom-out-fade');
         sceneLeft1.classList.add('active');
 
-        // แสดงปุ่มพูดคุยที่ตำแหน่ง X:1171 Y:333 แบบปิดการกดไว้ก่อน
         btnTalk.classList.add('visible-disabled');
 
         currentStep = 'LEFT_BRANCH_START';
@@ -826,7 +1161,6 @@
       setTimeout(() => {
         sceneLeft2.classList.add('active');
 
-        // แสดงตัวละครปกรณ์หน้าเศร้า ชิดขวาสุด (960x1080)
         charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm';
         charPakorn.classList.add('active');
 
