@@ -475,6 +475,7 @@
     const textboxImg = document.getElementById('textbox-img');
     const navButtons = document.getElementById('nav-buttons');
     const btnLeft = document.getElementById('btn-left');
+    const btnMiddle = document.getElementById('btn-middle');
     const btnRight = document.getElementById('btn-right');
 
     // Preload รูปภาพทั้งหมด
@@ -637,10 +638,11 @@
       } 
       else if (currentStep === 12) {
         textbox.classList.remove('active');
-        btnLeft.style.display = 'block';
-        btnRight.style.display = 'block';
+        btnLeft.style.display = 'none';
+        btnRight.style.display = 'none';
+        btnMiddle.style.display = 'block';
         navButtons.classList.add('active');
-        currentStep = 'NAV_STAGE';
+        currentStep = 'NAV_MIDDLE_STAGE';
       }
       // ดำเนินเรื่องฝั่งซ้าย
       else if (currentStep === 'LEFT_BRANCH_2') {
@@ -757,14 +759,26 @@
     // คลิกปุ่มตรงกลาง
     function handleMiddleButtonClick(event) {
       event.stopPropagation();
+      if (isTransitioning) return;
+      isTransitioning = true;
       resetIdleTimer();
+
       navButtons.classList.remove('active');
       sceneMain.classList.remove('active');
 
       setTimeout(() => {
         sceneMain.style.backgroundImage = "url('https://lh3.googleusercontent.com/d/1JXQa4HTXdUYG7ou90LBHsRZ1PTcF9B9b')";
         sceneMain.classList.add('active');
-        currentStep = 'END_STAGE';
+        
+        // ย้ายปุ่มซ้ายและปุ่มขวามาแสดงในฉากทางแยกนี้
+        btnLeft.style.display = 'block';
+        btnRight.style.display = 'block';
+        btnMiddle.style.display = 'none';
+        navButtons.classList.add('active');
+
+        currentStep = 'FORK_STAGE';
+        isTransitioning = false;
+        resetIdleTimer();
       }, 400);
     }
 
