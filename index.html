@@ -158,10 +158,6 @@
       filter: drop-shadow(0 0 16px rgba(236, 72, 153, 0.8));
     }
 
-    .home-btn:active {
-      transform: scale(0.92);
-    }
-
     /* ข้อความ ( แตะ ) ลางๆ กลางจอเมื่อผู้เล่นค้างเกิน 4 วินาที */
     .center-tap-hint {
       position: absolute;
@@ -186,14 +182,26 @@
     }
 
     @keyframes tapSoftPulse {
-      0%, 100% {
-        transform: translate(-50%, -50%) scale(0.97);
-        opacity: 0.65;
-      }
-      50% {
-        transform: translate(-50%, -50%) scale(1.05);
-        opacity: 0.95;
-      }
+      0%, 100% { transform: translate(-50%, -50%) scale(0.97); opacity: 0.65; }
+      50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.95; }
+    }
+
+    /* เลเยอร์แสงสีขาววาบสลับฉาก (White Screen Flash) */
+    .white-flash-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #ffffff;
+      z-index: 150;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .white-flash-layer.active {
+      opacity: 1;
     }
 
     /* เลเยอร์ฉากหลัง */
@@ -269,10 +277,6 @@
       filter: drop-shadow(0 12px 28px rgba(236, 72, 153, 0.75));
     }
 
-    .gender-btn:active {
-      transform: scale(0.95);
-    }
-
     /* ตัวละคร ปกรณ์ (960x1080 ชิดขวา) */
     .character-pakorn {
       position: absolute;
@@ -338,10 +342,6 @@
       filter: drop-shadow(0 6px 18px rgba(255, 255, 255, 0.95));
     }
 
-    .app-icon:active {
-      transform: scale(0.92);
-    }
-
     /* จอน้อย Pop-up */
     .popup-screen {
       position: absolute;
@@ -366,8 +366,8 @@
       cursor: pointer;
     }
 
-    /* กลุ่มปุ่มเลือกตัวเลือก ตล.1 และ ตล.2 (1920x430) */
-    .tl-choices-container {
+    /* กลุ่มปุ่มเลือกตัวเลือก ตล.1, ตล.2 และกลุ่มตัวเลือกใหม่ 2 ปุ่ม */
+    .choice-group-container {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -383,12 +383,12 @@
       transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .tl-choices-container.active {
+    .choice-group-container.active {
       opacity: 1;
       pointer-events: auto;
     }
 
-    .tl-choice-btn {
+    .choice-btn-item {
       width: 100%;
       max-width: 1750px;
       height: auto;
@@ -397,16 +397,12 @@
       filter: drop-shadow(0 8px 22px rgba(0, 0, 0, 0.65));
     }
 
-    .tl-choice-btn:hover {
+    .choice-btn-item:hover {
       transform: scale(1.04);
       filter: drop-shadow(0 10px 25px rgba(236, 72, 153, 0.8));
     }
 
-    .tl-choice-btn:active {
-      transform: scale(0.96);
-    }
-
-    .tl-choice-btn.disabled {
+    .choice-btn-item.disabled {
       opacity: 0.45;
       pointer-events: none;
       filter: grayscale(0.8) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
@@ -438,10 +434,9 @@
       height: 100%;
       object-fit: fill;
       display: block;
-      transition: opacity 0.25s ease;
     }
 
-    /* ปุ่มควบคุมซ้าย-กลาง-ขวา */
+    /* ปุ่มนำทางซ้าย-กลาง-ขวา */
     .nav-buttons-container {
       position: absolute;
       bottom: 5%;
@@ -479,23 +474,13 @@
     }
 
     @keyframes btnSmoothGlow {
-      0%, 100% {
-        transform: scale(1);
-        filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 14px rgba(236, 72, 153, 0.55));
-      }
-      50% {
-        transform: scale(1.08);
-        filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 25px rgba(255, 255, 255, 0.95));
-      }
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 14px rgba(236, 72, 153, 0.55)); }
+      50% { transform: scale(1.08); filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 25px rgba(255, 255, 255, 0.95)); }
     }
 
     .nav-btn:hover {
       transform: scale(1.22) !important;
       filter: drop-shadow(0 12px 28px rgba(236, 72, 153, 0.95)) drop-shadow(0 0 32px rgba(255, 255, 255, 1)) !important;
-    }
-
-    .nav-btn:active {
-      transform: scale(0.93) !important;
     }
 
     /* ปุ่มพูดคุย */
@@ -527,14 +512,85 @@
     }
 
     @keyframes talkPulse {
-      0%, 100% {
-        transform: scale(1);
-        filter: drop-shadow(0 8px 20px rgba(236, 72, 153, 0.7)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
-      }
-      50% {
-        transform: scale(1.08);
-        filter: drop-shadow(0 12px 28px rgba(236, 72, 153, 0.95)) drop-shadow(0 0 25px rgba(255, 255, 255, 1));
-      }
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 8px 20px rgba(236, 72, 153, 0.7)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.8)); }
+      50% { transform: scale(1.08); filter: drop-shadow(0 12px 28px rgba(236, 72, 153, 0.95)) drop-shadow(0 0 25px rgba(255, 255, 255, 1)); }
+    }
+
+    /* ---------------- มินิเกมต่อสู้ (BATTLE MINI-GAME UI) ---------------- */
+    #battle-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    #battle-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .battle-start-title {
+      font-size: 72px;
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 0 0 20px #ec4899, 0 0 40px #a855f7, 0 6px 18px rgba(0,0,0,0.9);
+      letter-spacing: 6px;
+      cursor: pointer;
+      animation: startGlowPulse 1.5s infinite ease-in-out;
+    }
+
+    @keyframes startGlowPulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.12); opacity: 1; text-shadow: 0 0 30px #ec4899, 0 0 60px #ec4899; }
+    }
+
+    .battle-score-hud {
+      position: absolute;
+      top: 25px;
+      left: 30px;
+      z-index: 95;
+      background: rgba(10, 10, 20, 0.85);
+      border: 2px solid rgba(236, 72, 153, 0.8);
+      border-radius: 20px;
+      padding: 10px 22px;
+      color: #fff;
+      font-size: 20px;
+      font-weight: bold;
+      box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
+      display: none;
+    }
+
+    .battle-score-hud.active {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .battle-floating-item {
+      position: absolute;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+      transition: transform 0.1s ease;
+      white-space: nowrap;
+      z-index: 92;
+    }
+
+    .battle-floating-item:active {
+      transform: scale(0.9);
     }
   </style>
 </head>
@@ -560,7 +616,10 @@
     <!-- ข้อความ ( แตะ ) ลางๆ กลางจอเมื่อผู้เล่นค้างเกิน 4 วินาที -->
     <div id="center-tap-hint" class="center-tap-hint">( แตะ )</div>
 
-    <!-- ฉากต่างๆ (Background Scenes) -->
+    <!-- เลเยอร์แสงสีขาวสลับฉาก -->
+    <div id="white-flash" class="white-flash-layer"></div>
+
+    <!-- ฉากพื้นหลังหลักต่างๆ -->
     <div id="scene-0" class="scene-bg active" style="background-image: url('https://lh3.googleusercontent.com/d/1Lk0CVOXS70d9zYJ-lg2F5glhiQ_YOWiT'); cursor: pointer;"></div>
     <div id="scene-sp1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1Kuzs9rpu0M5NScCdeTSl9dAZEa2aLmjP');"></div>
     <div id="scene-sp2" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1l0LxDM6bw6FYo4xN_cWEOzM8UfIOyvS4');">
@@ -580,9 +639,15 @@
     <div id="scene-4" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1aUIvEEm4WdVxR6a34qSuKUP9t5p7lUuP'); cursor: pointer;"></div>
     <div id="scene-6" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1JXQa4HTXdUYG7ou90LBHsRZ1PTcF9B9b'); cursor: pointer;"></div>
 
-    <!-- ฉากฝั่งซ้าย -->
+    <!-- ฉากทางฝั่งซ้าย -->
     <div id="scene-left1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/19vPu5aoFrebQdm1DtzvciBHaySg4OJxt'); cursor: pointer;"></div>
     <div id="scene-left2" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1R8i9bZv4Gpqyvv5972rX8UDL-IkKpJOF'); cursor: pointer;"></div>
+
+    <!-- ฉากใหม่เพิ่มเติมตามเนื้อเรื่องใหม่ -->
+    <div id="scene-end1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1d09NSfEhvtgQNhvawJia8pnquEam6v9m'); cursor: pointer;"></div>
+    <div id="scene-battle" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1bjZxiZLWUYRZmDnNtJCmjJaJ7PNXyhHC');"></div>
+    <div id="scene-cutscene-male" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/180pshb-vV-qmrluZ3zXmDR4n8Zax26Bo'); cursor: pointer;"></div>
+    <div id="scene-cutscene-female" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/13JkiphKhIn9eL2xbeXK9BihxLejVpkLp'); cursor: pointer;"></div>
 
     <!-- จอมือถือภารกิจ 1 & 2 -->
     <div id="phone-screen-1" class="phone-screen-overlay" style="background-image: url('https://lh3.googleusercontent.com/d/12a9H6WrV2NlJoaPaEsNX0WXhUtxBrG7e');">
@@ -605,13 +670,19 @@
     <div id="popup-screen-1" class="popup-screen" style="background-image: url('https://lh3.googleusercontent.com/d/1LNkuEzI1QjwZ8nPo0H1sugzR-3-LN1LQ');" onclick="handlePopupClick(1)"></div>
     <div id="popup-screen-2" class="popup-screen" style="background-image: url('https://lh3.googleusercontent.com/d/1s-hsVrRE8J-Hu5XrZBzp39GLAyB7SNbr');" onclick="handlePopupClick(2)"></div>
 
-    <!-- ปุ่มเลือกตัวเลือก ตล.1 และ ตล.2 -->
-    <div id="tl-choices" class="tl-choices-container">
-      <img id="btn-tl1" class="tl-choice-btn" src="https://lh3.googleusercontent.com/d/16fZtXZW9f00q5ykmcbPzbhVmqQksAzvp" alt="ปุ่ม ตล.1" onclick="handleChoiceTL(1)">
-      <img id="btn-tl2" class="tl-choice-btn" src="https://lh3.googleusercontent.com/d/1GYaP0COPFsX-8I39_BttVQ3DLg7FHAEu" alt="ปุ่ม ตล.2" onclick="handleChoiceTL(2)">
+    <!-- กลุ่มปุ่มเลือกตัวเลือก ตล.1 และ ตล.2 -->
+    <div id="tl-choices" class="choice-group-container">
+      <img id="btn-tl1" class="choice-btn-item" src="https://lh3.googleusercontent.com/d/16fZtXZW9f00q5ykmcbPzbhVmqQksAzvp" alt="ปุ่ม ตล.1" onclick="handleChoiceTL(1)">
+      <img id="btn-tl2" class="choice-btn-item" src="https://lh3.googleusercontent.com/d/1GYaP0COPFsX-8I39_BttVQ3DLg7FHAEu" alt="ปุ่ม ตล.2" onclick="handleChoiceTL(2)">
     </div>
 
-    <!-- เลเยอร์ตัวละคร ปกรณ์ (ชิดขวาสุด) -->
+    <!-- กลุ่มปุ่มเลือกใหม่ 2 ตัวเลือก -->
+    <div id="new-branch-choices" class="choice-group-container">
+      <img class="choice-btn-item" src="https://lh3.googleusercontent.com/d/1CxisMPMH0Sg09Pe0KrWb0GkjAOd4s2gS" alt="ตัวเลือก 1" onclick="handleNewBranchChoice(1)">
+      <img class="choice-btn-item" src="https://lh3.googleusercontent.com/d/17Uy4zdlhIL6swRefsjU-EDNT_L3WzDUN" alt="ตัวเลือก 2" onclick="handleNewBranchChoice(2)">
+    </div>
+
+    <!-- เลเยอร์ตัวละคร ปกรณ์ -->
     <img id="char-pakorn" class="character-pakorn" src="" alt="ปกรณ์">
 
     <!-- ปุ่มพูดคุย -->
@@ -635,6 +706,15 @@
       </div>
     </div>
 
+    <!-- มินิเกมต่อสู้ (Battle Overlay) -->
+    <div id="battle-overlay">
+      <div id="battle-start-txt" class="battle-start-title" onclick="startBattleMinigame()">เริ่มต่อสู้</div>
+    </div>
+    <div id="battle-score-hud" class="battle-score-hud">
+      <div>🎯 คะแนน: <span id="battle-score-val" style="color:#f472b6;">0</span> / 10</div>
+      <div>❤️ ชีวิต: <span id="battle-lives-val" style="color:#ef4444;">3</span></div>
+    </div>
+
   </div>
 
   <script>
@@ -646,11 +726,20 @@
 
     let completedChoice1 = false;
     let completedChoice2 = false;
-    let activeChoiceBranch = 0; // 1 หรือ 2
+    let activeChoiceBranch = 0;
+    let currentBranchPath = 0; // 1 = ยอมจำนน, 2 = ต่อสู้
+    let knowledgeScore = 0; // 0 ถึง 100%
+
+    // ตัวแปรสำหรับมินิเกม
+    let battleScore = 0;
+    let battleLives = 3;
+    let battleInterval = null;
+    let isBattleActive = false;
 
     const gameContainer = document.getElementById('game-container');
     const centerTapHint = document.getElementById('center-tap-hint');
     const knowledgeBar = document.getElementById('knowledge-bar');
+    const whiteFlash = document.getElementById('white-flash');
     
     // Scenes
     const scene0 = document.getElementById('scene-0');
@@ -664,14 +753,29 @@
     const sceneLeft1 = document.getElementById('scene-left1');
     const sceneLeft2 = document.getElementById('scene-left2');
 
-    // Choice UI & Overlays
+    // New Scenes
+    const sceneEnd1 = document.getElementById('scene-end1');
+    const sceneBattle = document.getElementById('scene-battle');
+    const sceneCutsceneMale = document.getElementById('scene-cutscene-male');
+    const sceneCutsceneFemale = document.getElementById('scene-cutscene-female');
+
+    // Choice Containers & Overlays
     const tlChoices = document.getElementById('tl-choices');
     const btnTl1 = document.getElementById('btn-tl1');
     const btnTl2 = document.getElementById('btn-tl2');
+    const newBranchChoices = document.getElementById('new-branch-choices');
+
     const phoneScreen1 = document.getElementById('phone-screen-1');
     const phoneScreen2 = document.getElementById('phone-screen-2');
     const popupScreen1 = document.getElementById('popup-screen-1');
     const popupScreen2 = document.getElementById('popup-screen-2');
+
+    // Battle UI
+    const battleOverlay = document.getElementById('battle-overlay');
+    const battleStartTxt = document.getElementById('battle-start-txt');
+    const battleScoreHud = document.getElementById('battle-score-hud');
+    const battleScoreVal = document.getElementById('battle-score-val');
+    const battleLivesVal = document.getElementById('battle-lives-val');
 
     // UI & Characters
     const charPakorn = document.getElementById('char-pakorn');
@@ -742,7 +846,22 @@
       'https://lh3.googleusercontent.com/d/1n3Uhf75eITtQeE9Eayd8OqhNFJ2LsIlX',
       'https://lh3.googleusercontent.com/d/17ViaK3xMirpKrlYKVNGEc03Db-s82v4m',
       'https://lh3.googleusercontent.com/d/1CBfWBhQVU9kPGLcTGsK9v_K6NB5xvKdn',
-      'https://lh3.googleusercontent.com/d/14c-gOWytS0Wvy_smrsTLus4esDrhOVcj'
+      'https://lh3.googleusercontent.com/d/14c-gOWytS0Wvy_smrsTLus4esDrhOVcj',
+      'https://lh3.googleusercontent.com/d/1CxisMPMH0Sg09Pe0KrWb0GkjAOd4s2gS',
+      'https://lh3.googleusercontent.com/d/17Uy4zdlhIL6swRefsjU-EDNT_L3WzDUN',
+      'https://lh3.googleusercontent.com/d/1c5Pf5QLYaYLihT01uY-v5opfYctqx58g',
+      'https://lh3.googleusercontent.com/d/1xoPS3J3vHigPjcIOouMo8zmUGc3hMIJZ',
+      'https://lh3.googleusercontent.com/d/1d09NSfEhvtgQNhvawJia8pnquEam6v9m',
+      'https://lh3.googleusercontent.com/d/11WdiZgGjjNZL6kZwRsS_038jgamsO77E',
+      'https://lh3.googleusercontent.com/d/1TRqkXGiYZMDxEu_feTVjblu6mkpa6Yd4',
+      'https://lh3.googleusercontent.com/d/1zvp5CM6rjIKL2DG6drOZ7X9cQw1RU51O',
+      'https://lh3.googleusercontent.com/d/1PVTLSehn7PfIuaM9GB1jEflubF3U9z1V',
+      'https://lh3.googleusercontent.com/d/1OrmrcPSVDzZPz3Rnnz4oYDBvv9dDVPP8',
+      'https://lh3.googleusercontent.com/d/1bjZxiZLWUYRZmDnNtJCmjJaJ7PNXyhHC',
+      'https://lh3.googleusercontent.com/d/1AJHrpm0Qq1Muj4uTroYaDCAGDsDJRjUS',
+      'https://lh3.googleusercontent.com/d/180pshb-vV-qmrluZ3zXmDR4n8Zax26Bo',
+      'https://lh3.googleusercontent.com/d/13JkiphKhIn9eL2xbeXK9BihxLejVpkLp',
+      'https://lh3.googleusercontent.com/d/1JFrkUBuNVi3stpA73362NLLVSHwuZakT'
     ];
 
     imageList.forEach(url => {
@@ -754,7 +873,7 @@
     function resetIdleTimer() {
       centerTapHint.classList.remove('active');
       clearTimeout(idleTimer);
-      if (!isTransitioning && currentStep !== 'GENDER_STAGE' && currentStep !== 'WAIT_AUTO_SP1' && currentStep !== 'WAIT_AUTO_SCENE_4' && currentStep !== 'WAIT_APP_SELECTION' && currentStep !== 'SHOW_TL_CHOICES') {
+      if (!isTransitioning && currentStep !== 'GENDER_STAGE' && currentStep !== 'WAIT_AUTO_SP1' && currentStep !== 'WAIT_AUTO_SCENE_4' && currentStep !== 'WAIT_APP_SELECTION' && currentStep !== 'SHOW_TL_CHOICES' && currentStep !== 'SHOW_NEW_BRANCH_CHOICES' && !isBattleActive) {
         idleTimer = setTimeout(() => {
           centerTapHint.classList.add('active');
         }, 4000);
@@ -848,6 +967,37 @@
       }
     });
 
+    sceneEnd1.addEventListener('click', () => {
+      if (isTransitioning) return;
+      if (currentStep === 'SCENE_END1_READY') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/11WdiZgGjjNZL6kZwRsS_038jgamsO77E';
+        textbox.classList.add('active');
+        currentStep = 'TXT_END1_1';
+        resetIdleTimer();
+      }
+    });
+
+    sceneCutsceneMale.addEventListener('click', () => {
+      if (isTransitioning) return;
+      if (currentStep === 'CUTSCENE_READY') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1OrmrcPSVDzZPz3Rnnz4oYDBvv9dDVPP8';
+        textbox.classList.add('active');
+        currentStep = 'TXT_CUTSCENE_1';
+        resetIdleTimer();
+      }
+    });
+
+    sceneCutsceneFemale.addEventListener('click', () => {
+      if (isTransitioning) return;
+      if (currentStep === 'CUTSCENE_READY') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1OrmrcPSVDzZPz3Rnnz4oYDBvv9dDVPP8';
+        textbox.classList.add('active');
+        currentStep = 'TXT_CUTSCENE_1';
+        resetIdleTimer();
+      }
+    });
+
+    // ระบบจัดการคลิกแถบข้อความหลัก
     function handleTextboxClick(event) {
       event.stopPropagation();
       if (isTransitioning) return;
@@ -857,7 +1007,7 @@
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1vKgnY25GF7ayPdywSG7pY7tLH0c3kwVH';
         scene1.classList.remove('active');
         scene2.classList.add('active');
-        btnHome.classList.add('active'); // แสดงปุ่ม Home ตั้งแต่ฉากที่ 2
+        btnHome.classList.add('active');
         currentStep = 'TXT_2';
       } 
       else if (currentStep === 'TXT_2') {
@@ -992,7 +1142,7 @@
         phoneScreen1.classList.remove('active');
 
         completedChoice1 = true;
-        updateKnowledgeBar();
+        updateKnowledgeBar(50);
 
         setTimeout(() => {
           charPakorn.classList.add('active');
@@ -1013,30 +1163,104 @@
         phoneScreen2.classList.remove('active');
 
         completedChoice2 = true;
-        updateKnowledgeBar();
+        updateKnowledgeBar(50);
 
         setTimeout(() => {
           charPakorn.classList.add('active');
           checkChoiceCompletion();
         }, 500);
       }
+      else if (currentStep === 'FINAL_TXT_BEFORE_CHOICES') {
+        textbox.classList.remove('active');
+        newBranchChoices.classList.add('active');
+        currentStep = 'SHOW_NEW_BRANCH_CHOICES';
+      }
+      // ----- เนื้อเรื่องส่วนตัวเลือกที่ 1 -----
+      else if (currentStep === 'TXT_NEW_BRANCH_1_1') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1xoPS3J3vHigPjcIOouMo8zmUGc3hMIJZ';
+        charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm'; // ปกรณ์หน้าเศร้า
+        currentStep = 'TXT_NEW_BRANCH_1_2';
+      }
+      else if (currentStep === 'TXT_NEW_BRANCH_1_2') {
+        textbox.classList.remove('active');
+        charPakorn.classList.remove('active');
+        triggerWhiteFlashTransition(() => {
+          sceneLeft2.classList.remove('active');
+          sceneEnd1.classList.add('active');
+          currentStep = 'SCENE_END1_READY';
+        });
+      }
+      else if (currentStep === 'TXT_END1_1') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1TRqkXGiYZMDxEu_feTVjblu6mkpa6Yd4';
+        currentStep = 'TXT_END1_2';
+      }
+      else if (currentStep === 'TXT_END1_2') {
+        textbox.classList.remove('active');
+        triggerWhiteFlashTransition(() => {
+          sceneEnd1.classList.remove('active');
+          sceneLeft2.classList.add('active');
+          currentStep = 'FINAL_CONCLUSION_REACHED';
+        });
+      }
+      // ----- เนื้อเรื่องส่วนตัวเลือกที่ 2 -----
+      else if (currentStep === 'TXT_NEW_BRANCH_2_1') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1PVTLSehn7PfIuaM9GB1jEflubF3U9z1V';
+        charPakorn.src = 'https://lh3.googleusercontent.com/d/1IlNHrs-Y3-KGzqYFLhPfrLsZsLrHlboy'; // ปกรณ์หน้าโกรธ
+        currentStep = 'TXT_NEW_BRANCH_2_2';
+      }
+      else if (currentStep === 'TXT_NEW_BRANCH_2_2') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1OrmrcPSVDzZPz3Rnnz4oYDBvv9dDVPP8';
+        currentStep = 'TXT_NEW_BRANCH_2_3';
+      }
+      else if (currentStep === 'TXT_NEW_BRANCH_2_3') {
+        textbox.classList.remove('active');
+        charPakorn.classList.remove('active');
+        triggerWhiteFlashTransition(() => {
+          sceneLeft2.classList.remove('active');
+          sceneBattle.classList.add('active');
+          battleOverlay.classList.add('active');
+          battleStartTxt.style.display = 'block';
+          currentStep = 'BATTLE_START_WAIT';
+        });
+      }
+      // ----- เนื้อเรื่องกรณีชนะมินิเกม -----
+      else if (currentStep === 'TXT_CUTSCENE_1') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1JFrkUBuNVi3stpA73362NLLVSHwuZakT';
+        currentStep = 'TXT_CUTSCENE_2';
+      }
+      else if (currentStep === 'TXT_CUTSCENE_2') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1TRqkXGiYZMDxEu_feTVjblu6mkpa6Yd4';
+        currentStep = 'TXT_CUTSCENE_3';
+      }
+      else if (currentStep === 'TXT_CUTSCENE_3') {
+        textbox.classList.remove('active');
+        triggerWhiteFlashTransition(() => {
+          sceneCutsceneMale.classList.remove('active');
+          sceneCutsceneFemale.classList.remove('active');
+          sceneLeft2.classList.add('active');
+          currentStep = 'FINAL_CONCLUSION_REACHED';
+        });
+      }
+    }
+
+    /* สลับฉากด้วยแสงขาววาบ (White Flash Transition) */
+    function triggerWhiteFlashTransition(callback) {
+      isTransitioning = true;
+      whiteFlash.classList.add('active');
+      setTimeout(() => {
+        if (callback) callback();
+        setTimeout(() => {
+          whiteFlash.classList.remove('active');
+          isTransitioning = false;
+          resetIdleTimer();
+        }, 300);
+      }, 700);
     }
 
     function showTLChoices() {
       currentStep = 'SHOW_TL_CHOICES';
-      
-      if (completedChoice1) {
-        btnTl1.classList.add('disabled');
-      } else {
-        btnTl1.classList.remove('disabled');
-      }
-
-      if (completedChoice2) {
-        btnTl2.classList.add('disabled');
-      } else {
-        btnTl2.classList.remove('disabled');
-      }
-
+      btnTl1.classList.toggle('disabled', completedChoice1);
+      btnTl2.classList.toggle('disabled', completedChoice2);
       tlChoices.classList.add('active');
     }
 
@@ -1058,7 +1282,7 @@
     function handleAppClick(branch, appNum) {
       if (isTransitioning || currentStep !== 'WAIT_APP_SELECTION') return;
 
-      if (branch === 1) { // สาขา ตล.1
+      if (branch === 1) {
         if (appNum === 3) {
           popupScreen1.classList.add('active');
           currentStep = 'WAIT_TAP_FOR_POPUP1_TEXTBOX';
@@ -1066,7 +1290,7 @@
           showWrongAppNotice();
         }
       } 
-      else if (branch === 2) { // สาขา ตล.2
+      else if (branch === 2) {
         if (appNum === 2) {
           popupScreen2.classList.add('active');
           currentStep = 'WAIT_TAP_FOR_POPUP2_TEXTBOX';
@@ -1115,11 +1339,163 @@
       }
     }
 
-    function updateKnowledgeBar() {
-      let percent = 0;
-      if (completedChoice1) percent += 50;
-      if (completedChoice2) percent += 50;
-      knowledgeBar.style.width = percent + '%';
+    /* จัดการการกดเลือกตัวเลือกใหม่ 2 ตัวเลือก */
+    function handleNewBranchChoice(choiceNum) {
+      if (isTransitioning || currentStep !== 'SHOW_NEW_BRANCH_CHOICES') return;
+      currentBranchPath = choiceNum;
+      newBranchChoices.classList.remove('active');
+
+      if (choiceNum === 1) { // เส้นทางที่ 1
+        setTimeout(() => {
+          textboxImg.src = 'https://lh3.googleusercontent.com/d/1c5Pf5QLYaYLihT01uY-v5opfYctqx58g';
+          textbox.classList.add('active');
+          currentStep = 'TXT_NEW_BRANCH_1_1';
+        }, 400);
+      } 
+      else if (choiceNum === 2) { // เส้นทางที่ 2 (เข้าสู่การต่อสู้)
+        setTimeout(() => {
+          textboxImg.src = 'https://lh3.googleusercontent.com/d/1zvp5CM6rjIKL2DG6drOZ7X9cQw1RU51O';
+          textbox.classList.add('active');
+          currentStep = 'TXT_NEW_BRANCH_2_1';
+        }, 400);
+      }
+    }
+
+    // ---------------- ระบบมินิเกมต่อสู้ (BATTLE MINI-GAME ENGINE) ----------------
+    const itemData = [
+      { text: "บอกที่อยู่บ้าน", target: true, color: "#ef4444" },
+      { text: "ไม่บอกที่อยู่", target: false, color: "#10b981" },
+      { text: "บอกเลขบัตรประชาชน", target: true, color: "#f59e0b" },
+      { text: "ชอบกินส้มตำ", target: false, color: "#3b82f6" },
+      { text: "บอกรหัสผ่าน ATM", target: true, color: "#ec4899" },
+      { text: "ทักทายสวัสดี", target: false, color: "#a855f7" },
+      { text: "บอกเลขบัญชีธนาคาร", target: true, color: "#ef4444" },
+      { text: "ถามเรื่องสภาพอากาศ", target: false, color: "#10b981" },
+      { text: "บอกวันเดือนปีเกิด", target: true, color: "#f59e0b" },
+      { text: "ไม่บอกพาสเวิร์ด", target: false, color: "#3b82f6" },
+      { text: "บอกเบอร์โทรแม่", target: true, color: "#ec4899" },
+      { text: "คุยเรื่องการ์ตูน", target: false, color: "#a855f7" }
+    ];
+
+    function startBattleMinigame() {
+      if (isBattleActive) return;
+      isBattleActive = true;
+      battleScore = 0;
+      battleLives = 3;
+      battleScoreVal.innerText = battleScore;
+      battleLivesVal.innerText = battleLives;
+
+      battleStartTxt.style.display = 'none';
+      battleScoreHud.classList.add('active');
+
+      battleInterval = setInterval(spawnFloatingItem, 900);
+    }
+
+    function spawnFloatingItem() {
+      if (!isBattleActive) return;
+
+      const randomData = itemData[Math.floor(Math.random() * itemData.length)];
+      const itemEl = document.createElement('div');
+      itemEl.className = 'battle-floating-item';
+      itemEl.innerText = randomData.text;
+      itemEl.style.backgroundColor = randomData.color;
+
+      const randomX = Math.floor(Math.random() * 70) + 15; // 15% ถึง 85%
+      itemEl.style.left = randomX + '%';
+      itemEl.style.bottom = '-60px';
+
+      gameContainer.appendChild(itemEl);
+
+      let posY = -60;
+      const speed = 2.8 + Math.random() * 1.5;
+
+      const moveTimer = setInterval(() => {
+        if (!isBattleActive) {
+          clearInterval(moveTimer);
+          if (itemEl.parentNode) itemEl.parentNode.removeChild(itemEl);
+          return;
+        }
+
+        posY += speed;
+        itemEl.style.bottom = posY + 'px';
+
+        // เมื่อลอยขึ้นถึงขอบบน
+        if (posY > gameContainer.offsetHeight - 50) {
+          clearInterval(moveTimer);
+          if (itemEl.parentNode) itemEl.parentNode.removeChild(itemEl);
+
+          // ถ้าเป็นอันตรายหลุดไปถึงเพดาน ให้หักแต้มชีวิต
+          if (randomData.target) {
+            handleBattleMistake();
+          }
+        }
+      }, 20);
+
+      itemEl.onclick = (e) => {
+        e.stopPropagation();
+        clearInterval(moveTimer);
+        if (itemEl.parentNode) itemEl.parentNode.removeChild(itemEl);
+
+        if (randomData.target) {
+          battleScore++;
+          battleScoreVal.innerText = battleScore;
+          if (battleScore >= 10) {
+            finishBattleMinigame(true);
+          }
+        } else {
+          handleBattleMistake();
+        }
+      };
+    }
+
+    function handleBattleMistake() {
+      battleLives--;
+      battleLivesVal.innerText = battleLives;
+      if (battleLives <= 0) {
+        finishBattleMinigame(false);
+      }
+    }
+
+    function finishBattleMinigame(isWin) {
+      isBattleActive = false;
+      clearInterval(battleInterval);
+      battleScoreHud.classList.remove('active');
+      battleOverlay.classList.remove('active');
+
+      document.querySelectorAll('.battle-floating-item').forEach(el => el.remove());
+
+      if (isWin) { // ชนะมินิเกม
+        triggerWhiteFlashTransition(() => {
+          sceneBattle.classList.remove('active');
+          if (selectedGender === 'male') {
+            sceneCutsceneMale.classList.add('active');
+          } else {
+            sceneCutsceneFemale.classList.add('active');
+          }
+          currentStep = 'CUTSCENE_READY';
+        });
+      } else { // แพ้มินิเกม
+        updateKnowledgeBar(-50); // ลดแต้มหลอดความรู้ลงครึ่งหนึ่ง
+        triggerWhiteFlashTransition(() => {
+          sceneBattle.classList.remove('active');
+          sceneLeft2.classList.add('active');
+          charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm';
+          charPakorn.classList.add('active');
+
+          textboxImg.src = 'https://lh3.googleusercontent.com/d/1AJHrpm0Qq1Muj4uTroYaDCAGDsDJRjUS';
+          textbox.classList.add('active');
+          currentStep = 'TXT_NEW_BRANCH_1_1';
+        });
+      }
+    }
+
+    function updateKnowledgeBar(deltaPercent) {
+      if (deltaPercent === -50) {
+        knowledgeScore = Math.floor(knowledgeScore / 2);
+      } else {
+        knowledgeScore = Math.min(100, knowledgeScore + deltaPercent);
+      }
+      knowledgeBar.style.width = knowledgeScore + '%';
     }
 
     function handleMiddleButtonClick(event) {
@@ -1191,7 +1567,7 @@
       }, 600);
     }
 
-    // ฟังก์ชันปุ่ม Home กลับหน้าเริ่มเกม
+    /* ปุ่ม Home กลับหน้าเริ่มเกม */
     function handleHomeButtonClick(event) {
       if (event) event.stopPropagation();
       
@@ -1201,28 +1577,38 @@
       completedChoice1 = false;
       completedChoice2 = false;
       activeChoiceBranch = 0;
+      currentBranchPath = 0;
+      knowledgeScore = 0;
+      isBattleActive = false;
+      clearInterval(battleInterval);
       clearTimeout(wrongAppTimer);
 
       btnHome.classList.remove('active');
       tlChoices.classList.remove('active');
+      newBranchChoices.classList.remove('active');
       phoneScreen1.classList.remove('active');
       phoneScreen2.classList.remove('active');
       popupScreen1.classList.remove('active');
       popupScreen2.classList.remove('active');
+      battleOverlay.classList.remove('active');
+      battleScoreHud.classList.remove('active');
       charPakorn.classList.remove('active');
       textbox.classList.remove('active');
       navButtons.classList.remove('active');
       btnTalk.classList.remove('interactive');
       btnTalk.classList.remove('visible-disabled');
       genderSelect.classList.remove('active');
+      whiteFlash.classList.remove('active');
 
-      const allScenes = [scene0, sceneSp1, sceneSp2, scene1, scene2, scene3, scene4, scene6, sceneLeft1, sceneLeft2];
+      document.querySelectorAll('.battle-floating-item').forEach(el => el.remove());
+
+      const allScenes = [scene0, sceneSp1, sceneSp2, scene1, scene2, scene3, scene4, scene6, sceneLeft1, sceneLeft2, sceneEnd1, sceneBattle, sceneCutsceneMale, sceneCutsceneFemale];
       allScenes.forEach(sc => {
         sc.classList.remove('active', 'zoom-out-fade', 'instant-change');
       });
 
       scene0.classList.add('active');
-      updateKnowledgeBar();
+      knowledgeBar.style.width = '0%';
       resetIdleTimer();
     }
 
