@@ -711,7 +711,7 @@
     </div>
     <div id="battle-score-hud" class="battle-score-hud">
       <div>🎯 คะแนน: <span id="battle-score-val" style="color:#f472b6;">0</span> / 10</div>
-      <div>❤️ ชีวิต: <span id="battle-lives-val" style="color:#ef4444;">3</span></div>
+      <div>❤️ ชีวิต: <span id="battle-lives-val" style="color:#ef4444;">4</span></div>
     </div>
 
   </div>
@@ -731,7 +731,7 @@
 
     // ตัวแปรสำหรับมินิเกม
     let battleScore = 0;
-    let battleLives = 3;
+    let battleLives = 4;
     let battleInterval = null;
     let isBattleActive = false;
 
@@ -1356,31 +1356,32 @@
       }
     }
 
-    // คำตอบที่ถูกต้อง ( target: true ) เป็นข้อความเชิงป้องกัน เช่น "ไม่บอก..." / "ไม่ส่ง..." และแสดงผลสีแดง (#ef4444)
+    // คำตอบที่ถูกต้อง ( target: true ) ต้องกด = ข้อความป้องกันข้อมูลส่วนตัว (สีแดง #ef4444)
+    // ตัวหลอกที่ห้ามกด ( target: false ) = ข้อความเปิดเผยข้อมูล/เสี่ยงภัย (หลากหลายสี)
     const itemData = [
-      { text: "ไม่บอกที่อยู่", target: true, color: "#ef4444" },
-      { text: "ไม่ส่งรูปตัวเอง", target: true, color: "#ef4444" },
-      { text: "ไม่สร้างวิดีโอด้วยเสียงจริง", target: true, color: "#ef4444" },
+      { text: "ไม่บอกเบอร์มือถือ", target: true, color: "#ef4444" },
+      { text: "ไม่บอกเลขบัตรATM", target: true, color: "#ef4444" },
+      { text: "ไม่บอกที่อยู่บ้าน", target: true, color: "#ef4444" },
+      { text: "ไม่ส่งรูปส่วนตัว", target: true, color: "#ef4444" },
+      { text: "ไม่สร้างวิดีโอเสียงจริง", target: true, color: "#ef4444" },
       { text: "ไม่บอกรหัสผ่าน", target: true, color: "#ef4444" },
       { text: "ไม่บอกเลขบัตรประชาชน", target: true, color: "#ef4444" },
       { text: "ไม่บอกเลขบัญชีธนาคาร", target: true, color: "#ef4444" },
-      { text: "ไม่ส่งเบอร์โทรศัพท์", target: true, color: "#ef4444" },
-      { text: "ไม่ให้วันเดือนปีเกิด", target: true, color: "#ef4444" },
-      { text: "บอกที่อยู่บ้าน", target: false, color: "#10b981" },
-      { text: "ส่งรูปถ่ายตัวเอง", target: false, color: "#3b82f6" },
-      { text: "บอกรหัสผ่าน ATM", target: false, color: "#8b5cf6" },
-      { text: "บอกเลขบัญชีธนาคาร", target: false, color: "#06b6d4" },
-      { text: "สร้างคลิปเสียงจริง", target: false, color: "#f97316" },
-      { text: "บอกเลขบัตรประชาชน", target: false, color: "#ec4899" },
-      { text: "ชอบกินส้มตำ", target: false, color: "#a855f7" },
-      { text: "ทักทายสวัสดี", target: false, color: "#14b8a6" }
+      { text: "บอกเลขบัตร", target: false, color: "#10b981" },
+      { text: "ห้ามกักข้อมูลกับAi", target: false, color: "#3b82f6" },
+      { text: "บอกที่อยู่", target: false, color: "#8b5cf6" },
+      { text: "ส่งรูปส่วนตัวให้ Ai", target: false, color: "#06b6d4" },
+      { text: "บอกรหัสผ่าน ATM", target: false, color: "#f97316" },
+      { text: "บอกเลขบัญชีธนาคาร", target: false, color: "#ec4899" },
+      { text: "ยินยอมเปิดเผยข้อมูล", target: false, color: "#a855f7" },
+      { text: "แชร์ตำแหน่งที่อยู่จริง", target: false, color: "#14b8a6" }
     ];
 
     function startBattleMinigame() {
       if (isBattleActive) return;
       isBattleActive = true;
       battleScore = 0;
-      battleLives = 3;
+      battleLives = 4;
       battleScoreVal.innerText = battleScore;
       battleLivesVal.innerText = battleLives;
 
