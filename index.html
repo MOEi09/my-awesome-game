@@ -133,7 +133,7 @@
       transform: translateY(0);
     }
 
-    /* ปุ่ม Home ด้านบนซ้าย (ย้ายมาจากฝั่งขวา) */
+    /* ปุ่ม Home ด้านบนซ้าย (ย้ายมาไว้ฝั่งซ้ายบน) */
     .home-btn {
       position: absolute;
       top: 18px;
@@ -610,10 +610,10 @@
       </div>
     </div>
 
-    <!-- ปุ่ม Home กลับหน้าหลัก -->
+    <!-- ปุ่ม Home กลับหน้าหลัก (มุมซ้ายบน) -->
     <img id="btn-home" class="home-btn" src="https://lh3.googleusercontent.com/d/14c-gOWytS0Wvy_smrsTLus4esDrhOVcj" alt="หน้าแรก" onclick="handleHomeButtonClick(event)">
 
-    <!-- ข้อความ ( แตะ ) ลางๆ กลางจอเมื่อผู้เล่นค้างเกิน 4 วินาที -->
+    <!-- ข้อความ ( แแตะ ) ลางๆ กลางจอเมื่อผู้เล่นค้างเกิน 4 วินาที -->
     <div id="center-tap-hint" class="center-tap-hint">( แตะ )</div>
 
     <!-- เลเยอร์แสงสีขาวสลับฉาก -->
@@ -643,7 +643,7 @@
     <div id="scene-left1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/19vPu5aoFrebQdm1DtzvciBHaySg4OJxt'); cursor: pointer;"></div>
     <div id="scene-left2" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1R8i9bZv4Gpqyvv5972rX8UDL-IkKpJOF'); cursor: pointer;"></div>
 
-    <!-- ฉากใหม่เพิ่มเติมตามเนื้อเรื่องใหม่ -->
+    <!-- ฉากเพิ่มเติมตามเนื้อเรื่องใหม่ -->
     <div id="scene-end1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1d09NSfEhvtgQNhvawJia8pnquEam6v9m'); cursor: pointer;"></div>
     <div id="scene-battle" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1bjZxiZLWUYRZmDnNtJCmjJaJ7PNXyhHC');"></div>
     <div id="scene-cutscene-male" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/180pshb-vV-qmrluZ3zXmDR4n8Zax26Bo'); cursor: pointer;"></div>
@@ -1362,19 +1362,20 @@
     }
 
     // ---------------- ระบบมินิเกมต่อสู้ (BATTLE MINI-GAME ENGINE) ----------------
+    // ข้อมูลที่ไม่ควรบอก AI เป็นสีแดง (#ef4444) ส่วนคำตอบอื่นเป็นสีอื่นๆ
     const itemData = [
       { text: "บอกที่อยู่บ้าน", target: true, color: "#ef4444" },
       { text: "ไม่บอกที่อยู่", target: false, color: "#10b981" },
-      { text: "บอกเลขบัตรประชาชน", target: true, color: "#f59e0b" },
+      { text: "บอกเลขบัตรประชาชน", target: true, color: "#ef4444" },
       { text: "ชอบกินส้มตำ", target: false, color: "#3b82f6" },
-      { text: "บอกรหัสผ่าน ATM", target: true, color: "#ec4899" },
-      { text: "ทักทายสวัสดี", target: false, color: "#a855f7" },
+      { text: "บอกรหัสผ่าน ATM", target: true, color: "#ef4444" },
+      { text: "ทักทายสวัสดี", target: false, color: "#8b5cf6" },
       { text: "บอกเลขบัญชีธนาคาร", target: true, color: "#ef4444" },
-      { text: "ถามเรื่องสภาพอากาศ", target: false, color: "#10b981" },
-      { text: "บอกวันเดือนปีเกิด", target: true, color: "#f59e0b" },
-      { text: "ไม่บอกพาสเวิร์ด", target: false, color: "#3b82f6" },
-      { text: "บอกเบอร์โทรแม่", target: true, color: "#ec4899" },
-      { text: "คุยเรื่องการ์ตูน", target: false, color: "#a855f7" }
+      { text: "ถามเรื่องสภาพอากาศ", target: false, color: "#06b6d4" },
+      { text: "บอกวันเดือนปีเกิด", target: true, color: "#ef4444" },
+      { text: "ไม่บอกพาสเวิร์ด", target: false, color: "#f97316" },
+      { text: "บอกเบอร์โทรแม่", target: true, color: "#ef4444" },
+      { text: "คุยเรื่องการ์ตูน", target: false, color: "#ec4899" }
     ];
 
     function startBattleMinigame() {
