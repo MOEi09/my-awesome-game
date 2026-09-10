@@ -133,7 +133,7 @@
       transform: translateY(0);
     }
 
-    /* ปุ่ม Home ด้านบนซ้าย (ย้ายมาไว้ฝั่งซ้ายบน) */
+    /* ปุ่ม Home ด้านบนซ้าย */
     .home-btn {
       position: absolute;
       top: 18px;
@@ -186,7 +186,7 @@
       50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.95; }
     }
 
-    /* เลเยอร์แสงสีขาววาบสลับฉาก (White Screen Flash) */
+    /* เลเยอร์แสงสีขาววาบสลับฉาก (White Flash Layer) */
     .white-flash-layer {
       position: absolute;
       top: 0;
@@ -204,7 +204,6 @@
       opacity: 1;
     }
 
-    /* เลเยอร์ฉากหลัง */
     .scene-bg {
       position: absolute;
       top: 0;
@@ -366,7 +365,6 @@
       cursor: pointer;
     }
 
-    /* กลุ่มปุ่มเลือกตัวเลือก ตล.1, ตล.2 และกลุ่มตัวเลือกใหม่ 2 ปุ่ม */
     .choice-group-container {
       position: absolute;
       top: 50%;
@@ -516,7 +514,6 @@
       50% { transform: scale(1.08); filter: drop-shadow(0 12px 28px rgba(236, 72, 153, 0.95)) drop-shadow(0 0 25px rgba(255, 255, 255, 1)); }
     }
 
-    /* ---------------- มินิเกมต่อสู้ (BATTLE MINI-GAME UI) ---------------- */
     #battle-overlay {
       position: absolute;
       top: 0;
@@ -553,10 +550,12 @@
       50% { transform: scale(1.12); opacity: 1; text-shadow: 0 0 30px #ec4899, 0 0 60px #ec4899; }
     }
 
+    /* ป้ายคะแนนมินิเกมย้ายไปฝั่งขวาบน (Opposite Side) */
     .battle-score-hud {
       position: absolute;
       top: 25px;
-      left: 30px;
+      right: 30px;
+      left: auto;
       z-index: 95;
       background: rgba(10, 10, 20, 0.85);
       border: 2px solid rgba(236, 72, 153, 0.8);
@@ -613,7 +612,7 @@
     <!-- ปุ่ม Home กลับหน้าหลัก (มุมซ้ายบน) -->
     <img id="btn-home" class="home-btn" src="https://lh3.googleusercontent.com/d/14c-gOWytS0Wvy_smrsTLus4esDrhOVcj" alt="หน้าแรก" onclick="handleHomeButtonClick(event)">
 
-    <!-- ข้อความ ( แแตะ ) ลางๆ กลางจอเมื่อผู้เล่นค้างเกิน 4 วินาที -->
+    <!-- ข้อความ ( แตะ ) ลางๆ กลางจอเมื่อผู้เล่นค้างเกิน 4 วินาที -->
     <div id="center-tap-hint" class="center-tap-hint">( แตะ )</div>
 
     <!-- เลเยอร์แสงสีขาวสลับฉาก -->
@@ -869,7 +868,6 @@
       img.src = url;
     });
 
-    /* ระบบจับเวลาค้างหน้าจอ */
     function resetIdleTimer() {
       centerTapHint.classList.remove('active');
       clearTimeout(idleTimer);
@@ -997,7 +995,6 @@
       }
     });
 
-    // ระบบจัดการคลิกแถบข้อความหลัก
     function handleTextboxClick(event) {
       event.stopPropagation();
       if (isTransitioning) return;
@@ -1178,7 +1175,7 @@
       // ----- เนื้อเรื่องส่วนตัวเลือกที่ 1 -----
       else if (currentStep === 'TXT_NEW_BRANCH_1_1') {
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1xoPS3J3vHigPjcIOouMo8zmUGc3hMIJZ';
-        charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm'; // ปกรณ์หน้าเศร้า
+        charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm';
         currentStep = 'TXT_NEW_BRANCH_1_2';
       }
       else if (currentStep === 'TXT_NEW_BRANCH_1_2') {
@@ -1205,7 +1202,7 @@
       // ----- เนื้อเรื่องส่วนตัวเลือกที่ 2 -----
       else if (currentStep === 'TXT_NEW_BRANCH_2_1') {
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1PVTLSehn7PfIuaM9GB1jEflubF3U9z1V';
-        charPakorn.src = 'https://lh3.googleusercontent.com/d/1IlNHrs-Y3-KGzqYFLhPfrLsZsLrHlboy'; // ปกรณ์หน้าโกรธ
+        charPakorn.src = 'https://lh3.googleusercontent.com/d/1IlNHrs-Y3-KGzqYFLhPfrLsZsLrHlboy';
         currentStep = 'TXT_NEW_BRANCH_2_2';
       }
       else if (currentStep === 'TXT_NEW_BRANCH_2_2') {
@@ -1243,7 +1240,6 @@
       }
     }
 
-    /* สลับฉากด้วยแสงขาววาบ (White Flash Transition) */
     function triggerWhiteFlashTransition(callback) {
       isTransitioning = true;
       whiteFlash.classList.add('active');
@@ -1339,20 +1335,19 @@
       }
     }
 
-    /* จัดการการกดเลือกตัวเลือกใหม่ 2 ตัวเลือก */
     function handleNewBranchChoice(choiceNum) {
       if (isTransitioning || currentStep !== 'SHOW_NEW_BRANCH_CHOICES') return;
       currentBranchPath = choiceNum;
       newBranchChoices.classList.remove('active');
 
-      if (choiceNum === 1) { // เส้นทางที่ 1
+      if (choiceNum === 1) {
         setTimeout(() => {
           textboxImg.src = 'https://lh3.googleusercontent.com/d/1c5Pf5QLYaYLihT01uY-v5opfYctqx58g';
           textbox.classList.add('active');
           currentStep = 'TXT_NEW_BRANCH_1_1';
         }, 400);
       } 
-      else if (choiceNum === 2) { // เส้นทางที่ 2 (เข้าสู่การต่อสู้)
+      else if (choiceNum === 2) {
         setTimeout(() => {
           textboxImg.src = 'https://lh3.googleusercontent.com/d/1zvp5CM6rjIKL2DG6drOZ7X9cQw1RU51O';
           textbox.classList.add('active');
@@ -1361,21 +1356,24 @@
       }
     }
 
-    // ---------------- ระบบมินิเกมต่อสู้ (BATTLE MINI-GAME ENGINE) ----------------
-    // ข้อมูลที่ไม่ควรบอก AI เป็นสีแดง (#ef4444) ส่วนคำตอบอื่นเป็นสีอื่นๆ
+    // คำตอบที่ถูกต้อง ( target: true ) เป็นข้อความเชิงป้องกัน เช่น "ไม่บอก..." / "ไม่ส่ง..." และแสดงผลสีแดง (#ef4444)
     const itemData = [
-      { text: "บอกที่อยู่บ้าน", target: true, color: "#ef4444" },
-      { text: "ไม่บอกที่อยู่", target: false, color: "#10b981" },
-      { text: "บอกเลขบัตรประชาชน", target: true, color: "#ef4444" },
-      { text: "ชอบกินส้มตำ", target: false, color: "#3b82f6" },
-      { text: "บอกรหัสผ่าน ATM", target: true, color: "#ef4444" },
-      { text: "ทักทายสวัสดี", target: false, color: "#8b5cf6" },
-      { text: "บอกเลขบัญชีธนาคาร", target: true, color: "#ef4444" },
-      { text: "ถามเรื่องสภาพอากาศ", target: false, color: "#06b6d4" },
-      { text: "บอกวันเดือนปีเกิด", target: true, color: "#ef4444" },
-      { text: "ไม่บอกพาสเวิร์ด", target: false, color: "#f97316" },
-      { text: "บอกเบอร์โทรแม่", target: true, color: "#ef4444" },
-      { text: "คุยเรื่องการ์ตูน", target: false, color: "#ec4899" }
+      { text: "ไม่บอกที่อยู่", target: true, color: "#ef4444" },
+      { text: "ไม่ส่งรูปตัวเอง", target: true, color: "#ef4444" },
+      { text: "ไม่สร้างวิดีโอด้วยเสียงจริง", target: true, color: "#ef4444" },
+      { text: "ไม่บอกรหัสผ่าน", target: true, color: "#ef4444" },
+      { text: "ไม่บอกเลขบัตรประชาชน", target: true, color: "#ef4444" },
+      { text: "ไม่บอกเลขบัญชีธนาคาร", target: true, color: "#ef4444" },
+      { text: "ไม่ส่งเบอร์โทรศัพท์", target: true, color: "#ef4444" },
+      { text: "ไม่ให้วันเดือนปีเกิด", target: true, color: "#ef4444" },
+      { text: "บอกที่อยู่บ้าน", target: false, color: "#10b981" },
+      { text: "ส่งรูปถ่ายตัวเอง", target: false, color: "#3b82f6" },
+      { text: "บอกรหัสผ่าน ATM", target: false, color: "#8b5cf6" },
+      { text: "บอกเลขบัญชีธนาคาร", target: false, color: "#06b6d4" },
+      { text: "สร้างคลิปเสียงจริง", target: false, color: "#f97316" },
+      { text: "บอกเลขบัตรประชาชน", target: false, color: "#ec4899" },
+      { text: "ชอบกินส้มตำ", target: false, color: "#a855f7" },
+      { text: "ทักทายสวัสดี", target: false, color: "#14b8a6" }
     ];
 
     function startBattleMinigame() {
@@ -1401,7 +1399,7 @@
       itemEl.innerText = randomData.text;
       itemEl.style.backgroundColor = randomData.color;
 
-      const randomX = Math.floor(Math.random() * 70) + 15; // 15% ถึง 85%
+      const randomX = Math.floor(Math.random() * 65) + 15;
       itemEl.style.left = randomX + '%';
       itemEl.style.bottom = '-60px';
 
@@ -1420,12 +1418,10 @@
         posY += speed;
         itemEl.style.bottom = posY + 'px';
 
-        // เมื่อลอยขึ้นถึงขอบบน
         if (posY > gameContainer.offsetHeight - 50) {
           clearInterval(moveTimer);
           if (itemEl.parentNode) itemEl.parentNode.removeChild(itemEl);
 
-          // ถ้าเป็นอันตรายหลุดไปถึงเพดาน ให้หักแต้มชีวิต
           if (randomData.target) {
             handleBattleMistake();
           }
@@ -1465,7 +1461,7 @@
 
       document.querySelectorAll('.battle-floating-item').forEach(el => el.remove());
 
-      if (isWin) { // ชนะมินิเกม
+      if (isWin) {
         triggerWhiteFlashTransition(() => {
           sceneBattle.classList.remove('active');
           if (selectedGender === 'male') {
@@ -1475,8 +1471,8 @@
           }
           currentStep = 'CUTSCENE_READY';
         });
-      } else { // แพ้มินิเกม
-        updateKnowledgeBar(-50); // ลดแต้มหลอดความรู้ลงครึ่งหนึ่ง
+      } else {
+        updateKnowledgeBar(-50);
         triggerWhiteFlashTransition(() => {
           sceneBattle.classList.remove('active');
           sceneLeft2.classList.add('active');
