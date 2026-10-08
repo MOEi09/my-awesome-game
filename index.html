@@ -550,7 +550,7 @@
       50% { transform: scale(1.12); opacity: 1; text-shadow: 0 0 30px #ec4899, 0 0 60px #ec4899; }
     }
 
-    /* ป้ายคะแนนมินิเกมย้ายไปฝั่งขวาบน (Opposite Side) */
+    /* ป้ายคะแนนมินิเกมย้ายไปฝั่งขวาบน */
     .battle-score-hud {
       position: absolute;
       top: 25px;
@@ -930,11 +930,12 @@
       }
     });
 
+    // แตะที่ฉาก 4 (จอมือถือดับ)
     scene4.addEventListener('click', () => {
       if (currentStep === 'SCENE_4_WAIT' && !isTransitioning) {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1zN3SmFzX0ScbeXLZCWOGk9p-rEjCVuCT';
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1UejuctKbYKqiwwDNj-95z4ObYyp3kR_U';
         textbox.classList.add('active');
-        currentStep = 'TXT_6';
+        currentStep = 'TXT_POST_DARK';
         resetIdleTimer();
       }
     });
@@ -1030,9 +1031,15 @@
       }
       else if (currentStep === 'TXT_4_SCENE_3') {
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1gNsteHUVNCqlTG5UBX2fVVG2OWV2kdja';
-        currentStep = 'TXT_5';
+        currentStep = 'TXT_PRE_DARK_1';
       }
-      else if (currentStep === 'TXT_5') {
+      else if (currentStep === 'TXT_PRE_DARK_1') {
+        // ขึ้นข้อความก่อนมือถือดับ
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1zN3SmFzX0ScbeXLZCWOGk9p-rEjCVuCT';
+        currentStep = 'TXT_PRE_DARK_2';
+      }
+      else if (currentStep === 'TXT_PRE_DARK_2') {
+        // แถบข้อความหายไป และหน้าจอมืดดับเข้าสู่ฉากมือถือดับ (scene-4)
         textbox.classList.remove('active');
         scene3.classList.remove('active');
         scene4.classList.add('active');
@@ -1045,27 +1052,16 @@
           resetIdleTimer();
         }, 4000);
       }
-      else if (currentStep === 'TXT_6') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1UejuctKbYKqiwwDNj-95z4ObYyp3kR_U';
-        currentStep = 'TXT_7';
-      }
-      else if (currentStep === 'TXT_7') {
+      else if (currentStep === 'TXT_POST_DARK') {
+        // สลับฉากกลับมาเป็นฉากเมืองพร้อมขึ้นปุ่มตรงกลาง
+        textbox.classList.remove('active');
         scene4.classList.add('instant-change');
         scene4.classList.remove('active');
-        scene3.classList.add('instant-change');
-        scene3.classList.add('active');
+        scene2.classList.add('active');
 
         setTimeout(() => {
           scene4.classList.remove('instant-change');
-          scene3.classList.remove('instant-change');
         }, 50);
-
-        currentStep = 'TXT_7_SCENE_3';
-      }
-      else if (currentStep === 'TXT_7_SCENE_3') {
-        textbox.classList.remove('active');
-        scene3.classList.remove('active');
-        scene2.classList.add('active');
 
         btnLeft.style.display = 'none';
         btnRight.style.display = 'none';
