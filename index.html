@@ -158,7 +158,7 @@
       filter: drop-shadow(0 0 16px rgba(236, 72, 153, 0.8));
     }
 
-    /* ข้อความ ( แตะ ) ลางๆ กลางจอเมื่อผู้เล่นค้างเกิน 4 วินาที */
+    /* ข้อความ ( แแตะ ) ลางๆ กลางจอเมื่อผู้เล่นค้างเกิน 4 วินาที */
     .center-tap-hint {
       position: absolute;
       top: 50%;
@@ -550,7 +550,7 @@
       50% { transform: scale(1.12); opacity: 1; text-shadow: 0 0 30px #ec4899, 0 0 60px #ec4899; }
     }
 
-    /* ป้ายคะแนนมินิเกมย้ายไปฝั่งขวาบน */
+    /* ป้ายคะแนนมินิเกมย้ายไปฝั่งขวาบน (Opposite Side) */
     .battle-score-hud {
       position: absolute;
       top: 25px;
@@ -871,7 +871,7 @@
     function resetIdleTimer() {
       centerTapHint.classList.remove('active');
       clearTimeout(idleTimer);
-      if (!isTransitioning && currentStep !== 'GENDER_STAGE' && currentStep !== 'WAIT_AUTO_SP1' && currentStep !== 'WAIT_AUTO_SCENE_4' && currentStep !== 'WAIT_APP_SELECTION' && currentStep !== 'SHOW_TL_CHOICES' && currentStep !== 'SHOW_NEW_BRANCH_CHOICES' && !isBattleActive) {
+      if (!isTransitioning && currentStep !== 'GENDER_STAGE' && currentStep !== 'WAIT_AUTO_SP1' && currentStep !== 'WAIT_APP_SELECTION' && currentStep !== 'SHOW_TL_CHOICES' && currentStep !== 'SHOW_NEW_BRANCH_CHOICES' && !isBattleActive) {
         idleTimer = setTimeout(() => {
           centerTapHint.classList.add('active');
         }, 4000);
@@ -926,16 +926,6 @@
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1wAa-IMb7559wyuJp2yoAM1Je4ePmzws9';
         textbox.classList.add('active');
         currentStep = 'TXT_1';
-        resetIdleTimer();
-      }
-    });
-
-    // แตะที่ฉาก 4 (จอมือถือดับ)
-    scene4.addEventListener('click', () => {
-      if (currentStep === 'SCENE_4_WAIT' && !isTransitioning) {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1UejuctKbYKqiwwDNj-95z4ObYyp3kR_U';
-        textbox.classList.add('active');
-        currentStep = 'TXT_POST_DARK';
         resetIdleTimer();
       }
     });
@@ -1031,44 +1021,26 @@
       }
       else if (currentStep === 'TXT_4_SCENE_3') {
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1gNsteHUVNCqlTG5UBX2fVVG2OWV2kdja';
-        currentStep = 'TXT_PRE_DARK_1';
+        currentStep = 'TXT_5';
       }
-      else if (currentStep === 'TXT_PRE_DARK_1') {
-        // ขึ้นข้อความก่อนมือถือดับ
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1zN3SmFzX0ScbeXLZCWOGk9p-rEjCVuCT';
-        currentStep = 'TXT_PRE_DARK_2';
-      }
-      else if (currentStep === 'TXT_PRE_DARK_2') {
-        // แถบข้อความหายไป และหน้าจอมืดดับเข้าสู่ฉากมือถือดับ (scene-4)
+      else if (currentStep === 'TXT_5') {
+        // เปลี่ยนจากฉากสวนสาธารณะเป็นฉากจอดำ
         textbox.classList.remove('active');
         scene3.classList.remove('active');
         scene4.classList.add('active');
-        currentStep = 'WAIT_AUTO_SCENE_4';
-        isTransitioning = true;
 
         setTimeout(() => {
-          currentStep = 'SCENE_4_WAIT';
-          isTransitioning = false;
-          resetIdleTimer();
-        }, 4000);
+          textboxImg.src = 'https://lh3.googleusercontent.com/d/1zN3SmFzX0ScbeXLZCWOGk9p-rEjCVuCT';
+          textbox.classList.add('active');
+          currentStep = 'TXT_BLACKSCREEN_1';
+        }, 300);
       }
-      else if (currentStep === 'TXT_POST_DARK') {
-        // สลับฉากกลับมาเป็นฉากเมืองพร้อมขึ้นปุ่มตรงกลาง
+      else if (currentStep === 'TXT_BLACKSCREEN_1') {
+        // แตะแล้วแถบหาย สลับฉากกลับเป็นสวนสาธารณะ
         textbox.classList.remove('active');
-        scene4.classList.add('instant-change');
         scene4.classList.remove('active');
-        scene2.classList.add('active');
-
-        setTimeout(() => {
-          scene4.classList.remove('instant-change');
-        }, 50);
-
-        btnLeft.style.display = 'none';
-        btnRight.style.display = 'none';
-        btnMiddle.style.display = 'block';
-        navButtons.classList.add('active');
-
-        currentStep = 'SCENE_2_MIDDLE_BTN';
+        scene3.classList.add('active');
+        currentStep = 'WAIT_TAP_FOR_SCENE3_RETURN';
       }
       // ทางฝั่งซ้าย
       else if (currentStep === 'TXT_LEFT_1') {
@@ -1234,7 +1206,29 @@
           currentStep = 'FINAL_CONCLUSION_REACHED';
         });
       }
+      else if (currentStep === 'TXT_SCENE3_LAST_MSG') {
+        textbox.classList.remove('active');
+        scene3.classList.remove('active');
+        scene2.classList.add('active');
+
+        btnLeft.style.display = 'none';
+        btnRight.style.display = 'none';
+        btnMiddle.style.display = 'block';
+        navButtons.classList.add('active');
+
+        currentStep = 'SCENE_2_MIDDLE_BTN';
+      }
     }
+
+    // แตะฉากสวนสาธารณะเมื่อสลับกลับมาจากจอดำ
+    scene3.addEventListener('click', () => {
+      if (currentStep === 'WAIT_TAP_FOR_SCENE3_RETURN' && !isTransitioning) {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1UejuctKbYKqiwwDNj-95z4ObYyp3kR_U';
+        textbox.classList.add('active');
+        currentStep = 'TXT_SCENE3_LAST_MSG';
+        resetIdleTimer();
+      }
+    });
 
     function triggerWhiteFlashTransition(callback) {
       isTransitioning = true;
@@ -1352,8 +1346,6 @@
       }
     }
 
-    // คำตอบที่ถูกต้อง ( target: true ) ต้องกด = ข้อความป้องกันข้อมูลส่วนตัว (สีแดง #ef4444)
-    // ตัวหลอกที่ห้ามกด ( target: false ) = ข้อความเปิดเผยข้อมูล/เสี่ยงภัย (หลากหลายสี)
     const itemData = [
       { text: "ไม่บอกเบอร์มือถือ", target: true, color: "#ef4444" },
       { text: "ไม่บอกเลขบัตรATM", target: true, color: "#ef4444" },
