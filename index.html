@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Visual Novel Game</title>
   <style>
     * {
@@ -11,11 +11,14 @@
       padding: 0;
       user-select: none;
       -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     body, html {
       width: 100%;
       height: 100%;
+      height: 100dvh;
       background-color: #07070a;
       display: flex;
       justify-content: center;
@@ -24,13 +27,57 @@
       font-family: 'Sarabun', 'Segoe UI', Tahoma, sans-serif;
     }
 
+    /* หน้าจอแจ้งเตือนให้หมุนมือถือเป็นแนวนอนเมื่อเปิดในแนวตั้ง */
+    #rotate-warning {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(10, 10, 18, 0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #fff;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 24px;
+      gap: 18px;
+    }
+
+    .rotate-icon {
+      font-size: 56px;
+      animation: rotatePhoneAnim 2s infinite ease-in-out;
+    }
+
+    @keyframes rotatePhoneAnim {
+      0%, 20% { transform: rotate(0deg); }
+      50%, 80% { transform: rotate(-90deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    #rotate-warning p {
+      font-size: 18px;
+      line-height: 1.5;
+      color: #f3f4f6;
+      max-width: 300px;
+    }
+
+    @media screen and (orientation: portrait) and (max-width: 900px) {
+      #rotate-warning {
+        display: flex;
+      }
+    }
+
     /* กรอบหน้าจอเกมสัดส่วน 16:9 (1920x1080) */
     #game-container {
       position: relative;
       width: 100vw;
       height: 56.25vw; /* 16:9 Aspect Ratio */
       max-height: 100vh;
+      max-height: 100dvh;
       max-width: 177.78vh;
+      max-width: 177.78dvh;
       background-color: #000;
       overflow: hidden;
       box-shadow: 0 0 45px rgba(0, 0, 0, 0.95);
@@ -39,17 +86,17 @@
     /* แถบ HUD วัดความรู้ด้านบน */
     .hud-header {
       position: absolute;
-      top: 18px;
+      top: clamp(8px, 2vh, 18px);
       left: 50%;
       transform: translateX(-50%);
       z-index: 100;
       display: flex;
       align-items: center;
-      gap: 12px;
-      background: rgba(18, 18, 30, 0.78);
+      gap: clamp(8px, 1.2vw, 12px);
+      background: rgba(18, 18, 30, 0.82);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      padding: 8px 24px;
+      padding: clamp(5px, 1vh, 8px) clamp(14px, 2.2vw, 24px);
       border-radius: 30px;
       border: 1px solid rgba(255, 255, 255, 0.18);
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
@@ -57,7 +104,7 @@
     }
 
     .hud-icon {
-      font-size: 22px;
+      font-size: clamp(16px, 2.2vw, 22px);
       color: #ffd700;
       display: flex;
       align-items: center;
@@ -65,8 +112,8 @@
     }
 
     .progress-bar-container {
-      width: 220px;
-      height: 12px;
+      width: clamp(120px, 22vw, 220px);
+      height: clamp(8px, 1.4vh, 12px);
       background: rgba(255, 255, 255, 0.12);
       border-radius: 10px;
       overflow: hidden;
@@ -87,13 +134,13 @@
     }
 
     .info-btn {
-      width: 22px;
-      height: 22px;
+      width: clamp(20px, 2.4vw, 24px);
+      height: clamp(20px, 2.4vw, 24px);
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.22);
       color: #fff;
       font-weight: bold;
-      font-size: 13px;
+      font-size: clamp(11px, 1.4vw, 13px);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -102,7 +149,8 @@
       transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .info-btn:hover {
+    .info-btn:hover,
+    .info-btn-wrapper.show-tip .info-btn {
       background: #ec4899;
       transform: scale(1.15);
       box-shadow: 0 0 12px rgba(236, 72, 153, 0.8);
@@ -110,13 +158,13 @@
 
     .tooltip {
       position: absolute;
-      top: 34px;
-      right: 0;
-      background: rgba(15, 15, 25, 0.95);
+      top: clamp(28px, 4vh, 34px);
+      right: -10px;
+      background: rgba(15, 15, 25, 0.96);
       color: #fff;
-      padding: 9px 16px;
+      padding: 8px 14px;
       border-radius: 10px;
-      font-size: 13px;
+      font-size: clamp(11px, 1.4vw, 13px);
       white-space: nowrap;
       pointer-events: none;
       opacity: 0;
@@ -127,7 +175,8 @@
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
     }
 
-    .info-btn-wrapper:hover .tooltip {
+    .info-btn-wrapper:hover .tooltip,
+    .info-btn-wrapper.show-tip .tooltip {
       opacity: 1;
       visibility: visible;
       transform: translateY(0);
@@ -136,10 +185,10 @@
     /* ปุ่ม Home ด้านบนซ้าย */
     .home-btn {
       position: absolute;
-      top: 18px;
-      left: 24px;
-      width: 48px;
-      height: 48px;
+      top: clamp(8px, 2vh, 18px);
+      left: clamp(12px, 2vw, 24px);
+      width: clamp(34px, 4.5vw, 48px);
+      height: clamp(34px, 4.5vw, 48px);
       z-index: 100;
       cursor: pointer;
       opacity: 0;
@@ -153,22 +202,23 @@
       pointer-events: auto;
     }
 
+    .home-btn:active,
     .home-btn:hover {
       transform: scale(1.12);
       filter: drop-shadow(0 0 16px rgba(236, 72, 153, 0.8));
     }
 
-    /* ข้อความ ( แแตะ ) ลางๆ กลางจอเมื่อผู้เล่นค้างเกิน 4 วินาที */
+    /* ข้อความ ( แตะ ) ลางๆ กลางจอเมื่อผู้เล่นค้างเกิน 4 วินาที */
     .center-tap-hint {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0.95);
       z-index: 95;
-      font-size: 26px;
+      font-size: clamp(18px, 2.6vw, 26px);
       font-weight: 600;
-      color: rgba(255, 255, 255, 0.72);
-      letter-spacing: 5px;
+      color: rgba(255, 255, 255, 0.78);
+      letter-spacing: 4px;
       text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95), 0 0 22px rgba(236, 72, 153, 0.7);
       pointer-events: none;
       opacity: 0;
@@ -263,16 +313,18 @@
     }
 
     .gender-btn {
-      width: 250px;
+      width: 44%;
+      max-width: 250px;
+      min-width: 110px;
       height: auto;
-      max-width: 38%;
       cursor: pointer;
       transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
       filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
     }
 
+    .gender-btn:active,
     .gender-btn:hover {
-      transform: scale(1.12);
+      transform: scale(1.1);
       filter: drop-shadow(0 12px 28px rgba(236, 72, 153, 0.75));
     }
 
@@ -323,19 +375,20 @@
       width: 29.5%;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 14px 12px;
+      gap: clamp(6px, 1.2vw, 14px) clamp(6px, 1vw, 12px);
       justify-items: center;
       align-items: center;
     }
 
     .app-icon {
-      width: 68%;
+      width: 72%;
       height: auto;
       cursor: pointer;
       transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease;
       filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));
     }
 
+    .app-icon:active,
     .app-icon:hover {
       transform: scale(1.15);
       filter: drop-shadow(0 6px 18px rgba(255, 255, 255, 0.95));
@@ -367,14 +420,14 @@
 
     .choice-group-container {
       position: absolute;
-      top: 50%;
+      top: 52%;
       left: 50%;
       transform: translate(-50%, -50%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 24px;
-      width: 95%;
+      gap: clamp(10px, 2.2vh, 24px);
+      width: 94%;
       z-index: 70;
       opacity: 0;
       pointer-events: none;
@@ -395,8 +448,9 @@
       filter: drop-shadow(0 8px 22px rgba(0, 0, 0, 0.65));
     }
 
+    .choice-btn-item:active,
     .choice-btn-item:hover {
-      transform: scale(1.04);
+      transform: scale(1.03);
       filter: drop-shadow(0 10px 25px rgba(236, 72, 153, 0.8));
     }
 
@@ -463,7 +517,8 @@
 
     .nav-btn {
       max-width: 220px;
-      width: 80%;
+      width: 65%;
+      min-width: 90px;
       height: auto;
       cursor: pointer;
       transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
@@ -476,8 +531,9 @@
       50% { transform: scale(1.08); filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 25px rgba(255, 255, 255, 0.95)); }
     }
 
+    .nav-btn:active,
     .nav-btn:hover {
-      transform: scale(1.22) !important;
+      transform: scale(1.18) !important;
       filter: drop-shadow(0 12px 28px rgba(236, 72, 153, 0.95)) drop-shadow(0 0 32px rgba(255, 255, 255, 1)) !important;
     }
 
@@ -486,8 +542,9 @@
       position: absolute;
       top: 30.83%;
       left: 61.00%;
-      width: 14%;
+      width: 15%;
       max-width: 220px;
+      min-width: 85px;
       height: auto;
       z-index: 45;
       cursor: pointer;
@@ -536,12 +593,13 @@
     }
 
     .battle-start-title {
-      font-size: 72px;
+      font-size: clamp(32px, 6.5vw, 72px);
       font-weight: 900;
       color: #fff;
       text-shadow: 0 0 20px #ec4899, 0 0 40px #a855f7, 0 6px 18px rgba(0,0,0,0.9);
-      letter-spacing: 6px;
+      letter-spacing: clamp(3px, 0.6vw, 6px);
       cursor: pointer;
+      padding: 12px 28px;
       animation: startGlowPulse 1.5s infinite ease-in-out;
     }
 
@@ -550,19 +608,19 @@
       50% { transform: scale(1.12); opacity: 1; text-shadow: 0 0 30px #ec4899, 0 0 60px #ec4899; }
     }
 
-    /* ป้ายคะแนนมินิเกมย้ายไปฝั่งขวาบน (Opposite Side) */
+    /* ป้ายคะแนนมินิเกมฝั่งขวาบน */
     .battle-score-hud {
       position: absolute;
-      top: 25px;
-      right: 30px;
+      top: clamp(8px, 2vh, 25px);
+      right: clamp(10px, 2vw, 30px);
       left: auto;
       z-index: 95;
-      background: rgba(10, 10, 20, 0.85);
+      background: rgba(10, 10, 20, 0.88);
       border: 2px solid rgba(236, 72, 153, 0.8);
       border-radius: 20px;
-      padding: 10px 22px;
+      padding: clamp(5px, 1vh, 10px) clamp(12px, 1.8vw, 22px);
       color: #fff;
-      font-size: 20px;
+      font-size: clamp(12px, 1.8vw, 20px);
       font-weight: bold;
       box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
       display: none;
@@ -570,19 +628,19 @@
 
     .battle-score-hud.active {
       display: flex;
-      gap: 20px;
+      gap: clamp(10px, 1.5vw, 20px);
       align-items: center;
     }
 
     .battle-floating-item {
       position: absolute;
-      padding: 12px 24px;
+      padding: clamp(7px, 1.3vh, 12px) clamp(14px, 2vw, 24px);
       border-radius: 30px;
-      font-size: 20px;
+      font-size: clamp(13px, 1.8vw, 20px);
       font-weight: bold;
       color: #fff;
       cursor: pointer;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.65);
       transition: transform 0.1s ease;
       white-space: nowrap;
       z-index: 92;
@@ -595,6 +653,12 @@
 </head>
 <body>
 
+  <!-- หน้าจอแจ้งเตือนให้หมุนมือถือเป็นแนวนอน -->
+  <div id="rotate-warning">
+    <div class="rotate-icon">📱</div>
+    <p>กรุณาหมุนหน้าจอมือถือเป็น<strong>แนวนอน</strong><br>เพื่อประสบการณ์การเล่นที่สมบูรณ์</p>
+  </div>
+
   <div id="game-container">
     
     <!-- แถบ HUD วัดความรู้ด้านบน -->
@@ -603,7 +667,7 @@
       <div class="progress-bar-container">
         <div id="knowledge-bar" class="progress-bar-fill"></div>
       </div>
-      <div class="info-btn-wrapper">
+      <div id="info-btn-wrapper" class="info-btn-wrapper" onclick="toggleTooltip(event)">
         <div class="info-btn">!</div>
         <div class="tooltip">แก้ปัญหาภายในเกมได้ แถบวัดความรู้จะขยับขึ้น</div>
       </div>
@@ -739,6 +803,7 @@
     const centerTapHint = document.getElementById('center-tap-hint');
     const knowledgeBar = document.getElementById('knowledge-bar');
     const whiteFlash = document.getElementById('white-flash');
+    const infoBtnWrapper = document.getElementById('info-btn-wrapper');
     
     // Scenes
     const scene0 = document.getElementById('scene-0');
@@ -787,6 +852,12 @@
     const btnLeft = document.getElementById('btn-left');
     const btnMiddle = document.getElementById('btn-middle');
     const btnRight = document.getElementById('btn-right');
+
+    // แตะปุ่ม ! เพื่อเปิด/ปิดคำอธิบายบนมือถือ
+    function toggleTooltip(event) {
+      event.stopPropagation();
+      infoBtnWrapper.classList.toggle('show-tip');
+    }
 
     // Preload รูปภาพทั้งหมด
     const imageList = [
@@ -879,6 +950,7 @@
     }
 
     gameContainer.addEventListener('click', () => {
+      infoBtnWrapper.classList.remove('show-tip');
       resetIdleTimer();
     });
 
@@ -926,6 +998,16 @@
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1wAa-IMb7559wyuJp2yoAM1Je4ePmzws9';
         textbox.classList.add('active');
         currentStep = 'TXT_1';
+        resetIdleTimer();
+      }
+    });
+
+    // แตะฉากมือถือจอดับ (scene-4) หลังจากขึ้นฉากเสร็จแล้วเพื่อแสดงแถบข้อความ
+    scene4.addEventListener('click', () => {
+      if (currentStep === 'WAIT_TAP_ON_BLACKSCREEN' && !isTransitioning) {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1zN3SmFzX0ScbeXLZCWOGk9p-rEjCVuCT';
+        textbox.classList.add('active');
+        currentStep = 'TXT_BLACKSCREEN_1';
         resetIdleTimer();
       }
     });
@@ -1024,19 +1106,19 @@
         currentStep = 'TXT_5';
       }
       else if (currentStep === 'TXT_5') {
-        // เปลี่ยนจากฉากสวนสาธารณะเป็นฉากจอดำ
+        isTransitioning = true;
         textbox.classList.remove('active');
         scene3.classList.remove('active');
         scene4.classList.add('active');
 
+        // รอให้ฉากมือถือจอดับ (scene-4) แสดงผลเสร็จสมบูรณ์ก่อน จึงให้ผู้เล่นกดที่จอได้
         setTimeout(() => {
-          textboxImg.src = 'https://lh3.googleusercontent.com/d/1zN3SmFzX0ScbeXLZCWOGk9p-rEjCVuCT';
-          textbox.classList.add('active');
-          currentStep = 'TXT_BLACKSCREEN_1';
-        }, 300);
+          isTransitioning = false;
+          currentStep = 'WAIT_TAP_ON_BLACKSCREEN';
+          resetIdleTimer();
+        }, 900);
       }
       else if (currentStep === 'TXT_BLACKSCREEN_1') {
-        // แตะแล้วแถบหาย สลับฉากกลับเป็นสวนสาธารณะ
         textbox.classList.remove('active');
         scene4.classList.remove('active');
         scene3.classList.add('active');
@@ -1376,7 +1458,7 @@
       battleStartTxt.style.display = 'none';
       battleScoreHud.classList.add('active');
 
-      battleInterval = setInterval(spawnFloatingItem, 900);
+      battleInterval = setInterval(spawnFloatingItem, 950);
     }
 
     function spawnFloatingItem() {
@@ -1388,14 +1470,15 @@
       itemEl.innerText = randomData.text;
       itemEl.style.backgroundColor = randomData.color;
 
-      const randomX = Math.floor(Math.random() * 65) + 15;
+      const randomX = Math.floor(Math.random() * 58) + 12;
       itemEl.style.left = randomX + '%';
-      itemEl.style.bottom = '-60px';
+      itemEl.style.bottom = '-50px';
 
       gameContainer.appendChild(itemEl);
 
-      let posY = -60;
-      const speed = 2.8 + Math.random() * 1.5;
+      let posY = -50;
+      const containerHeight = gameContainer.offsetHeight || 500;
+      const speed = (containerHeight / 260) + (Math.random() * 0.8);
 
       const moveTimer = setInterval(() => {
         if (!isBattleActive) {
@@ -1407,7 +1490,7 @@
         posY += speed;
         itemEl.style.bottom = posY + 'px';
 
-        if (posY > gameContainer.offsetHeight - 50) {
+        if (posY > gameContainer.offsetHeight - 35) {
           clearInterval(moveTimer);
           if (itemEl.parentNode) itemEl.parentNode.removeChild(itemEl);
 
@@ -1585,6 +1668,7 @@
       btnTalk.classList.remove('visible-disabled');
       genderSelect.classList.remove('active');
       whiteFlash.classList.remove('active');
+      infoBtnWrapper.classList.remove('show-tip');
 
       document.querySelectorAll('.battle-floating-item').forEach(el => el.remove());
 
