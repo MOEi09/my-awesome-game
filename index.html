@@ -83,28 +83,92 @@
       box-shadow: 0 0 45px rgba(0, 0, 0, 0.95);
     }
 
-    /* แถบ HUD วัดความรู้ด้านบน */
+    /* =========================================================
+       แถบ HUD วัดความรู้สไตล์ iPhone (ซ่อนด้านบน + ติ่งลูกศรมินิมอล)
+       ========================================================= */
     .hud-header {
       position: absolute;
-      top: clamp(8px, 2vh, 18px);
+      top: 0;
       left: 50%;
-      transform: translateX(-50%);
-      z-index: 100;
+      /* ซ่อนตัวกล่องหลักขึ้นไปพ้นขอบบนของจอ เหลือเฉพาะติ่งลูกศรด้านล่าง */
+      transform: translate(-50%, -100%);
+      z-index: 120;
       display: flex;
       align-items: center;
       gap: clamp(8px, 1.2vw, 12px);
-      background: rgba(18, 18, 30, 0.82);
+      background: rgba(18, 18, 28, 0.86);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: clamp(6px, 1.1vh, 9px) clamp(14px, 2.2vw, 22px);
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+      transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    /* เมื่อเด้งลงมา (อัตโนมัติ หรือ กดเปิด) */
+    .hud-header.expanded {
+      transform: translate(-50%, clamp(8px, 1.8vh, 16px));
+    }
+
+    /* แสงเรืองตอนคะแนนขึ้น/ลง */
+    .hud-header.glow-up {
+      border-color: rgba(74, 222, 128, 0.75);
+      box-shadow: 0 10px 30px rgba(34, 197, 94, 0.35);
+    }
+
+    .hud-header.glow-down {
+      border-color: rgba(248, 113, 113, 0.8);
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
+    }
+
+    /* ติ่งปุ่มลูกศรมินิมอลสไตล์ iPhone เกาะติดใต้แถบ HUD */
+    .hud-pull-tab {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: clamp(34px, 4.2vw, 44px);
+      height: clamp(14px, 2vh, 18px);
+      background: rgba(18, 18, 28, 0.72);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      padding: clamp(5px, 1vh, 8px) clamp(14px, 2.2vw, 24px);
-      border-radius: 30px;
       border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
-      transition: all 0.4s ease;
+      border-top: none;
+      border-radius: 0 0 11px 11px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      transition: background 0.25s ease, color 0.25s ease, width 0.25s ease;
+    }
+
+    .hud-pull-tab:hover,
+    .hud-pull-tab:active {
+      background: rgba(35, 35, 52, 0.92);
+      color: #ffffff;
+    }
+
+    .hud-pull-tab svg {
+      width: clamp(12px, 1.4vw, 15px);
+      height: clamp(12px, 1.4vw, 15px);
+      stroke: currentColor;
+      stroke-width: 2.4;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* หมุนลูกศรชี้ขึ้นเมื่อแถบเลื่อนลงมาแล้ว */
+    .hud-header.expanded .hud-pull-tab svg {
+      transform: rotate(180deg);
     }
 
     .hud-icon {
-      font-size: clamp(16px, 2.2vw, 22px);
+      font-size: clamp(15px, 2vw, 20px);
       color: #ffd700;
       display: flex;
       align-items: center;
@@ -113,8 +177,8 @@
 
     .progress-bar-container {
       width: clamp(120px, 22vw, 220px);
-      height: clamp(8px, 1.4vh, 12px);
-      background: rgba(255, 255, 255, 0.12);
+      height: clamp(7px, 1.3vh, 11px);
+      background: rgba(255, 255, 255, 0.14);
       border-radius: 10px;
       overflow: hidden;
       position: relative;
@@ -126,7 +190,7 @@
       height: 100%;
       background: linear-gradient(90deg, #a855f7, #ec4899, #3b82f6);
       border-radius: 10px;
-      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: width 0.65s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .info-btn-wrapper {
@@ -134,13 +198,13 @@
     }
 
     .info-btn {
-      width: clamp(20px, 2.4vw, 24px);
-      height: clamp(20px, 2.4vw, 24px);
+      width: clamp(19px, 2.2vw, 23px);
+      height: clamp(19px, 2.2vw, 23px);
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.22);
       color: #fff;
       font-weight: bold;
-      font-size: clamp(11px, 1.4vw, 13px);
+      font-size: clamp(11px, 1.3vw, 13px);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -173,6 +237,7 @@
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       border: 1px solid rgba(255, 255, 255, 0.18);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+      z-index: 130;
     }
 
     .info-btn-wrapper:hover .tooltip,
@@ -1025,8 +1090,8 @@
 
   <div id="game-container">
     
-    <!-- แถบ HUD วัดความรู้ด้านบน -->
-    <div class="hud-header">
+    <!-- แถบ HUD วัดความรู้สไตล์ iPhone (ซ่อนด้านบน + ติ่งลูกศรชี้ลง) -->
+    <div id="hud-header" class="hud-header" onclick="event.stopPropagation()">
       <div class="hud-icon">📖</div>
       <div class="progress-bar-container">
         <div id="knowledge-bar" class="progress-bar-fill"></div>
@@ -1034,6 +1099,12 @@
       <div id="info-btn-wrapper" class="info-btn-wrapper" onclick="toggleTooltip(event)">
         <div class="info-btn">!</div>
         <div class="tooltip">แก้ปัญหาภายในเกมได้ แถบวัดความรู้จะขยับขึ้น</div>
+      </div>
+      <!-- ปุ่มติ่งลูกศรชี้ลงมินิมอล -->
+      <div id="hud-pull-tab" class="hud-pull-tab" title="ตรวจสอบแถบความรู้" onclick="toggleHudDropdown(event)">
+        <svg viewBox="0 0 24 24">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
       </div>
     </div>
 
@@ -1091,6 +1162,9 @@
 
     <!-- ฉากเพิ่มเติมตามเนื้อเรื่อง -->
     <div id="scene-end1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1d09NSfEhvtgQNhvawJia8pnquEam6v9m'); cursor: pointer;"></div>
+    <div id="scene-post-1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1hvjf4IgFwQpsoOApzjtyAgaeKLgwOnGg'); cursor: pointer;"></div>
+    <div id="scene-post-2" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1VWFsbewvkPenzyvqfKoXCoAvC2zY5FEv'); cursor: pointer;"></div>
+
     <!-- ฉากมินิเกมใหม่ -->
     <div id="scene-battle" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1V1alCUpj9w4dyHs5KV5Ha5goILnrg6Np');"></div>
     <div id="scene-cutscene-male" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/180pshb-vV-qmrluZ3zXmDR4n8Zax26Bo'); cursor: pointer;"></div>
@@ -1183,7 +1257,7 @@
     </div>
 
     <!-- =========================================================
-         ปุ่มทางลัดสำหรับตรวจงาน (มุมล่างซ้าย - สั่งลบออกได้เมื่อเสร็จงาน)
+         ปุ่มทางลัดสำหรับตรวจงาน (มุมล่างซ้าย - สั่งลบออกได้เมื่อตรวจงานเสร็จ)
          ========================================================= -->
     <div id="debug-shortcut-wrapper" onclick="event.stopPropagation()">
       <button type="button" class="debug-toggle-btn" onclick="toggleDebugMenu(event)">🛠️ ทางลัดฉาก</button>
@@ -1218,6 +1292,11 @@
     let currentBranchPath = 0; // 1 = ยอมจำนน (Bad End), 2 = ต่อสู้
     let knowledgeScore = 0; // 0 ถึง 100%
 
+    // ตัวแปรควบคุมแถบ HUD สไตล์ iPhone
+    let isHudPinned = false;
+    let hudAutoHideTimer = null;
+    let hudBarAnimTimer = null;
+
     // ตัวแปรสำหรับมินิเกมแชตจับผิดสาย AI
     let isBattleActive = false;
     let battleHearts = 2; // ตอบผิดได้แค่ 2 ครั้ง
@@ -1230,6 +1309,7 @@
 
     const gameContainer = document.getElementById('game-container');
     const centerTapHint = document.getElementById('center-tap-hint');
+    const hudHeader = document.getElementById('hud-header');
     const knowledgeBar = document.getElementById('knowledge-bar');
     const whiteFlash = document.getElementById('white-flash');
     const preTutorialOverlay = document.getElementById('pre-tutorial-overlay');
@@ -1255,6 +1335,8 @@
 
     // Endings & Battle Scenes
     const sceneEnd1 = document.getElementById('scene-end1');
+    const scenePost1 = document.getElementById('scene-post-1');
+    const scenePost2 = document.getElementById('scene-post-2');
     const sceneBattle = document.getElementById('scene-battle');
     const sceneCutsceneMale = document.getElementById('scene-cutscene-male');
     const sceneCutsceneFemale = document.getElementById('scene-cutscene-female');
@@ -1294,6 +1376,21 @@
     const btnLeft = document.getElementById('btn-left');
     const btnMiddle = document.getElementById('btn-middle');
     const btnRight = document.getElementById('btn-right');
+
+    // กดติ่งลูกศรมินิมอลเพื่อดึงแถบลงมาหรือพับเก็บขึ้นไป
+    function toggleHudDropdown(event) {
+      if (event) event.stopPropagation();
+      clearTimeout(hudAutoHideTimer);
+
+      if (hudHeader.classList.contains('expanded')) {
+        isHudPinned = false;
+        hudHeader.classList.remove('expanded');
+        infoBtnWrapper.classList.remove('show-tip');
+      } else {
+        isHudPinned = true;
+        hudHeader.classList.add('expanded');
+      }
+    }
 
     // แตะปุ่ม ! เพื่อเปิด/ปิดคำอธิบายบนมือถือ
     function toggleTooltip(event) {
@@ -1375,7 +1472,10 @@
       'https://lh3.googleusercontent.com/d/1AJHrpm0Qq1Muj4uTroYaDCAGDsDJRjUS',
       'https://lh3.googleusercontent.com/d/180pshb-vV-qmrluZ3zXmDR4n8Zax26Bo',
       'https://lh3.googleusercontent.com/d/13JkiphKhIn9eL2xbeXK9BihxLejVpkLp',
-      'https://lh3.googleusercontent.com/d/1JFrkUBuNVi3stpA73362NLLVSHwuZakT'
+      'https://lh3.googleusercontent.com/d/1JFrkUBuNVi3stpA73362NLLVSHwuZakT',
+      'https://lh3.googleusercontent.com/d/1hvjf4IgFwQpsoOApzjtyAgaeKLgwOnGg',
+      'https://lh3.googleusercontent.com/d/1VWFsbewvkPenzyvqfKoXCoAvC2zY5FEv',
+      'https://lh3.googleusercontent.com/d/1C-D11JodkziIg1jBzPZgSykND1Lq3xgB'
     ];
 
     imageList.forEach(url => {
@@ -1407,6 +1507,11 @@
     gameContainer.addEventListener('click', () => {
       infoBtnWrapper.classList.remove('show-tip');
       debugMenuPanel.classList.remove('open');
+      // หากผู้เล่นกดเปิดแถบความรู้ค้างไว้ แล้วไปแตะจุดอื่นในหน้าจอ ให้พับเก็บขึ้นไปอย่างนุ่มนวล
+      if (isHudPinned) {
+        isHudPinned = false;
+        hudHeader.classList.remove('expanded');
+      }
       resetIdleTimer();
     });
 
@@ -1502,6 +1607,28 @@
         currentStep = 'TXT_LEFT_4';
         resetIdleTimer();
       }
+      else if (currentStep === 'FINAL_CONCLUSION_REACHED') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1r0j3uFS_hw_np35jVKFFsp9lBWPBg4HP';
+        textbox.classList.add('active');
+        currentStep = 'TXT_POST_ENDING_1';
+        resetIdleTimer();
+      }
+    });
+
+    scenePost1.addEventListener('click', () => {
+      if (isTransitioning || currentStep !== 'POST_ENDING_SCENE_1') return;
+      scenePost1.classList.remove('active');
+      scenePost2.classList.add('active');
+      currentStep = 'POST_ENDING_SCENE_2';
+      resetIdleTimer();
+    });
+
+    scenePost2.addEventListener('click', () => {
+      if (isTransitioning || currentStep !== 'POST_ENDING_SCENE_2') return;
+      textboxImg.src = 'https://lh3.googleusercontent.com/d/1C-D11JodkziIg1jBzPZgSykND1Lq3xgB';
+      textbox.classList.add('active');
+      currentStep = 'TXT_POST_ENDING_2';
+      resetIdleTimer();
     });
 
     sceneEnd1.addEventListener('click', () => {
@@ -1746,6 +1873,19 @@
           sceneLeft2.classList.add('active');
           currentStep = 'FINAL_CONCLUSION_REACHED';
         });
+      }
+      // ----- ลำดับฉากหลังจบคัตซีน -----
+      else if (currentStep === 'TXT_POST_ENDING_1') {
+        textbox.classList.remove('active');
+        sceneLeft2.classList.remove('active');
+        scenePost1.classList.add('active');
+        currentStep = 'POST_ENDING_SCENE_1';
+      }
+      else if (currentStep === 'TXT_POST_ENDING_2') {
+        textbox.classList.remove('active');
+        scenePost2.classList.remove('active');
+        sceneLeft2.classList.add('active');
+        currentStep = 'POST_ENDING_DONE';
       }
       else if (currentStep === 'TXT_SCENE3_LAST_MSG') {
         textbox.classList.remove('active');
@@ -2217,13 +2357,43 @@
       }
     }
 
-    function updateKnowledgeBar(deltaPercent) {
+    /* =========================================================
+       อัปเดตแถบวัดความรู้ + แอนิเมชันเด้งลงสไตล์ iPhone
+       ========================================================= */
+    function updateKnowledgeBar(deltaPercent, silent = false) {
+      const prevScore = knowledgeScore;
       if (deltaPercent === -50) {
         knowledgeScore = Math.floor(knowledgeScore / 2);
       } else {
-        knowledgeScore = Math.min(100, knowledgeScore + deltaPercent);
+        knowledgeScore = Math.min(100, Math.max(0, knowledgeScore + deltaPercent));
       }
-      knowledgeBar.style.width = knowledgeScore + '%';
+
+      if (silent) {
+        knowledgeBar.style.width = knowledgeScore + '%';
+        return;
+      }
+
+      const isIncrease = knowledgeScore >= prevScore;
+      clearTimeout(hudAutoHideTimer);
+      clearTimeout(hudBarAnimTimer);
+
+      // เลื่อนแถบลงมาให้เห็น + เปลี่ยนสีขอบเรืองแสงตามการเพิ่ม/ลด
+      hudHeader.classList.remove('glow-up', 'glow-down');
+      hudHeader.classList.add('expanded', isIncrease ? 'glow-up' : 'glow-down');
+
+      // รอให้แถบเลื่อนลงมาถึงตำแหน่งก่อน 280ms แล้วค่อยขยับหลอดคะแนนให้เห็นชัดๆ
+      hudBarAnimTimer = setTimeout(() => {
+        knowledgeBar.style.width = knowledgeScore + '%';
+      }, 280);
+
+      // ค้างไว้ 2.8 วินาทีแล้วพับเก็บขึ้นไป (ถ้าผู้เล่นไม่ได้กดปักหมุดค้างไว้)
+      hudAutoHideTimer = setTimeout(() => {
+        hudHeader.classList.remove('glow-up', 'glow-down');
+        if (!isHudPinned) {
+          hudHeader.classList.remove('expanded');
+          infoBtnWrapper.classList.remove('show-tip');
+        }
+      }, 2800);
     }
 
     function handleMiddleButtonClick(event) {
@@ -2307,13 +2477,17 @@
       activeChoiceBranch = 0;
       currentBranchPath = 0;
       knowledgeScore = 0;
+      isHudPinned = false;
       isBattleActive = false;
       battleHearts = 2;
       isWaitingNextRound = false;
       clearInterval(roundTimerInterval);
       clearTimeout(battleFinishTimer);
       clearTimeout(wrongAppTimer);
+      clearTimeout(hudAutoHideTimer);
+      clearTimeout(hudBarAnimTimer);
 
+      hudHeader.classList.remove('expanded', 'glow-up', 'glow-down');
       btnHome.classList.remove('active');
       tlChoices.classList.remove('active');
       newBranchChoices.classList.remove('active');
@@ -2336,7 +2510,7 @@
       countdownNum.style.display = 'none';
       infoBtnWrapper.classList.remove('show-tip');
 
-      const allScenes = [scene0, sceneSp1, sceneSp2, scene1, scene2, scene3, scene4, scene6, sceneLeft1, sceneLeft2, sceneEnd1, sceneBattle, sceneCutsceneMale, sceneCutsceneFemale];
+      const allScenes = [scene0, sceneSp1, sceneSp2, scene1, scene2, scene3, scene4, scene6, sceneLeft1, sceneLeft2, sceneEnd1, scenePost1, scenePost2, sceneBattle, sceneCutsceneMale, sceneCutsceneFemale];
       allScenes.forEach(sc => {
         sc.classList.remove('active', 'zoom-out-fade', 'instant-change');
       });
@@ -2399,7 +2573,7 @@
       else if (target === 'DECISION') {
         completedChoice1 = true;
         completedChoice2 = true;
-        updateKnowledgeBar(100);
+        updateKnowledgeBar(100, true);
         sceneLeft2.classList.add('active');
         charPakorn.src = 'https://lh3.googleusercontent.com/d/1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA';
         charPakorn.classList.add('active');
@@ -2409,32 +2583,32 @@
       else if (target === 'PRE_MINIGAME') {
         completedChoice1 = true;
         completedChoice2 = true;
-        updateKnowledgeBar(100);
+        updateKnowledgeBar(100, true);
         sceneLeft2.classList.add('active');
         showBattleTutorial();
       } 
       else if (target === 'MINIGAME_NOW') {
         completedChoice1 = true;
         completedChoice2 = true;
-        updateKnowledgeBar(100);
+        updateKnowledgeBar(100, true);
         sceneBattle.classList.add('active');
         battleOverlay.classList.add('active');
         startChatBattleMinigame();
       } 
       else if (target === 'WIN_MALE') {
         selectedGender = 'male';
-        updateKnowledgeBar(100);
+        updateKnowledgeBar(100, true);
         sceneCutsceneMale.classList.add('active');
         currentStep = 'CUTSCENE_READY';
       } 
       else if (target === 'WIN_FEMALE') {
         selectedGender = 'female';
-        updateKnowledgeBar(100);
+        updateKnowledgeBar(100, true);
         sceneCutsceneFemale.classList.add('active');
         currentStep = 'CUTSCENE_READY';
       } 
       else if (target === 'BAD_END') {
-        updateKnowledgeBar(50);
+        updateKnowledgeBar(50, true);
         sceneEnd1.classList.add('active');
         currentStep = 'SCENE_END1_READY';
       }
