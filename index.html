@@ -926,6 +926,93 @@
       opacity: 0.45;
       pointer-events: none;
     }
+
+    /* =========================================================
+       DEBUG SHORTCUT MENU (ปุ่มทางลัดมุมล่างซ้าย - ลบออกได้เมื่อตรวจงานเสร็จ)
+       ========================================================= */
+    #debug-shortcut-wrapper {
+      position: absolute;
+      bottom: clamp(8px, 1.8vh, 16px);
+      left: clamp(8px, 1.5vw, 16px);
+      z-index: 9990;
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .debug-toggle-btn {
+      background: rgba(15, 23, 42, 0.88);
+      color: #f8fafc;
+      border: 1.5px solid rgba(236, 72, 153, 0.7);
+      border-radius: 999px;
+      padding: clamp(5px, 0.9vh, 8px) clamp(10px, 1.4vw, 16px);
+      font-family: inherit;
+      font-size: clamp(11px, 1.2vw, 14px);
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .debug-toggle-btn:hover,
+    .debug-toggle-btn:active {
+      background: #ec4899;
+      color: #ffffff;
+      transform: scale(1.05);
+    }
+
+    .debug-menu-panel {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      padding: 8px;
+      max-height: 62vh;
+      overflow-y: auto;
+      min-width: clamp(185px, 22vw, 240px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .debug-menu-panel.open {
+      display: flex;
+    }
+
+    .debug-menu-title {
+      font-size: clamp(10px, 1.05vw, 12px);
+      font-weight: 800;
+      color: #f472b6;
+      padding: 2px 6px 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      margin-bottom: 2px;
+    }
+
+    .debug-item-btn {
+      background: rgba(255, 255, 255, 0.08);
+      color: #f1f5f9;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: clamp(5px, 0.8vh, 7px) 10px;
+      font-family: inherit;
+      font-size: clamp(10.5px, 1.15vw, 13.5px);
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+    .debug-item-btn:hover,
+    .debug-item-btn:active {
+      background: rgba(236, 72, 153, 0.85);
+      color: #ffffff;
+      transform: translateX(3px);
+    }
   </style>
 </head>
 <body>
@@ -1095,6 +1182,27 @@
       </div>
     </div>
 
+    <!-- =========================================================
+         ปุ่มทางลัดสำหรับตรวจงาน (มุมล่างซ้าย - สั่งลบออกได้เมื่อเสร็จงาน)
+         ========================================================= -->
+    <div id="debug-shortcut-wrapper" onclick="event.stopPropagation()">
+      <button type="button" class="debug-toggle-btn" onclick="toggleDebugMenu(event)">🛠️ ทางลัดฉาก</button>
+      <div id="debug-menu-panel" class="debug-menu-panel">
+        <div class="debug-menu-title">เลือกฉากที่ต้องการตรวจ</div>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('HOME')">0. หน้าเริ่มเกม</button>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('GENDER')">1. เลือกตัวละคร (ชาย/หญิง)</button>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('BRANCH_6')">2. หน้าแยกทางซ้าย/ขวา</button>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('PAKORN_TALK')">3. เริ่มคุยกับปกรณ์</button>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('TL_CHOICES')">4. เลือกภารกิจมือถือ (ตล.1/2)</button>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('DECISION')">5. เลือก ยอมจำนน / ต่อสู้</button>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('PRE_MINIGAME')">6. ก่อนเข้ามินิเกม (ฉากคั่น)</button>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('MINIGAME_NOW')">7. เล่นมินิเกมทันที</button>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('WIN_MALE')">8. คัตซีนชนะ (ชาย)</button>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('WIN_FEMALE')">9. คัตซีนชนะ (หญิง)</button>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('BAD_END')">10. ฉากจบ Bad End</button>
+      </div>
+    </div>
+
   </div>
 
   <script>
@@ -1131,6 +1239,7 @@
     const tapToStartBlink = document.getElementById('tap-to-start-blink');
     const countdownNum = document.getElementById('countdown-num');
     const infoBtnWrapper = document.getElementById('info-btn-wrapper');
+    const debugMenuPanel = document.getElementById('debug-menu-panel');
     
     // Scenes
     const scene0 = document.getElementById('scene-0');
@@ -1298,6 +1407,7 @@
 
     gameContainer.addEventListener('click', () => {
       infoBtnWrapper.classList.remove('show-tip');
+      debugMenuPanel.classList.remove('open');
       resetIdleTimer();
     });
 
@@ -2224,6 +2334,97 @@
 
       scene0.classList.add('active');
       knowledgeBar.style.width = '0%';
+      resetIdleTimer();
+    }
+
+    /* =========================================================
+       ฟังก์ชันทางลัดตรวจงาน (ลบออกได้เมื่อเสร็จงาน)
+       ========================================================= */
+    function toggleDebugMenu(event) {
+      if (event) event.stopPropagation();
+      debugMenuPanel.classList.toggle('open');
+    }
+
+    function jumpToShortcut(target) {
+      debugMenuPanel.classList.remove('open');
+      const keepGender = selectedGender || 'male';
+      handleHomeButtonClick();
+      selectedGender = keepGender;
+
+      if (target === 'HOME') return;
+
+      scene0.classList.remove('active');
+      btnHome.classList.add('active');
+
+      if (target === 'GENDER') {
+        btnHome.classList.remove('active');
+        sceneSp2.classList.add('active');
+        genderSelect.classList.add('active');
+        currentStep = 'GENDER_STAGE';
+      } 
+      else if (target === 'BRANCH_6') {
+        scene6.classList.add('active');
+        btnLeft.style.display = 'block';
+        btnRight.style.display = 'block';
+        btnMiddle.style.display = 'none';
+        navButtons.classList.add('active');
+        currentStep = 'SCENE_6_BRANCH';
+      } 
+      else if (target === 'PAKORN_TALK') {
+        sceneLeft2.classList.add('active');
+        charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm';
+        charPakorn.classList.add('active');
+        currentStep = 'LEFT_BRANCH_2_START';
+      } 
+      else if (target === 'TL_CHOICES') {
+        sceneLeft2.classList.add('active');
+        charPakorn.src = 'https://lh3.googleusercontent.com/d/1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA';
+        charPakorn.classList.add('active');
+        showTLChoices();
+      } 
+      else if (target === 'DECISION') {
+        completedChoice1 = true;
+        completedChoice2 = true;
+        updateKnowledgeBar(100);
+        sceneLeft2.classList.add('active');
+        charPakorn.src = 'https://lh3.googleusercontent.com/d/1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA';
+        charPakorn.classList.add('active');
+        newBranchChoices.classList.add('active');
+        currentStep = 'SHOW_NEW_BRANCH_CHOICES';
+      } 
+      else if (target === 'PRE_MINIGAME') {
+        completedChoice1 = true;
+        completedChoice2 = true;
+        updateKnowledgeBar(100);
+        sceneLeft2.classList.add('active');
+        showBattleTutorial();
+      } 
+      else if (target === 'MINIGAME_NOW') {
+        completedChoice1 = true;
+        completedChoice2 = true;
+        updateKnowledgeBar(100);
+        sceneBattle.classList.add('active');
+        battleOverlay.classList.add('active');
+        startChatBattleMinigame();
+      } 
+      else if (target === 'WIN_MALE') {
+        selectedGender = 'male';
+        updateKnowledgeBar(100);
+        sceneCutsceneMale.classList.add('active');
+        currentStep = 'CUTSCENE_READY';
+      } 
+      else if (target === 'WIN_FEMALE') {
+        selectedGender = 'female';
+        updateKnowledgeBar(100);
+        sceneCutsceneFemale.classList.add('active');
+        currentStep = 'CUTSCENE_READY';
+      } 
+      else if (target === 'BAD_END') {
+        updateKnowledgeBar(50);
+        sceneEnd1.classList.add('active');
+        currentStep = 'SCENE_END1_READY';
+      }
+
       resetIdleTimer();
     }
 
