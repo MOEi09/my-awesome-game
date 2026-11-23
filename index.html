@@ -236,7 +236,7 @@
       50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.95; }
     }
 
-    /* เลเยอร์แสงสีขาวสลับฉาก & นับถอยหลัง 3 2 1 (White Flash Layer) */
+    /* เลเยอร์แสงสีขาวสลับฉาก (White Flash Layer) */
     .white-flash-layer {
       position: absolute;
       top: 0;
@@ -258,21 +258,115 @@
       pointer-events: auto;
     }
 
-    /* ตัวเลขนับถอยหลัง 3 2 1 สีแดงเรืองแสง */
-    .countdown-number {
-      font-size: clamp(72px, 14vw, 170px);
+    /* หน้าจอแนะนำวิธีเล่นก่อนเริ่มมินิเกม */
+    .tutorial-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 160;
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      pointer-events: none;
+      cursor: pointer;
+      transition: opacity 0.5s ease;
+    }
+
+    .tutorial-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* จอดำเตือนหัวใจ 2 ดวง & นับถอยหลัง 3 2 1 เริ่ม! */
+    .pregame-black-screen {
+      position: absolute;
+      inset: 0;
+      z-index: 165;
+      background-color: #050508;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.45s ease;
+    }
+
+    .pregame-black-screen.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .warning-content-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(14px, 2.8vh, 28px);
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .warning-hearts-row {
+      display: flex;
+      gap: clamp(14px, 2.5vw, 28px);
+      font-size: clamp(44px, 7.5vw, 88px);
+      filter: drop-shadow(0 0 18px rgba(255, 30, 30, 0.9));
+      animation: heartBeatSlow 1.6s infinite ease-in-out;
+    }
+
+    @keyframes heartBeatSlow {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* ข้อความและตัวเลข สีขาวเรืองแสงสีแดง */
+    .white-red-glow-text {
+      color: #ffffff;
       font-weight: 900;
-      color: #ff1e1e;
       text-shadow:
-        0 0 18px rgba(255, 30, 30, 0.95),
-        0 0 40px rgba(255, 0, 0, 0.85),
-        0 0 70px rgba(220, 38, 38, 0.75);
+        0 0 10px rgba(255, 30, 30, 1),
+        0 0 24px rgba(255, 0, 0, 0.95),
+        0 0 48px rgba(220, 38, 38, 0.85);
+    }
+
+    .warning-title-text {
+      font-size: clamp(24px, 4.6vw, 56px);
+      letter-spacing: 1px;
+    }
+
+    .tap-to-start-blink {
+      position: absolute;
+      bottom: 9%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: clamp(14px, 2.1vw, 24px);
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.72);
+      letter-spacing: 2px;
+      animation: faintBlink 1.8s infinite ease-in-out;
+      pointer-events: none;
+    }
+
+    @keyframes faintBlink {
+      0%, 100% { opacity: 0.25; }
+      50% { opacity: 0.85; }
+    }
+
+    /* ตัวเลขนับถอยหลัง 3 2 1 เริ่ม! (สีขาวเรืองแสงสีแดง) */
+    .countdown-number {
+      font-size: clamp(72px, 14vw, 175px);
+      font-weight: 900;
+      color: #ffffff;
+      text-shadow:
+        0 0 14px rgba(255, 30, 30, 1),
+        0 0 34px rgba(255, 0, 0, 0.95),
+        0 0 65px rgba(220, 38, 38, 0.85);
       display: none;
       animation: countdownPop 0.85s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     @keyframes countdownPop {
-      0% { transform: scale(1.5); opacity: 0; }
+      0% { transform: scale(1.55); opacity: 0; }
       35% { transform: scale(0.95); opacity: 1; }
       100% { transform: scale(1); opacity: 1; }
     }
@@ -611,17 +705,17 @@
       pointer-events: auto;
     }
 
-    /* กล่องบอลลูนแชตตรงกลาง (ระหว่างมือถือซ้าย กับ ปกรณ์ขวา) */
+    /* กล่องบอลลูนแชตตรงกลาง (ปรับตำแหน่งให้สูงขึ้น อยู่ช่วงกลางบนระหว่างมือถือซ้าย กับ ปกรณ์ขวา) */
     .chat-feed-area {
       position: absolute;
       top: 13%;
       left: 38.5%;
       width: 31%;
-      height: 76%;
+      height: 55%;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      gap: clamp(8px, 1.5vh, 14px);
+      gap: clamp(8px, 1.4vh, 14px);
       padding-bottom: 1%;
       overflow: hidden;
       pointer-events: none;
@@ -632,11 +726,11 @@
       position: relative;
       background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
       color: #111827;
-      padding: clamp(8px, 1.4vh, 14px) clamp(12px, 1.6vw, 20px);
-      border-radius: clamp(14px, 2vw, 24px);
-      font-size: clamp(12px, 1.45vw, 20px);
+      padding: clamp(8px, 1.3vh, 13px) clamp(12px, 1.5vw, 18px);
+      border-radius: clamp(14px, 2vw, 22px);
+      font-size: clamp(12px, 1.4vw, 19px);
       font-weight: 700;
-      line-height: 1.35;
+      line-height: 1.32;
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.9);
       max-width: 92%;
       transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
@@ -644,7 +738,7 @@
     }
 
     @keyframes bubblePopIn {
-      0% { opacity: 0; transform: translateY(22px) scale(0.92); }
+      0% { opacity: 0; transform: translateY(20px) scale(0.92); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
@@ -696,7 +790,7 @@
 
     .chat-sender-tag {
       display: block;
-      font-size: clamp(9px, 1vw, 13px);
+      font-size: clamp(9px, 0.95vw, 13px);
       font-weight: 800;
       margin-bottom: 2px;
       opacity: 0.75;
@@ -710,15 +804,57 @@
       color: #db2777;
     }
 
-    /* พื้นที่ปุ่มตัวเลือก 2 ช่อง มุมขวาบน (ตรงกับกรอบสีเทาในภาพ) */
+    /* หัวใจ 2 ดวง วางบนพื้นที่ว่างเหนือหัวตัวละครปกรณ์ */
+    .battle-hearts-panel {
+      position: absolute;
+      top: 45.5%;
+      right: 9.8%;
+      display: flex;
+      align-items: center;
+      gap: clamp(8px, 1.2vw, 14px);
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: clamp(4px, 0.8vh, 8px) clamp(12px, 1.6vw, 18px);
+      border-radius: 25px;
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+      z-index: 95;
+    }
+
+    .battle-heart-icon {
+      font-size: clamp(18px, 2.5vw, 30px);
+      transition: transform 0.35s ease, opacity 0.35s ease, filter 0.35s ease;
+      filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.85));
+    }
+
+    .battle-heart-icon.lost {
+      opacity: 0.25;
+      filter: grayscale(1);
+      transform: scale(0.8);
+    }
+
+    @keyframes shakeError {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+
+    .shake-anim {
+      animation: shakeError 0.45s ease;
+    }
+
+    /* พื้นที่ปุ่มตัวเลือก 2 ช่อง มุมขวาบน */
     .chat-choices-panel {
       position: absolute;
-      top: 9.5%;
+      top: 8.5%;
       right: 3.5%;
       width: 24.5%;
       display: flex;
       flex-direction: column;
-      gap: clamp(8px, 1.4vh, 14px);
+      gap: clamp(6px, 1.1vh, 11px);
       z-index: 95;
     }
 
@@ -743,7 +879,7 @@
 
     .turn-timer-track {
       width: 100%;
-      height: clamp(6px, 1vh, 9px);
+      height: clamp(6px, 0.9vh, 8px);
       background: rgba(255, 255, 255, 0.18);
       border-radius: 8px;
       overflow: hidden;
@@ -760,17 +896,16 @@
     /* ปุ่มตัวเลือกข้อความ 2 ช่อง */
     .chat-choice-btn {
       width: 100%;
-      min-height: clamp(48px, 11vh, 105px);
+      min-height: clamp(42px, 9.5vh, 92px);
       background: rgba(241, 245, 249, 0.96);
-      hover: #ffffff;
       color: #0f172a;
       border: 2.5px solid #cbd5e1;
       border-radius: clamp(12px, 1.6vw, 18px);
-      padding: clamp(8px, 1.2vh, 14px) clamp(10px, 1.4vw, 16px);
+      padding: clamp(7px, 1vh, 12px) clamp(10px, 1.3vw, 15px);
       font-family: inherit;
-      font-size: clamp(11px, 1.32vw, 18px);
+      font-size: clamp(11px, 1.28vw, 17px);
       font-weight: 700;
-      line-height: 1.32;
+      line-height: 1.3;
       text-align: left;
       cursor: pointer;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
@@ -792,7 +927,7 @@
       pointer-events: none;
     }
 
-    /* ปุ่มกดวางสายสีแดง บนจอมือถือซ้ายมือ (ใช้กดปิดท้ายเมื่อแฉสำเร็จ) */
+    /* ปุ่มกดวางสายสีแดง บนจอมือถือซ้ายมือ (โผล่ตอนแฉสำเร็จ) */
     .hangup-hotspot {
       position: absolute;
       bottom: 13.5%;
@@ -867,8 +1002,22 @@
     <!-- ข้อความ ( แตะ ) ลางๆ กลางจอเมื่อผู้เล่นค้างเกิน 4 วินาที -->
     <div id="center-tap-hint" class="center-tap-hint">( แตะ )</div>
 
-    <!-- เลเยอร์แสงสีขาวสลับฉาก & นับถอยหลัง 3 2 1 -->
-    <div id="white-flash" class="white-flash-layer">
+    <!-- เลเยอร์แสงสีขาวสลับฉาก -->
+    <div id="white-flash" class="white-flash-layer"></div>
+
+    <!-- หน้าแนะนำวิธีเล่นก่อนเข้ามินิเกม -->
+    <div id="tutorial-overlay" class="tutorial-overlay" style="background-image: url('https://lh3.googleusercontent.com/d/1kglHihqUsYYNJn4YsHWcyoYSXlNcO8ns');" onclick="handleTutorialClick(event)"></div>
+
+    <!-- จอดำเตือนหัวใจ 2 ดวง + นับถอยหลัง 3 2 1 เริ่ม! -->
+    <div id="pregame-black-screen" class="pregame-black-screen" onclick="handlePregameBlackClick(event)">
+      <div id="warning-content-box" class="warning-content-box">
+        <div class="warning-hearts-row">
+          <span>❤️</span>
+          <span>❤️</span>
+        </div>
+        <div class="white-red-glow-text warning-title-text">มีโอกาสผิดแค่ 2 ครั้งเท่านั้น</div>
+      </div>
+      <div id="tap-to-start-blink" class="tap-to-start-blink">แตะเพื่อเริ่ม</div>
       <div id="countdown-num" class="countdown-number">3</div>
     </div>
 
@@ -930,7 +1079,7 @@
       <img id="btn-tl2" class="choice-btn-item" src="https://lh3.googleusercontent.com/d/1GYaP0COPFsX-8I39_BttVQ3DLg7FHAEu" alt="ปุ่ม ตล.2" onclick="handleChoiceTL(2)">
     </div>
 
-    <!-- กลุ่มปุ่มเลือกใหม่ 2 ตัวเลือก (อัปเดตลิงก์ปุ่มใหม่แล้ว) -->
+    <!-- กลุ่มปุ่มเลือกใหม่ 2 ตัวเลือก -->
     <div id="new-branch-choices" class="choice-group-container">
       <img class="choice-btn-item" src="https://lh3.googleusercontent.com/d/1itwtKHZx_hACnQQu-oopNlhPWwRcxTq9" alt="ตัวเลือก 1 (ยอมจำนน)" onclick="handleNewBranchChoice(1)">
       <img class="choice-btn-item" src="https://lh3.googleusercontent.com/d/1pyKs58lssQ7SqmrWlAMfEBwkTH7domle" alt="ตัวเลือก 2 (ต่อสู้)" onclick="handleNewBranchChoice(2)">
@@ -982,6 +1131,12 @@
         <button id="chat-choice-1" class="chat-choice-btn" onclick="handleChatChoice(1)"></button>
       </div>
 
+      <!-- หัวใจ 2 ดวง วางบนพื้นที่ว่างเหนือหัวตัวละครปกรณ์ -->
+      <div id="battle-hearts-panel" class="battle-hearts-panel">
+        <span id="battle-heart-1" class="battle-heart-icon">❤️</span>
+        <span id="battle-heart-2" class="battle-heart-icon">❤️</span>
+      </div>
+
       <!-- ปุ่มกดวางสายสีแดงบนจอมือถือซ้ายมือ (โผล่ตอนแฉสำเร็จ) -->
       <div id="hangup-hint-label" class="hangup-hint-label">👆 กดปุ่มแดงวางสาย!</div>
       <div id="hangup-hotspot" class="hangup-hotspot" onclick="finishChatBattle(true)"></div>
@@ -1004,16 +1159,21 @@
 
     // ตัวแปรสำหรับมินิเกมแชตจับผิดสาย AI
     let isBattleActive = false;
+    let battleHearts = 2; // ตอบผิดได้แค่ 2 ครั้ง
     let currentChatRound = 0;
     let roundTimerInterval = null;
     let roundTimeLeft = 12;
-    const MAX_ROUND_TIME = 12; // 12 วินาทีต่อข้อ เพื่อให้อ่านทันและตื่นเต้น
+    const MAX_ROUND_TIME = 12; // 12 วินาทีต่อข้อ
     let isWaitingNextRound = false;
 
     const gameContainer = document.getElementById('game-container');
     const centerTapHint = document.getElementById('center-tap-hint');
     const knowledgeBar = document.getElementById('knowledge-bar');
     const whiteFlash = document.getElementById('white-flash');
+    const tutorialOverlay = document.getElementById('tutorial-overlay');
+    const pregameBlackScreen = document.getElementById('pregame-black-screen');
+    const warningContentBox = document.getElementById('warning-content-box');
+    const tapToStartBlink = document.getElementById('tap-to-start-blink');
     const countdownNum = document.getElementById('countdown-num');
     const infoBtnWrapper = document.getElementById('info-btn-wrapper');
     
@@ -1050,6 +1210,9 @@
     const battleOverlay = document.getElementById('battle-overlay');
     const chatFeedArea = document.getElementById('chat-feed-area');
     const chatChoicesPanel = document.getElementById('chat-choices-panel');
+    const battleHeartsPanel = document.getElementById('battle-hearts-panel');
+    const battleHeart1 = document.getElementById('battle-heart-1');
+    const battleHeart2 = document.getElementById('battle-heart-2');
     const battleRoundNum = document.getElementById('battle-round-num');
     const battleTimerSec = document.getElementById('battle-timer-sec');
     const battleTimerFill = document.getElementById('battle-timer-fill');
@@ -1144,6 +1307,7 @@
       'https://lh3.googleusercontent.com/d/1zvp5CM6rjIKL2DG6drOZ7X9cQw1RU51O',
       'https://lh3.googleusercontent.com/d/1PVTLSehn7PfIuaM9GB1jEflubF3U9z1V',
       'https://lh3.googleusercontent.com/d/1OrmrcPSVDzZPz3Rnnz4oYDBvv9dDVPP8',
+      'https://lh3.googleusercontent.com/d/1kglHihqUsYYNJn4YsHWcyoYSXlNcO8ns',
       'https://lh3.googleusercontent.com/d/1V1alCUpj9w4dyHs5KV5Ha5goILnrg6Np',
       'https://lh3.googleusercontent.com/d/1AJHrpm0Qq1Muj4uTroYaDCAGDsDJRjUS',
       'https://lh3.googleusercontent.com/d/180pshb-vV-qmrluZ3zXmDR4n8Zax26Bo',
@@ -1159,7 +1323,18 @@
     function resetIdleTimer() {
       centerTapHint.classList.remove('active');
       clearTimeout(idleTimer);
-      if (!isTransitioning && currentStep !== 'GENDER_STAGE' && currentStep !== 'WAIT_AUTO_SP1' && currentStep !== 'WAIT_APP_SELECTION' && currentStep !== 'SHOW_TL_CHOICES' && currentStep !== 'SHOW_NEW_BRANCH_CHOICES' && !isBattleActive) {
+      if (
+        !isTransitioning &&
+        currentStep !== 'GENDER_STAGE' &&
+        currentStep !== 'WAIT_AUTO_SP1' &&
+        currentStep !== 'WAIT_APP_SELECTION' &&
+        currentStep !== 'SHOW_TL_CHOICES' &&
+        currentStep !== 'SHOW_NEW_BRANCH_CHOICES' &&
+        currentStep !== 'TUTORIAL_STAGE' &&
+        currentStep !== 'PREGAME_WARNING_STAGE' &&
+        currentStep !== 'PREGAME_COUNTDOWN_STAGE' &&
+        !isBattleActive
+      ) {
         idleTimer = setTimeout(() => {
           centerTapHint.classList.add('active');
         }, 4000);
@@ -1465,7 +1640,7 @@
           currentStep = 'FINAL_CONCLUSION_REACHED';
         });
       }
-      // ----- เนื้อเรื่องส่วนตัวเลือกที่ 2 (ต่อสู้ -> นับ 3 2 1 -> เข้ามินิเกมแชตจับผิดสาย AI) -----
+      // ----- เนื้อเรื่องส่วนตัวเลือกที่ 2 (ต่อสู้ -> หน้าแนะนำวิธีเล่น -> จอดำหัวใจ 2 ดวง -> นับ 3 2 1 เริ่ม! -> มินิเกม) -----
       else if (currentStep === 'TXT_NEW_BRANCH_2_1') {
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1PVTLSehn7PfIuaM9GB1jEflubF3U9z1V';
         charPakorn.src = 'https://lh3.googleusercontent.com/d/1IlNHrs-Y3-KGzqYFLhPfrLsZsLrHlboy';
@@ -1478,7 +1653,7 @@
       else if (currentStep === 'TXT_NEW_BRANCH_2_3') {
         textbox.classList.remove('active');
         charPakorn.classList.remove('active');
-        startCountdownAndEnterBattle();
+        showBattleTutorial();
       }
       // ----- เนื้อเรื่องกรณีชนะมินิเกม -----
       else if (currentStep === 'TXT_CUTSCENE_1') {
@@ -1524,7 +1699,6 @@
 
     function triggerWhiteFlashTransition(callback) {
       isTransitioning = true;
-      countdownNum.style.display = 'none';
       whiteFlash.classList.add('active');
       setTimeout(() => {
         if (callback) callback();
@@ -1536,39 +1710,74 @@
       }, 700);
     }
 
-    // หน้าสีขาวนับ 3 -> 2 -> 1 (ตัวอักษรสีแดงเรืองแสง) แล้วเข้าหน้ามินิเกม
-    function startCountdownAndEnterBattle() {
+    /* =========================================================
+       ลำดับก่อนเข้ามินิเกม:
+       1. หน้าแนะนำวิธีเล่น -> แตะจอ
+       2. จอดำขึ้นหัวใจ 2 ดวง + "มีโอกาสผิดแค่ 2 ครั้งเท่านั้น" + "แตะเพื่อเริ่ม" -> แตะจอ
+       3. นับถอยหลัง 3 -> 2 -> 1 -> เริ่ม! (สีขาวเรืองแสงสีแดง) -> เข้ามินิเกม
+       ========================================================= */
+    function showBattleTutorial() {
+      currentStep = 'TUTORIAL_STAGE';
+      resetIdleTimer();
+      tutorialOverlay.classList.add('active');
+    }
+
+    function handleTutorialClick(event) {
+      if (event) event.stopPropagation();
+      if (currentStep !== 'TUTORIAL_STAGE' || isTransitioning) return;
+
+      tutorialOverlay.classList.remove('active');
+      warningContentBox.style.display = 'flex';
+      tapToStartBlink.style.display = 'block';
+      countdownNum.style.display = 'none';
+
+      pregameBlackScreen.classList.add('active');
+      currentStep = 'PREGAME_WARNING_STAGE';
+      resetIdleTimer();
+    }
+
+    function handlePregameBlackClick(event) {
+      if (event) event.stopPropagation();
+      if (currentStep !== 'PREGAME_WARNING_STAGE' || isTransitioning) return;
+
+      currentStep = 'PREGAME_COUNTDOWN_STAGE';
       isTransitioning = true;
-      whiteFlash.classList.add('active');
+      resetIdleTimer();
+
+      warningContentBox.style.display = 'none';
+      tapToStartBlink.style.display = 'none';
       countdownNum.style.display = 'block';
 
-      let count = 3;
-      countdownNum.innerText = count;
-      countdownNum.style.animation = 'none';
-      void countdownNum.offsetWidth;
-      countdownNum.style.animation = 'countdownPop 0.85s cubic-bezier(0.22, 1, 0.36, 1)';
+      const sequence = ['3', '2', '1', 'เริ่ม!'];
+      let idx = 0;
 
-      const countInterval = setInterval(() => {
-        count--;
-        if (count >= 1) {
-          countdownNum.innerText = count;
-          countdownNum.style.animation = 'none';
-          void countdownNum.offsetWidth;
-          countdownNum.style.animation = 'countdownPop 0.85s cubic-bezier(0.22, 1, 0.36, 1)';
+      function playStep() {
+        countdownNum.innerText = sequence[idx];
+        countdownNum.style.animation = 'none';
+        void countdownNum.offsetWidth;
+        countdownNum.style.animation = 'countdownPop 0.8s cubic-bezier(0.22, 1, 0.36, 1)';
+      }
+
+      playStep();
+
+      const seqTimer = setInterval(() => {
+        idx++;
+        if (idx < sequence.length) {
+          playStep();
         } else {
-          clearInterval(countInterval);
+          clearInterval(seqTimer);
           countdownNum.style.display = 'none';
           sceneLeft2.classList.remove('active');
           sceneBattle.classList.add('active');
           battleOverlay.classList.add('active');
 
           setTimeout(() => {
-            whiteFlash.classList.remove('active');
+            pregameBlackScreen.classList.remove('active');
             isTransitioning = false;
             startChatBattleMinigame();
-          }, 300);
+          }, 250);
         }
-      }, 950);
+      }, 900);
     }
 
     function showTLChoices() {
@@ -1678,6 +1887,7 @@
 
     /* =========================================================
        ข้อมูลบทสนทนา 5 รอบ มินิเกมจับผิดสายปลอมเสียง AI
+       (แก้ไขด่าน 3-4 เป็นเรื่องหม่อมแม่ไปสปาแล้ว)
        ========================================================= */
     const chatRoundsData = [
       {
@@ -1697,15 +1907,15 @@
       {
         callerMsg: "วันนี้ระบบธนาคารแม่ล่ม! อย่าถามมากได้ไหมปกรณ์ รีบโอนมา!",
         choices: [
-          { text: "งั้นบอกชื่อสัตว์เลี้ยงตัวโปรดที่บ้านหน่อยครับ", correct: true },
+          { text: "เอ๊ะ... ไหนว่าวันนี้หม่อมแม่ไปสปาไม่ใช่หรือครับ?", correct: true },
           { text: "ขอโทษครับหม่อมแม่ ผมจะรีบโอนเดี๋ยวนี้ครับ", correct: false }
         ]
       },
       {
-        callerMsg: "เอ่อ... เจ้าตูบไง! โอนมาเร็วๆ สิ! (เสียงเริ่มกระตุกแข็งทื่อ)",
+        callerMsg: "เอ่อ... สปา... ใช่ๆ แม่ทำกระเป๋าหายที่สปานี่แหละ! โอนมาเร็วๆ สิ!",
         choices: [
-          { text: "ใช่ครับเจ้าตูบ! สงสัยสัญญาณไม่ดี ผมโอนเลยนะ", correct: false },
-          { text: "บ้านเราเลี้ยงแมว! แถมเสียงคุณกระตุกเหมือน AI!", correct: true }
+          { text: "โธ่! งั้นผมรีบโอนเงินไปให้หม่อมแม่เดี๋ยวนี้เลยครับ", correct: false },
+          { text: "วันนี้หม่อมแม่อยู่คฤหาสน์ไม่ได้ไปสปา! แถมเสียงคุณกระตุกเหมือน AI!", correct: true }
         ]
       },
       {
@@ -1719,6 +1929,13 @@
 
     function startChatBattleMinigame() {
       isBattleActive = true;
+      currentStep = 'BATTLE_ACTIVE';
+      resetIdleTimer();
+
+      battleHearts = 2;
+      battleHeart1.classList.remove('lost');
+      battleHeart2.classList.remove('lost');
+
       currentChatRound = 0;
       isWaitingNextRound = false;
       chatFeedArea.innerHTML = '';
@@ -1800,14 +2017,54 @@
           clearInterval(roundTimerInterval);
           battleTimerSec.innerText = '0';
           battleTimerFill.style.width = '0%';
-          // หมดเวลา -> แพ้มินิเกม
-          finishChatBattle(false);
+          // หมดเวลา -> หักหัวใจ 1 ดวง
+          handleBattleMistakePenalty(true);
         } else {
           battleTimerSec.innerText = Math.ceil(roundTimeLeft);
           const percent = (roundTimeLeft / MAX_ROUND_TIME) * 100;
           battleTimerFill.style.width = percent + '%';
         }
       }, 100);
+    }
+
+    function handleBattleMistakePenalty(isTimeout) {
+      isWaitingNextRound = true;
+      chatChoiceBtn0.disabled = true;
+      chatChoiceBtn1.disabled = true;
+
+      battleHearts--;
+      if (battleHearts === 1) {
+        battleHeart2.classList.add('lost');
+      } else if (battleHearts <= 0) {
+        battleHeart1.classList.add('lost');
+        battleHeart2.classList.add('lost');
+      }
+
+      // สั่นกล่องหัวใจและปุ่มตัวเลือกเพื่อเตือนว่าตอบผิด/หมดเวลา
+      battleHeartsPanel.classList.remove('shake-anim');
+      chatChoicesPanel.classList.remove('shake-anim');
+      void battleHeartsPanel.offsetWidth;
+      battleHeartsPanel.classList.add('shake-anim');
+      chatChoicesPanel.classList.add('shake-anim');
+
+      if (battleHearts <= 0) {
+        // ผิดครบ 2 ครั้ง -> แพ้มินิเกม ลดแถบความรู้ลงครึ่งหนึ่งและเข้า Bad End
+        setTimeout(() => {
+          finishChatBattle(false);
+        }, 850);
+      } else {
+        // ยังเหลือหัวใจอีก 1 ดวง -> ให้โอกาสตอบข้อเดิมใหม่
+        if (isTimeout) {
+          appendChatBubble('caller', "มัวแต่อึ้งอะไรอยู่ปกรณ์! รีบตอบแม่มาสิ!");
+        }
+        setTimeout(() => {
+          if (!isBattleActive) return;
+          isWaitingNextRound = false;
+          chatChoiceBtn0.disabled = false;
+          chatChoiceBtn1.disabled = false;
+          startRoundTimer();
+        }, 900);
+      }
     }
 
     function handleChatChoice(choiceIdx) {
@@ -1825,14 +2082,12 @@
       appendChatBubble('player', selected.text);
 
       if (!selected.correct) {
-        // เลือกผิด -> รอให้เห็นข้อความแป๊บนึงแล้วตัดเข้า Bad End ทันที
-        setTimeout(() => {
-          finishChatBattle(false);
-        }, 900);
+        // เลือกผิด -> หักหัวใจ 1 ดวง
+        handleBattleMistakePenalty(false);
         return;
       }
 
-      // เลือกถูก
+      // เลือกถูก -> ไปด่านถัดไป
       currentChatRound++;
       if (currentChatRound < chatRoundsData.length) {
         setTimeout(() => {
@@ -1867,7 +2122,7 @@
           currentStep = 'CUTSCENE_READY';
         });
       } else {
-        // ตอบผิดหรือหมดเวลา -> ลดแถบวัดความรู้ลงครึ่งหนึ่งและเข้าสู่ฉาก Bad End
+        // ตอบผิดครบ 2 ครั้ง -> ลดแถบวัดความรู้ลงครึ่งหนึ่งและเข้าสู่ฉาก Bad End
         updateKnowledgeBar(-50);
         triggerWhiteFlashTransition(() => {
           sceneBattle.classList.remove('active');
@@ -1973,6 +2228,7 @@
       currentBranchPath = 0;
       knowledgeScore = 0;
       isBattleActive = false;
+      battleHearts = 2;
       isWaitingNextRound = false;
       clearInterval(roundTimerInterval);
       clearTimeout(wrongAppTimer);
@@ -1984,6 +2240,8 @@
       phoneScreen2.classList.remove('active');
       popupScreen1.classList.remove('active');
       popupScreen2.classList.remove('active');
+      tutorialOverlay.classList.remove('active');
+      pregameBlackScreen.classList.remove('active');
       battleOverlay.classList.remove('active');
       hangupHotspot.classList.remove('active');
       hangupHintLabel.classList.remove('active');
