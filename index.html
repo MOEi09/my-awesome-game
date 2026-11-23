@@ -705,7 +705,7 @@
       pointer-events: auto;
     }
 
-    /* กล่องบอลลูนแชตตรงกลาง (จัดตำแหน่งให้อยู่ช่วงกลางบนและรองรับ 3 แชตชัดเจน + แชตที่ 4 จางด้านบน) */
+    /* กล่องบอลลูนแชตตรงกลาง */
     .chat-feed-area {
       position: absolute;
       top: 11%;
@@ -1067,7 +1067,7 @@
 
     <!-- ฉากพื้นหลังหลักต่างๆ -->
     <div id="scene-0" class="scene-bg active" style="background-image: url('https://lh3.googleusercontent.com/d/1Lk0CVOXS70d9zYJ-lg2F5glhiQ_YOWiT'); cursor: pointer;"></div>
-    <div id="scene-sp1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1Kuzs9rpu0M5NScCdeTSl9dAZEa2aLmjP');"></div>
+    <div id="scene-sp1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1ePNiGd1_pqhSdf18R4lFP2IgyJVGnR26'); cursor: pointer;"></div>
     <div id="scene-sp2" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1l0LxDM6bw6FYo4xN_cWEOzM8UfIOyvS4');">
       <div id="gender-select" class="gender-select-container">
         <div class="gender-select-wrapper">
@@ -1304,7 +1304,7 @@
     // Preload รูปภาพทั้งหมด
     const imageList = [
       'https://lh3.googleusercontent.com/d/1Lk0CVOXS70d9zYJ-lg2F5glhiQ_YOWiT',
-      'https://lh3.googleusercontent.com/d/1Kuzs9rpu0M5NScCdeTSl9dAZEa2aLmjP',
+      'https://lh3.googleusercontent.com/d/1ePNiGd1_pqhSdf18R4lFP2IgyJVGnR26',
       'https://lh3.googleusercontent.com/d/1l0LxDM6bw6FYo4xN_cWEOzM8UfIOyvS4',
       'https://lh3.googleusercontent.com/d/1_kb6brYLqRotQ1OS0Z-DHF5_ybcRouY4',
       'https://lh3.googleusercontent.com/d/1yT_wmTzzaZWrcXI1vRfB8zlxxqABtdxM',
@@ -1389,7 +1389,6 @@
       if (
         !isTransitioning &&
         currentStep !== 'GENDER_STAGE' &&
-        currentStep !== 'WAIT_AUTO_SP1' &&
         currentStep !== 'WAIT_APP_SELECTION' &&
         currentStep !== 'SHOW_TL_CHOICES' &&
         currentStep !== 'SHOW_NEW_BRANCH_CHOICES' &&
@@ -1411,7 +1410,7 @@
       resetIdleTimer();
     });
 
-    // 1. ฉาก 0 ➔ ฉากพิเศษ 1 ➔ ฉากพิเศษ 2 (เลือกเพศ)
+    // 1. ฉาก 0 ➔ แตะเปลี่ยนเป็นฉากพิเศษ 1 (ให้ผู้เล่นแตะภาพเอง ไม่นับเวลา)
     scene0.addEventListener('click', () => {
       if (isTransitioning || currentStep !== 'SCENE_0') return;
       isTransitioning = true;
@@ -1419,24 +1418,34 @@
 
       scene0.classList.remove('active');
       sceneSp1.classList.add('active');
-      currentStep = 'WAIT_AUTO_SP1';
 
       setTimeout(() => {
-        sceneSp1.classList.remove('active');
-        sceneSp2.classList.add('active');
-        
-        setTimeout(() => {
-          genderSelect.classList.add('active');
-          currentStep = 'GENDER_STAGE';
-          isTransitioning = false;
-          resetIdleTimer();
-        }, 400);
-      }, 4000);
+        currentStep = 'SCENE_SP1_WAIT_TAP';
+        isTransitioning = false;
+        resetIdleTimer();
+      }, 450);
+    });
+
+    // 1.5 แตะฉากพิเศษ 1 ➔ เปลี่ยนเป็นฉากเลือกเพศ และหน่วงเวลา 1 วินาทีก่อนให้กดปุ่มเลือกเพศได้
+    sceneSp1.addEventListener('click', () => {
+      if (isTransitioning || currentStep !== 'SCENE_SP1_WAIT_TAP') return;
+      isTransitioning = true;
+      resetIdleTimer();
+
+      sceneSp1.classList.remove('active');
+      sceneSp2.classList.add('active');
+
+      setTimeout(() => {
+        genderSelect.classList.add('active');
+        currentStep = 'GENDER_STAGE';
+        isTransitioning = false;
+        resetIdleTimer();
+      }, 1000);
     });
 
     // 2. เลือกเพศ
     function selectGender(gender) {
-      if (isTransitioning) return;
+      if (isTransitioning || currentStep !== 'GENDER_STAGE') return;
       isTransitioning = true;
       selectedGender = gender;
       genderSelect.classList.remove('active');
@@ -2167,11 +2176,11 @@
           loadChatRound(currentChatRound);
         }, 850);
       } else {
-        // ผ่านครบ 5 ข้อแล้ว! รอ 3 วินาทีแล้วไปฉากต่อไปเลย
+        // ผ่านครบ 5 ข้อแล้ว! รอ 1.5 วินาทีแล้วไปฉากต่อไปเลย
         chatChoicesPanel.style.display = 'none';
         battleFinishTimer = setTimeout(() => {
           finishChatBattle(true);
-        }, 3000);
+        }, 1500);
       }
     }
 
@@ -2359,8 +2368,13 @@
       if (target === 'GENDER') {
         btnHome.classList.remove('active');
         sceneSp2.classList.add('active');
-        genderSelect.classList.add('active');
-        currentStep = 'GENDER_STAGE';
+        isTransitioning = true;
+        setTimeout(() => {
+          genderSelect.classList.add('active');
+          currentStep = 'GENDER_STAGE';
+          isTransitioning = false;
+          resetIdleTimer();
+        }, 1000);
       } 
       else if (target === 'BRANCH_6') {
         scene6.classList.add('active');
