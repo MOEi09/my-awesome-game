@@ -1106,7 +1106,7 @@
     <!-- หน้าแนะนำวิธีเล่นก่อนเข้ามินิเกม -->
     <div id="tutorial-overlay" class="tutorial-overlay" style="background-image: url('https://lh3.googleusercontent.com/d/1kglHihqUsYYNJn4YsHWcyoYSXlNcO8ns');" onclick="handleTutorialClick(event)"></div>
 
-    <!-- จอดำเตือนหัวใจ 2 ดวง + นับถอยหลัง 3 2 1 เริ่ม! -->
+    <!-- จอดำเตือนหัวใจ 2 ดวง & นับถอยหลัง 3 2 1 เริ่ม! -->
     <div id="pregame-black-screen" class="pregame-black-screen" onclick="handlePregameBlackClick(event)">
       <div id="warning-content-box" class="warning-content-box">
         <div class="warning-hearts-row">
@@ -1915,11 +1915,9 @@
       }
       else if (currentStep === 'TXT_RIGHT_CUTSCENE_1') {
         textbox.classList.remove('active');
-        triggerWhiteFlashTransition(() => {
-          sceneRightCutscene.classList.remove('active');
-          sceneRight1.classList.add('active');
-          currentStep = 'RIGHT_AFTER_CUTSCENE';
-        });
+        sceneRightCutscene.classList.remove('active');
+        sceneRight1.classList.add('active');
+        currentStep = 'RIGHT_AFTER_CUTSCENE';
       }
       else if (currentStep === 'TXT_SCENE3_LAST_MSG') {
         textbox.classList.remove('active');
