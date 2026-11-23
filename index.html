@@ -90,7 +90,6 @@
       position: absolute;
       top: 0;
       left: 50%;
-      /* ซ่อนตัวกล่องหลักขึ้นไปพ้นขอบบนของจอ เหลือเฉพาะติ่งลูกศรด้านล่าง */
       transform: translate(-50%, -100%);
       z-index: 120;
       display: flex;
@@ -106,12 +105,10 @@
       transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, box-shadow 0.35s ease;
     }
 
-    /* เมื่อเด้งลงมา (อัตโนมัติ หรือ กดเปิด) */
     .hud-header.expanded {
       transform: translate(-50%, clamp(8px, 1.8vh, 16px));
     }
 
-    /* แสงเรืองตอนคะแนนขึ้น/ลง */
     .hud-header.glow-up {
       border-color: rgba(74, 222, 128, 0.75);
       box-shadow: 0 10px 30px rgba(34, 197, 94, 0.35);
@@ -122,7 +119,6 @@
       box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
     }
 
-    /* ติ่งปุ่มลูกศรมินิมอลสไตล์ iPhone เกาะติดใต้แถบ HUD */
     .hud-pull-tab {
       position: absolute;
       top: 100%;
@@ -162,7 +158,6 @@
       transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    /* หมุนลูกศรชี้ขึ้นเมื่อแถบเลื่อนลงมาแล้ว */
     .hud-header.expanded .hud-pull-tab svg {
       transform: rotate(180deg);
     }
@@ -384,7 +379,6 @@
       50% { transform: scale(1.1); }
     }
 
-    /* ข้อความและตัวเลข สีขาวเรืองแสงสีแดง */
     .white-red-glow-text {
       color: #ffffff;
       font-weight: 900;
@@ -417,7 +411,6 @@
       50% { opacity: 0.85; }
     }
 
-    /* ตัวเลขนับถอยหลัง 3 2 1 เริ่ม! (สีขาวเรืองแสงสีแดง) */
     .countdown-number {
       font-size: clamp(72px, 14vw, 175px);
       font-weight: 900;
@@ -770,7 +763,6 @@
       pointer-events: auto;
     }
 
-    /* กล่องบอลลูนแชตตรงกลาง */
     .chat-feed-area {
       position: absolute;
       top: 11%;
@@ -786,7 +778,6 @@
       pointer-events: none;
     }
 
-    /* บอลลูนข้อความแต่ละอัน */
     .chat-bubble {
       position: relative;
       background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
@@ -807,7 +798,6 @@
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* ข้อความฝั่งคนร้าย (ชิดซ้าย หางชี้ไปทางมือถือ) */
     .chat-bubble.caller {
       align-self: flex-start;
       border-bottom-left-radius: 4px;
@@ -826,7 +816,6 @@
       border-right: 12px solid #f1f5f9;
     }
 
-    /* ข้อความฝั่งปกรณ์ (ชิดขวา หางชี้ไปทางปกรณ์) */
     .chat-bubble.player {
       align-self: flex-end;
       background: linear-gradient(180deg, #fdf2f8 0%, #fce7f3 100%);
@@ -847,7 +836,6 @@
       border-left: 12px solid #fce7f3;
     }
 
-    /* ข้อความเก่าลำดับที่ 4 ด้านบนสุด ค่อยๆ จางลง */
     .chat-bubble.fading-old {
       opacity: 0.35;
       transform: scale(0.94);
@@ -869,7 +857,6 @@
       color: #db2777;
     }
 
-    /* หัวใจ 2 ดวง วางบนพื้นที่ว่างเหนือหัวตัวละครปกรณ์ */
     .battle-hearts-panel {
       position: absolute;
       top: 45.5%;
@@ -911,7 +898,6 @@
       animation: shakeError 0.45s ease;
     }
 
-    /* พื้นที่ปุ่มตัวเลือก 2 ช่อง มุมขวาบน */
     .chat-choices-panel {
       position: absolute;
       top: 8.5%;
@@ -923,7 +909,6 @@
       z-index: 95;
     }
 
-    /* หลอดจับเวลาต่อข้อ เหนือปุ่มตัวเลือก 2 ช่อง */
     .turn-timer-wrapper {
       width: 100%;
       background: rgba(15, 23, 42, 0.85);
@@ -958,7 +943,6 @@
       transition: width 0.1s linear;
     }
 
-    /* ปุ่มตัวเลือกข้อความ 2 ช่อง */
     .chat-choice-btn {
       width: 100%;
       min-height: clamp(42px, 9.5vh, 92px);
@@ -1100,7 +1084,6 @@
         <div class="info-btn">!</div>
         <div class="tooltip">แก้ปัญหาภายในเกมได้ แถบวัดความรู้จะขยับขึ้น</div>
       </div>
-      <!-- ปุ่มติ่งลูกศรชี้ลงมินิมอล -->
       <div id="hud-pull-tab" class="hud-pull-tab" title="ตรวจสอบแถบความรู้" onclick="toggleHudDropdown(event)">
         <svg viewBox="0 0 24 24">
           <polyline points="6 9 12 15 18 9"></polyline>
@@ -1156,9 +1139,13 @@
     <div id="scene-4" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1aUIvEEm4WdVxR6a34qSuKUP9t5p7lUuP'); cursor: pointer;"></div>
     <div id="scene-6" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1JXQa4HTXdUYG7ou90LBHsRZ1PTcF9B9b'); cursor: pointer;"></div>
 
-    <!-- ฉากทางฝั่งซ้าย -->
+    <!-- ฉากทางฝั่งซ้าย (ปกรณ์) -->
     <div id="scene-left1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/19vPu5aoFrebQdm1DtzvciBHaySg4OJxt'); cursor: pointer;"></div>
     <div id="scene-left2" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1R8i9bZv4Gpqyvv5972rX8UDL-IkKpJOF'); cursor: pointer;"></div>
+
+    <!-- ฉากทางฝั่งขวา (ณริน) -->
+    <div id="scene-right1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1gbYoJrTliezEEhAIdm3giNtEWyaICtDa'); cursor: pointer;"></div>
+    <div id="scene-right-cutscene" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1-eW9DcsG_tlo-kixHc5-0m9KexivpUuL'); cursor: pointer;"></div>
 
     <!-- ฉากเพิ่มเติมตามเนื้อเรื่อง -->
     <div id="scene-end1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1d09NSfEhvtgQNhvawJia8pnquEam6v9m'); cursor: pointer;"></div>
@@ -1223,7 +1210,7 @@
         <img id="btn-middle" class="nav-btn" src="https://lh3.googleusercontent.com/d/1xkl3-rlYm4JcyIjCpK9l1JWNQ0JWuQ8E" alt="Middle" onclick="handleMiddleButtonClick(event)">
       </div>
       <div class="nav-btn-slot">
-        <img id="btn-right" class="nav-btn" src="https://lh3.googleusercontent.com/d/12V_5iFWXQzVEtNexCig5EbJ4-2MKr4BW" alt="Right">
+        <img id="btn-right" class="nav-btn" src="https://lh3.googleusercontent.com/d/12V_5iFWXQzVEtNexCig5EbJ4-2MKr4BW" alt="Right" onclick="handleRightButtonClick(event)">
       </div>
     </div>
 
@@ -1231,10 +1218,8 @@
          มินิเกมใหม่: แชตจับผิดสาย AI (Chat Sequence Battle Overlay)
          ========================================================= -->
     <div id="battle-overlay">
-      <!-- กล่องบอลลูนข้อความตรงกลาง -->
       <div id="chat-feed-area" class="chat-feed-area"></div>
 
-      <!-- พื้นที่ตัวเลือก 2 ช่องมุมขวาบน + หลอดจับเวลา -->
       <div id="chat-choices-panel" class="chat-choices-panel">
         <div class="turn-timer-wrapper">
           <div class="turn-timer-header">
@@ -1249,7 +1234,6 @@
         <button id="chat-choice-1" class="chat-choice-btn" onclick="handleChatChoice(1)"></button>
       </div>
 
-      <!-- หัวใจ 2 ดวง วางบนพื้นที่ว่างเหนือหัวตัวละครปกรณ์ -->
       <div id="battle-hearts-panel" class="battle-hearts-panel">
         <span id="battle-heart-1" class="battle-heart-icon">❤️</span>
         <span id="battle-heart-2" class="battle-heart-icon">❤️</span>
@@ -1257,7 +1241,7 @@
     </div>
 
     <!-- =========================================================
-         ปุ่มทางลัดสำหรับตรวจงาน (มุมล่างซ้าย - สั่งลบออกได้เมื่อตรวจงานเสร็จ)
+         ปุ่มทางลัดสำหรับตรวจงาน (มุมล่างซ้าย - ลบออกได้เมื่อตรวจงานเสร็จ)
          ========================================================= -->
     <div id="debug-shortcut-wrapper" onclick="event.stopPropagation()">
       <button type="button" class="debug-toggle-btn" onclick="toggleDebugMenu(event)">🛠️ ทางลัดฉาก</button>
@@ -1274,6 +1258,7 @@
         <button type="button" class="debug-item-btn" onclick="jumpToShortcut('WIN_MALE')">8. คัตซีนชนะ (ชาย)</button>
         <button type="button" class="debug-item-btn" onclick="jumpToShortcut('WIN_FEMALE')">9. คัตซีนชนะ (หญิง)</button>
         <button type="button" class="debug-item-btn" onclick="jumpToShortcut('BAD_END')">10. ฉากจบ Bad End</button>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('RIGHT_NARIN')">11. ฝั่งขวา: เริ่มทางขวา (ณริน)</button>
       </div>
     </div>
 
@@ -1332,6 +1317,10 @@
     const scene6 = document.getElementById('scene-6');
     const sceneLeft1 = document.getElementById('scene-left1');
     const sceneLeft2 = document.getElementById('scene-left2');
+
+    // Right Branch Scenes (Narin)
+    const sceneRight1 = document.getElementById('scene-right1');
+    const sceneRightCutscene = document.getElementById('scene-right-cutscene');
 
     // Endings & Battle Scenes
     const sceneEnd1 = document.getElementById('scene-end1');
@@ -1475,7 +1464,12 @@
       'https://lh3.googleusercontent.com/d/1JFrkUBuNVi3stpA73362NLLVSHwuZakT',
       'https://lh3.googleusercontent.com/d/1hvjf4IgFwQpsoOApzjtyAgaeKLgwOnGg',
       'https://lh3.googleusercontent.com/d/1VWFsbewvkPenzyvqfKoXCoAvC2zY5FEv',
-      'https://lh3.googleusercontent.com/d/1C-D11JodkziIg1jBzPZgSykND1Lq3xgB'
+      'https://lh3.googleusercontent.com/d/1C-D11JodkziIg1jBzPZgSykND1Lq3xgB',
+      'https://lh3.googleusercontent.com/d/1gbYoJrTliezEEhAIdm3giNtEWyaICtDa',
+      'https://lh3.googleusercontent.com/d/1aRWypVJ1VPk3wNhXOnljlOgVZTtVPOH8',
+      'https://lh3.googleusercontent.com/d/1eIDca9iZQgH56miSMP81_vSpcdLDtkh1',
+      'https://lh3.googleusercontent.com/d/1-eW9DcsG_tlo-kixHc5-0m9KexivpUuL',
+      'https://lh3.googleusercontent.com/d/1vAu_k50ITmt94LWuS2H-2MhLLJto1cv9'
     ];
 
     imageList.forEach(url => {
@@ -1507,7 +1501,6 @@
     gameContainer.addEventListener('click', () => {
       infoBtnWrapper.classList.remove('show-tip');
       debugMenuPanel.classList.remove('open');
-      // หากผู้เล่นกดเปิดแถบความรู้ค้างไว้ แล้วไปแตะจุดอื่นในหน้าจอ ให้พับเก็บขึ้นไปอย่างนุ่มนวล
       if (isHudPinned) {
         isHudPinned = false;
         hudHeader.classList.remove('expanded');
@@ -1515,7 +1508,7 @@
       resetIdleTimer();
     });
 
-    // 1. ฉาก 0 ➔ แตะเปลี่ยนเป็นฉากพิเศษ 1 (ให้ผู้เล่นแตะภาพเอง ไม่นับเวลา)
+    // 1. ฉาก 0 ➔ แตะเปลี่ยนเป็นฉากพิเศษ 1
     scene0.addEventListener('click', () => {
       if (isTransitioning || currentStep !== 'SCENE_0') return;
       isTransitioning = true;
@@ -1573,7 +1566,6 @@
       }
     });
 
-    // แตะฉากมือถือจอดับ (scene-4) หลังจากขึ้นฉากเสร็จแล้วเพื่อแสดงแถบข้อความ
     scene4.addEventListener('click', () => {
       if (currentStep === 'WAIT_TAP_ON_BLACKSCREEN' && !isTransitioning) {
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1zN3SmFzX0ScbeXLZCWOGk9p-rEjCVuCT';
@@ -1611,6 +1603,27 @@
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1r0j3uFS_hw_np35jVKFFsp9lBWPBg4HP';
         textbox.classList.add('active');
         currentStep = 'TXT_POST_ENDING_1';
+        resetIdleTimer();
+      }
+    });
+
+    // ================= ฝั่งขวา (ณริน) =================
+    sceneRight1.addEventListener('click', () => {
+      if (isTransitioning) return;
+      if (currentStep === 'RIGHT_BRANCH_START') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1aRWypVJ1VPk3wNhXOnljlOgVZTtVPOH8';
+        textbox.classList.add('active');
+        currentStep = 'TXT_RIGHT_1';
+        resetIdleTimer();
+      }
+    });
+
+    sceneRightCutscene.addEventListener('click', () => {
+      if (isTransitioning) return;
+      if (currentStep === 'RIGHT_CUTSCENE_READY') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1vAu_k50ITmt94LWuS2H-2MhLLJto1cv9';
+        textbox.classList.add('active');
+        currentStep = 'TXT_RIGHT_CUTSCENE_1';
         resetIdleTimer();
       }
     });
@@ -1716,7 +1729,7 @@
         scene3.classList.add('active');
         currentStep = 'WAIT_TAP_FOR_SCENE3_RETURN';
       }
-      // ทางฝั่งซ้าย
+      // ทางฝั่งซ้าย (ปกรณ์)
       else if (currentStep === 'TXT_LEFT_1') {
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1RxIsG2xfq7nR9bM4Zz5dsKjmgL_In1rE';
         currentStep = 'TXT_LEFT_2';
@@ -1841,7 +1854,7 @@
           currentStep = 'FINAL_CONCLUSION_REACHED';
         });
       }
-      // ----- เนื้อเรื่องส่วนตัวเลือกที่ 2 (ต่อสู้ -> ฉากคั่น -> หน้าแนะนำวิธีเล่น -> จอดำหัวใจ 2 ดวง -> นับ 3 2 1 เริ่ม! -> มินิเกม) -----
+      // ----- เนื้อเรื่องส่วนตัวเลือกที่ 2 (ต่อสู้ -> มินิเกม) -----
       else if (currentStep === 'TXT_NEW_BRANCH_2_1') {
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1PVTLSehn7PfIuaM9GB1jEflubF3U9z1V';
         charPakorn.src = 'https://lh3.googleusercontent.com/d/1IlNHrs-Y3-KGzqYFLhPfrLsZsLrHlboy';
@@ -1874,7 +1887,7 @@
           currentStep = 'FINAL_CONCLUSION_REACHED';
         });
       }
-      // ----- ลำดับฉากหลังจบคัตซีน -----
+      // ----- ลำดับฉากหลังจบคัตซีนฝั่งซ้าย -----
       else if (currentStep === 'TXT_POST_ENDING_1') {
         textbox.classList.remove('active');
         sceneLeft2.classList.remove('active');
@@ -1886,6 +1899,27 @@
         scenePost2.classList.remove('active');
         sceneLeft2.classList.add('active');
         currentStep = 'POST_ENDING_DONE';
+      }
+      // ----- ทางฝั่งขวา (ณริน) -----
+      else if (currentStep === 'TXT_RIGHT_1') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1eIDca9iZQgH56miSMP81_vSpcdLDtkh1';
+        currentStep = 'TXT_RIGHT_2';
+      }
+      else if (currentStep === 'TXT_RIGHT_2') {
+        textbox.classList.remove('active');
+        triggerWhiteFlashTransition(() => {
+          sceneRight1.classList.remove('active');
+          sceneRightCutscene.classList.add('active');
+          currentStep = 'RIGHT_CUTSCENE_READY';
+        });
+      }
+      else if (currentStep === 'TXT_RIGHT_CUTSCENE_1') {
+        textbox.classList.remove('active');
+        triggerWhiteFlashTransition(() => {
+          sceneRightCutscene.classList.remove('active');
+          sceneRight1.classList.add('active');
+          currentStep = 'RIGHT_AFTER_CUTSCENE';
+        });
       }
       else if (currentStep === 'TXT_SCENE3_LAST_MSG') {
         textbox.classList.remove('active');
@@ -1925,11 +1959,7 @@
     }
 
     /* =========================================================
-       ลำดับก่อนเข้ามินิเกม:
-       1. ฉากคั่นก่อนแนะนำวิธีเล่น -> แตะจอ
-       2. หน้าแนะนำวิธีเล่น -> แตะจอ
-       3. จอดำขึ้นหัวใจ 2 ดวง + "มีโอกาสผิดแค่ 2 ครั้งเท่านั้น" + "แตะเพื่อเริ่ม" -> แตะจอ
-       4. นับถอยหลัง 3 -> 2 -> 1 -> เริ่ม! (สีขาวเรืองแสงสีแดง) -> เข้ามินิเกม
+       ลำดับก่อนเข้ามินิเกม
        ========================================================= */
     function showBattleTutorial() {
       currentStep = 'PRE_TUTORIAL_STAGE';
@@ -2093,7 +2123,6 @@
       newBranchChoices.classList.remove('active');
 
       if (choiceNum === 1) {
-        // เลือกปุ่มยอมจำนน (Bad End) -> ลดแถบวัดความรู้ลงครึ่งหนึ่งจากที่เก็บมาทั้งหมด
         updateKnowledgeBar(-50);
         setTimeout(() => {
           textboxImg.src = 'https://lh3.googleusercontent.com/d/1c5Pf5QLYaYLihT01uY-v5opfYctqx58g';
@@ -2175,7 +2204,6 @@
       bubble.innerHTML = `<span class="chat-sender-tag">${senderLabel}</span>${text}`;
       chatFeedArea.appendChild(bubble);
 
-      // คงแชทเดิมไว้ 3 ช่องชัดเจน และแชทที่ 4 ด้านบนสุดค่อยๆ จางลง (ลบอันที่ 5 ออก)
       const allBubbles = Array.from(chatFeedArea.children);
       if (allBubbles.length > 4) {
         const oldest = allBubbles[0];
@@ -2208,16 +2236,13 @@
       const data = chatRoundsData[roundIdx];
       battleRoundNum.innerText = roundIdx + 1;
 
-      // แสดงบอลลูนคำพูดคนร้าย
       appendChatBubble('caller', data.callerMsg);
 
-      // ใส่ข้อความลงปุ่มตัวเลือก 2 ช่องมุมขวาบน
       chatChoiceBtn0.innerText = data.choices[0].text;
       chatChoiceBtn1.innerText = data.choices[1].text;
       chatChoiceBtn0.disabled = false;
       chatChoiceBtn1.disabled = false;
 
-      // เริ่มนับเวลาถอยหลังต่อด่าน
       startRoundTimer();
     }
 
@@ -2239,7 +2264,6 @@
           clearInterval(roundTimerInterval);
           battleTimerSec.innerText = '0';
           battleTimerFill.style.width = '0%';
-          // หมดเวลา -> หักหัวใจ 1 ดวง
           handleBattleMistakePenalty(true);
         } else {
           battleTimerSec.innerText = Math.ceil(roundTimeLeft);
@@ -2262,7 +2286,6 @@
         battleHeart2.classList.add('lost');
       }
 
-      // สั่นกล่องหัวใจและปุ่มตัวเลือกเพื่อเตือนว่าตอบผิด/หมดเวลา
       battleHeartsPanel.classList.remove('shake-anim');
       chatChoicesPanel.classList.remove('shake-anim');
       void battleHeartsPanel.offsetWidth;
@@ -2270,12 +2293,10 @@
       chatChoicesPanel.classList.add('shake-anim');
 
       if (battleHearts <= 0) {
-        // ผิดครบ 2 ครั้ง -> แพ้มินิเกม ลดแถบความรู้ลงครึ่งหนึ่งและเข้า Bad End
         setTimeout(() => {
           finishChatBattle(false);
         }, 850);
       } else {
-        // ยังเหลือหัวใจอีก 1 ดวง -> ให้โอกาสตอบข้อเดิมใหม่
         if (isTimeout) {
           appendChatBubble('caller', "มัวแต่อึ้งอะไรอยู่ปกรณ์! รีบตอบแม่มาสิ!");
         }
@@ -2300,23 +2321,19 @@
       const data = chatRoundsData[currentChatRound];
       const selected = data.choices[choiceIdx];
 
-      // เด้งบอลลูนคำตอบของปกรณ์ขึ้นไปในแชต
       appendChatBubble('player', selected.text);
 
       if (!selected.correct) {
-        // เลือกผิด -> หักหัวใจ 1 ดวง
         handleBattleMistakePenalty(false);
         return;
       }
 
-      // เลือกถูก -> ไปด่านถัดไป
       currentChatRound++;
       if (currentChatRound < chatRoundsData.length) {
         setTimeout(() => {
           loadChatRound(currentChatRound);
         }, 850);
       } else {
-        // ผ่านครบ 5 ข้อแล้ว! รอ 1.5 วินาทีแล้วไปฉากต่อไปเลย
         chatChoicesPanel.style.display = 'none';
         battleFinishTimer = setTimeout(() => {
           finishChatBattle(true);
@@ -2342,7 +2359,6 @@
           currentStep = 'CUTSCENE_READY';
         });
       } else {
-        // ตอบผิดครบ 2 ครั้ง -> ลดแถบวัดความรู้ลงครึ่งหนึ่งและเข้าสู่ฉาก Bad End
         updateKnowledgeBar(-50);
         triggerWhiteFlashTransition(() => {
           sceneBattle.classList.remove('active');
@@ -2377,16 +2393,13 @@
       clearTimeout(hudAutoHideTimer);
       clearTimeout(hudBarAnimTimer);
 
-      // เลื่อนแถบลงมาให้เห็น + เปลี่ยนสีขอบเรืองแสงตามการเพิ่ม/ลด
       hudHeader.classList.remove('glow-up', 'glow-down');
       hudHeader.classList.add('expanded', isIncrease ? 'glow-up' : 'glow-down');
 
-      // รอให้แถบเลื่อนลงมาถึงตำแหน่งก่อน 280ms แล้วค่อยขยับหลอดคะแนนให้เห็นชัดๆ
       hudBarAnimTimer = setTimeout(() => {
         knowledgeBar.style.width = knowledgeScore + '%';
       }, 280);
 
-      // ค้างไว้ 2.8 วินาทีแล้วพับเก็บขึ้นไป (ถ้าผู้เล่นไม่ได้กดปักหมุดค้างไว้)
       hudAutoHideTimer = setTimeout(() => {
         hudHeader.classList.remove('glow-up', 'glow-down');
         if (!isHudPinned) {
@@ -2438,6 +2451,27 @@
         btnTalk.classList.add('visible-disabled');
 
         currentStep = 'LEFT_BRANCH_START';
+        isTransitioning = false;
+        resetIdleTimer();
+      }, 700);
+    }
+
+    // กดปุ่มลูกศรขวา (เข้าสู่เส้นทางณริน)
+    function handleRightButtonClick(event) {
+      event.stopPropagation();
+      if (isTransitioning || currentStep !== 'SCENE_6_BRANCH') return;
+      isTransitioning = true;
+      resetIdleTimer();
+
+      navButtons.classList.remove('active');
+      scene6.classList.add('zoom-out-fade');
+
+      setTimeout(() => {
+        scene6.classList.remove('active');
+        scene6.classList.remove('zoom-out-fade');
+        sceneRight1.classList.add('active');
+
+        currentStep = 'RIGHT_BRANCH_START';
         isTransitioning = false;
         resetIdleTimer();
       }, 700);
@@ -2510,7 +2544,11 @@
       countdownNum.style.display = 'none';
       infoBtnWrapper.classList.remove('show-tip');
 
-      const allScenes = [scene0, sceneSp1, sceneSp2, scene1, scene2, scene3, scene4, scene6, sceneLeft1, sceneLeft2, sceneEnd1, scenePost1, scenePost2, sceneBattle, sceneCutsceneMale, sceneCutsceneFemale];
+      const allScenes = [
+        scene0, sceneSp1, sceneSp2, scene1, scene2, scene3, scene4, scene6,
+        sceneLeft1, sceneLeft2, sceneRight1, sceneRightCutscene,
+        sceneEnd1, scenePost1, scenePost2, sceneBattle, sceneCutsceneMale, sceneCutsceneFemale
+      ];
       allScenes.forEach(sc => {
         sc.classList.remove('active', 'zoom-out-fade', 'instant-change');
       });
@@ -2611,6 +2649,10 @@
         updateKnowledgeBar(50, true);
         sceneEnd1.classList.add('active');
         currentStep = 'SCENE_END1_READY';
+      }
+      else if (target === 'RIGHT_NARIN') {
+        sceneRight1.classList.add('active');
+        currentStep = 'RIGHT_BRANCH_START';
       }
 
       resetIdleTimer();
