@@ -1106,7 +1106,7 @@
     <!-- หน้าแนะนำวิธีเล่นก่อนเข้ามินิเกม -->
     <div id="tutorial-overlay" class="tutorial-overlay" style="background-image: url('https://lh3.googleusercontent.com/d/1kglHihqUsYYNJn4YsHWcyoYSXlNcO8ns');" onclick="handleTutorialClick(event)"></div>
 
-    <!-- จอดำเตือนหัวใจ 2 ดวง & นับถอยหลัง 3 2 1 เริ่ม! -->
+    <!-- จอดำเตือนหัวใจ 2 ดวง + นับถอยหลัง 3 2 1 เริ่ม! -->
     <div id="pregame-black-screen" class="pregame-black-screen" onclick="handlePregameBlackClick(event)">
       <div id="warning-content-box" class="warning-content-box">
         <div class="warning-hearts-row">
@@ -1851,7 +1851,7 @@
         triggerWhiteFlashTransition(() => {
           sceneEnd1.classList.remove('active');
           sceneLeft2.classList.add('active');
-          currentStep = 'FINAL_CONCLUSION_REACHED';
+          currentStep = 'POST_ENDING_DONE';
         });
       }
       // ----- เนื้อเรื่องส่วนตัวเลือกที่ 2 (ต่อสู้ -> มินิเกม) -----
