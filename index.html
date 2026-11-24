@@ -1366,6 +1366,16 @@
     const btnMiddle = document.getElementById('btn-middle');
     const btnRight = document.getElementById('btn-right');
 
+    // ฟังก์ชันโหลดรูปแถบข้อความพร้อมลิงก์สำรองอัตโนมัติ (ป้องกันรูปไม่ขึ้น)
+    function setTextboxImage(urlOrId) {
+      const id = urlOrId.includes('/d/') ? urlOrId.split('/d/')[1].split('/')[0] : urlOrId;
+      textboxImg.onerror = function() {
+        this.onerror = null;
+        this.src = 'https://drive.google.com/thumbnail?id=' + id + '&sz=w1920';
+      };
+      textboxImg.src = 'https://lh3.googleusercontent.com/d/' + id;
+    }
+
     // กดติ่งลูกศรมินิมอลเพื่อดึงแถบลงมาหรือพับเก็บขึ้นไป
     function toggleHudDropdown(event) {
       if (event) event.stopPropagation();
@@ -1559,7 +1569,7 @@
 
     scene1.addEventListener('click', () => {
       if (currentStep === 'SCENE_1_START' && !isTransitioning) {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1wAa-IMb7559wyuJp2yoAM1Je4ePmzws9';
+        setTextboxImage('1wAa-IMb7559wyuJp2yoAM1Je4ePmzws9');
         textbox.classList.add('active');
         currentStep = 'TXT_1';
         resetIdleTimer();
@@ -1568,7 +1578,7 @@
 
     scene4.addEventListener('click', () => {
       if (currentStep === 'WAIT_TAP_ON_BLACKSCREEN' && !isTransitioning) {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1zN3SmFzX0ScbeXLZCWOGk9p-rEjCVuCT';
+        setTextboxImage('1zN3SmFzX0ScbeXLZCWOGk9p-rEjCVuCT');
         textbox.classList.add('active');
         currentStep = 'TXT_BLACKSCREEN_1';
         resetIdleTimer();
@@ -1577,7 +1587,7 @@
 
     sceneLeft1.addEventListener('click', () => {
       if (currentStep === 'LEFT_BRANCH_START' && !isTransitioning) {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1cmQ3NOW0uOvHLVMcyT0SsQVPZKO7kFl_';
+        setTextboxImage('1cmQ3NOW0uOvHLVMcyT0SsQVPZKO7kFl_');
         textbox.classList.add('active');
         currentStep = 'TXT_LEFT_1';
         resetIdleTimer();
@@ -1588,19 +1598,19 @@
       if (isTransitioning) return;
 
       if (currentStep === 'LEFT_BRANCH_2_START') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1yHF95n424Lzsd6ttJsF6RaySVGExQvoQ';
+        setTextboxImage('1yHF95n424Lzsd6ttJsF6RaySVGExQvoQ');
         textbox.classList.add('active');
         currentStep = 'TXT_LEFT_3';
         resetIdleTimer();
       }
       else if (currentStep === 'LEFT_BRANCH_PAKORN_NORMAL_1') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1BT7DatalObAp3W1o726jQyn_hPdVBYbx';
+        setTextboxImage('1BT7DatalObAp3W1o726jQyn_hPdVBYbx');
         textbox.classList.add('active');
         currentStep = 'TXT_LEFT_4';
         resetIdleTimer();
       }
       else if (currentStep === 'FINAL_CONCLUSION_REACHED') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1r0j3uFS_hw_np35jVKFFsp9lBWPBg4HP';
+        setTextboxImage('1r0j3uFS_hw_np35jVKFFsp9lBWPBg4HP');
         textbox.classList.add('active');
         currentStep = 'TXT_POST_ENDING_1';
         resetIdleTimer();
@@ -1611,7 +1621,7 @@
     sceneRight1.addEventListener('click', () => {
       if (isTransitioning) return;
       if (currentStep === 'RIGHT_BRANCH_START') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1aRWypVJ1VPk3wNhXOnljlOgVZTtVPOH8';
+        setTextboxImage('1aRWypVJ1VPk3wNhXOnljlOgVZTtVPOH8');
         textbox.classList.add('active');
         currentStep = 'TXT_RIGHT_1';
         resetIdleTimer();
@@ -1621,7 +1631,7 @@
     sceneRightCutscene.addEventListener('click', () => {
       if (isTransitioning) return;
       if (currentStep === 'RIGHT_CUTSCENE_READY') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1vAu_k50ITmt94LWuS2H-2MhLLJto1cv9';
+        setTextboxImage('1vAu_k50ITmt94LWuS2H-2MhLLJto1cv9');
         textbox.classList.add('active');
         currentStep = 'TXT_RIGHT_CUTSCENE_1';
         resetIdleTimer();
@@ -1638,7 +1648,7 @@
 
     scenePost2.addEventListener('click', () => {
       if (isTransitioning || currentStep !== 'POST_ENDING_SCENE_2') return;
-      textboxImg.src = 'https://lh3.googleusercontent.com/d/1C-D11JodkziIg1jBzPZgSykND1Lq3xgB';
+      setTextboxImage('1C-D11JodkziIg1jBzPZgSykND1Lq3xgB');
       textbox.classList.add('active');
       currentStep = 'TXT_POST_ENDING_2';
       resetIdleTimer();
@@ -1648,7 +1658,7 @@
     sceneEnd1.addEventListener('click', () => {
       if (isTransitioning) return;
       if (currentStep === 'SCENE_END1_READY') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/11WdiZgGjjNZL6kZwRsS_038jgamsO77E';
+        setTextboxImage('11WdiZgGjjNZL6kZwRsS_038jgamsO77E');
         textbox.classList.add('active');
         currentStep = 'TXT_END1_1';
         resetIdleTimer();
@@ -1658,7 +1668,7 @@
     sceneCutsceneMale.addEventListener('click', () => {
       if (isTransitioning) return;
       if (currentStep === 'CUTSCENE_READY') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1EI5UirRY1oJ62QZykKA1DbaM_E-DZsLP';
+        setTextboxImage('1EI5UirRY1oJ62QZykKA1DbaM_E-DZsLP');
         textbox.classList.add('active');
         currentStep = 'TXT_CUTSCENE_1';
         resetIdleTimer();
@@ -1668,7 +1678,7 @@
     sceneCutsceneFemale.addEventListener('click', () => {
       if (isTransitioning) return;
       if (currentStep === 'CUTSCENE_READY') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1EI5UirRY1oJ62QZykKA1DbaM_E-DZsLP';
+        setTextboxImage('1EI5UirRY1oJ62QZykKA1DbaM_E-DZsLP');
         textbox.classList.add('active');
         currentStep = 'TXT_CUTSCENE_1';
         resetIdleTimer();
@@ -1681,18 +1691,18 @@
       resetIdleTimer();
 
       if (currentStep === 'TXT_1') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1vKgnY25GF7ayPdywSG7pY7tLH0c3kwVH';
+        setTextboxImage('1vKgnY25GF7ayPdywSG7pY7tLH0c3kwVH');
         scene1.classList.remove('active');
         scene2.classList.add('active');
         btnHome.classList.add('active');
         currentStep = 'TXT_2';
       } 
       else if (currentStep === 'TXT_2') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1ipIgMhd9gXq1ibn_VioVclhVSvqnmdFt';
+        setTextboxImage('1ipIgMhd9gXq1ibn_VioVclhVSvqnmdFt');
         currentStep = 'TXT_3';
       } 
       else if (currentStep === 'TXT_3') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1r0j3uFS_hw_np35jVKFFsp9lBWPBg4HP';
+        setTextboxImage('1r0j3uFS_hw_np35jVKFFsp9lBWPBg4HP');
         currentStep = 'TXT_4';
       } 
       else if (currentStep === 'TXT_4') {
@@ -1709,7 +1719,7 @@
         currentStep = 'TXT_4_SCENE_3';
       }
       else if (currentStep === 'TXT_4_SCENE_3') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1gNsteHUVNCqlTG5UBX2fVVG2OWV2kdja';
+        setTextboxImage('1gNsteHUVNCqlTG5UBX2fVVG2OWV2kdja');
         currentStep = 'TXT_5';
       }
       else if (currentStep === 'TXT_5') {
@@ -1732,7 +1742,7 @@
       }
       // ทางฝั่งซ้าย (ปกรณ์)
       else if (currentStep === 'TXT_LEFT_1') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1RxIsG2xfq7nR9bM4Zz5dsKjmgL_In1rE';
+        setTextboxImage('1RxIsG2xfq7nR9bM4Zz5dsKjmgL_In1rE');
         currentStep = 'TXT_LEFT_2';
       }
       else if (currentStep === 'TXT_LEFT_2') {
@@ -1747,21 +1757,21 @@
         currentStep = 'LEFT_BRANCH_PAKORN_NORMAL_1';
       }
       else if (currentStep === 'TXT_LEFT_4') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1AuQQJlo1B1og7hNEoUBFP5j0TzcanwBB';
+        setTextboxImage('1AuQQJlo1B1og7hNEoUBFP5j0TzcanwBB');
         charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm';
         currentStep = 'TXT_LEFT_5';
       }
       else if (currentStep === 'TXT_LEFT_5') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1uMBohQwM_n512oPv4hizsD0S7si7zYYi';
+        setTextboxImage('1uMBohQwM_n512oPv4hizsD0S7si7zYYi');
         charPakorn.src = 'https://lh3.googleusercontent.com/d/1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA';
         currentStep = 'TXT_LEFT_6';
       }
       else if (currentStep === 'TXT_LEFT_6') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1lP2e_ZiwEHh36SGCPpvJCjJRR2RyxhzV';
+        setTextboxImage('1lP2e_ZiwEHh36SGCPpvJCjJRR2RyxhzV');
         currentStep = 'TXT_LEFT_7';
       }
       else if (currentStep === 'TXT_LEFT_7') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1FeW5eMcocC8iBIfFfxEnLZTWuBcnDi3d';
+        setTextboxImage('1FeW5eMcocC8iBIfFfxEnLZTWuBcnDi3d');
         currentStep = 'TXT_LEFT_END';
       }
       else if (currentStep === 'TXT_LEFT_END') {
@@ -1786,7 +1796,7 @@
         currentStep = 'WAIT_APP_SELECTION';
       }
       else if (currentStep === 'TXT_TL1_CORRECT_1') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/19s4BKLbNuOqJEw6SSfKmEEVY2_Mi25c-';
+        setTextboxImage('19s4BKLbNuOqJEw6SSfKmEEVY2_Mi25c-');
         currentStep = 'TXT_TL1_CORRECT_2';
       }
       else if (currentStep === 'TXT_TL1_CORRECT_2') {
@@ -1803,11 +1813,11 @@
         }, 500);
       }
       else if (currentStep === 'TXT_TL2_CORRECT_1') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1n3Uhf75eITtQeE9Eayd8OqhNFJ2LsIlX';
+        setTextboxImage('1n3Uhf75eITtQeE9Eayd8OqhNFJ2LsIlX');
         currentStep = 'TXT_TL2_CORRECT_2';
       }
       else if (currentStep === 'TXT_TL2_CORRECT_2') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/17ViaK3xMirpKrlYKVNGEc03Db-s82v4m';
+        setTextboxImage('17ViaK3xMirpKrlYKVNGEc03Db-s82v4m');
         currentStep = 'TXT_TL2_CORRECT_3';
       }
       else if (currentStep === 'TXT_TL2_CORRECT_3') {
@@ -1830,7 +1840,7 @@
       }
       // ----- เนื้อเรื่องส่วนตัวเลือกที่ 1 (ยอมจำนน / Bad End) -----
       else if (currentStep === 'TXT_NEW_BRANCH_1_1') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1xoPS3J3vHigPjcIOouMo8zmUGc3hMIJZ';
+        setTextboxImage('1xoPS3J3vHigPjcIOouMo8zmUGc3hMIJZ');
         charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm';
         currentStep = 'TXT_NEW_BRANCH_1_2';
       }
@@ -1845,7 +1855,7 @@
       }
       // ----- แถบข้อความภายในฉาก Bad End 2 อัน แล้วข้ามไปฉากสวนโล่งทันที (ไม่มีปลดล็อคสกิล) -----
       else if (currentStep === 'TXT_END1_1') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1TRqkXGiYZMDxEu_feTVjblu6mkpa6Yd4';
+        setTextboxImage('1TRqkXGiYZMDxEu_feTVjblu6mkpa6Yd4');
         currentStep = 'TXT_END1_2';
       }
       else if (currentStep === 'TXT_END1_2') {
@@ -1858,12 +1868,12 @@
       }
       // ----- เนื้อเรื่องส่วนตัวเลือกที่ 2 (ต่อสู้ -> มินิเกม) -----
       else if (currentStep === 'TXT_NEW_BRANCH_2_1') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1PVTLSehn7PfIuaM9GB1jEflubF3U9z1V';
+        setTextboxImage('1PVTLSehn7PfIuaM9GB1jEflubF3U9z1V');
         charPakorn.src = 'https://lh3.googleusercontent.com/d/1IlNHrs-Y3-KGzqYFLhPfrLsZsLrHlboy';
         currentStep = 'TXT_NEW_BRANCH_2_2';
       }
       else if (currentStep === 'TXT_NEW_BRANCH_2_2') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1EI5UirRY1oJ62QZykKA1DbaM_E-DZsLP';
+        setTextboxImage('1EI5UirRY1oJ62QZykKA1DbaM_E-DZsLP');
         currentStep = 'TXT_NEW_BRANCH_2_3';
       }
       else if (currentStep === 'TXT_NEW_BRANCH_2_3') {
@@ -1873,11 +1883,11 @@
       }
       // ----- เนื้อเรื่องกรณีชนะมินิเกม -----
       else if (currentStep === 'TXT_CUTSCENE_1') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1JFrkUBuNVi3stpA73362NLLVSHwuZakT';
+        setTextboxImage('1JFrkUBuNVi3stpA73362NLLVSHwuZakT');
         currentStep = 'TXT_CUTSCENE_2';
       }
       else if (currentStep === 'TXT_CUTSCENE_2') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1TRqkXGiYZMDxEu_feTVjblu6mkpa6Yd4';
+        setTextboxImage('1TRqkXGiYZMDxEu_feTVjblu6mkpa6Yd4');
         currentStep = 'TXT_CUTSCENE_3';
       }
       else if (currentStep === 'TXT_CUTSCENE_3') {
@@ -1904,7 +1914,7 @@
       }
       // ----- ทางฝั่งขวา (ณริน) -----
       else if (currentStep === 'TXT_RIGHT_1') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1eIDca9iZQgH56miSMP81_vSpcdLDtkh1';
+        setTextboxImage('1eIDca9iZQgH56miSMP81_vSpcdLDtkh1');
         currentStep = 'TXT_RIGHT_2';
       }
       else if (currentStep === 'TXT_RIGHT_2') {
@@ -1938,7 +1948,7 @@
     // แตะฉากสวนสาธารณะเมื่อสลับกลับมาจากจอดำ
     scene3.addEventListener('click', () => {
       if (currentStep === 'WAIT_TAP_FOR_SCENE3_RETURN' && !isTransitioning) {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1UejuctKbYKqiwwDNj-95z4ObYyp3kR_U';
+        setTextboxImage('1UejuctKbYKqiwwDNj-95z4ObYyp3kR_U');
         textbox.classList.add('active');
         currentStep = 'TXT_SCENE3_LAST_MSG';
         resetIdleTimer();
@@ -2051,7 +2061,7 @@
       tlChoices.classList.remove('active');
 
       setTimeout(() => {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1gCxxcGNJww9_a8wVNveWP63PCd3x570U';
+        setTextboxImage('1gCxxcGNJww9_a8wVNveWP63PCd3x570U');
         textbox.classList.add('active');
         currentStep = 'TXT_QUESTION_TL';
       }, 400);
@@ -2082,19 +2092,19 @@
       if (isTransitioning) return;
 
       if (popupNum === 1 && currentStep === 'WAIT_TAP_FOR_POPUP1_TEXTBOX') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1pnhZ0aiy7JYPgEF-JiuTsUxA5Tk7djdK';
+        setTextboxImage('1pnhZ0aiy7JYPgEF-JiuTsUxA5Tk7djdK');
         textbox.classList.add('active');
         currentStep = 'TXT_TL1_CORRECT_1';
       }
       else if (popupNum === 2 && currentStep === 'WAIT_TAP_FOR_POPUP2_TEXTBOX') {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1RLnopjABjKI5OtN42fucpA8fZ1SC9zr3';
+        setTextboxImage('1RLnopjABjKI5OtN42fucpA8fZ1SC9zr3');
         textbox.classList.add('active');
         currentStep = 'TXT_TL2_CORRECT_1';
       }
     }
 
     function showWrongAppNotice() {
-      textboxImg.src = 'https://lh3.googleusercontent.com/d/10cfQvccibUCVWX3dsS8DXqeenMqDRgzx';
+      setTextboxImage('10cfQvccibUCVWX3dsS8DXqeenMqDRgzx');
       textbox.classList.add('active');
       currentStep = 'WRONG_APP_MSG';
 
@@ -2109,7 +2119,7 @@
 
     function checkChoiceCompletion() {
       if (completedChoice1 && completedChoice2) {
-        textboxImg.src = 'https://lh3.googleusercontent.com/d/1CBfWBhQVU9kPGLcTGsK9v_K6NB5xvKdn';
+        setTextboxImage('1CBfWBhQVU9kPGLcTGsK9v_K6NB5xvKdn');
         textbox.classList.add('active');
         currentStep = 'FINAL_TXT_BEFORE_CHOICES';
       } else {
@@ -2125,14 +2135,14 @@
       if (choiceNum === 1) {
         updateKnowledgeBar(-50);
         setTimeout(() => {
-          textboxImg.src = 'https://lh3.googleusercontent.com/d/1c5Pf5QLYaYLihT01uY-v5opfYctqx58g';
+          setTextboxImage('1c5Pf5QLYaYLihT01uY-v5opfYctqx58g');
           textbox.classList.add('active');
           currentStep = 'TXT_NEW_BRANCH_1_1';
         }, 400);
       } 
       else if (choiceNum === 2) {
         setTimeout(() => {
-          textboxImg.src = 'https://lh3.googleusercontent.com/d/1zvp5CM6rjIKL2DG6drOZ7X9cQw1RU51O';
+          setTextboxImage('1zvp5CM6rjIKL2DG6drOZ7X9cQw1RU51O');
           textbox.classList.add('active');
           currentStep = 'TXT_NEW_BRANCH_2_1';
         }, 400);
@@ -2366,7 +2376,7 @@
           charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm';
           charPakorn.classList.add('active');
 
-          textboxImg.src = 'https://lh3.googleusercontent.com/d/1AJHrpm0Qq1Muj4uTroYaDCAGDsDJRjUS';
+          setTextboxImage('1AJHrpm0Qq1Muj4uTroYaDCAGDsDJRjUS');
           textbox.classList.add('active');
           currentStep = 'TXT_NEW_BRANCH_1_1';
         });
@@ -2648,7 +2658,9 @@
       else if (target === 'BAD_END') {
         updateKnowledgeBar(50, true);
         sceneEnd1.classList.add('active');
-        currentStep = 'SCENE_END1_READY';
+        setTextboxImage('11WdiZgGjjNZL6kZwRsS_038jgamsO77E');
+        textbox.classList.add('active');
+        currentStep = 'TXT_END1_1';
       }
       else if (target === 'RIGHT_NARIN') {
         sceneRight1.classList.add('active');
