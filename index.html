@@ -1644,16 +1644,14 @@
       resetIdleTimer();
     });
 
-    // กดหน้าฉากจบ Bad End -> ข้ามไปฉากสวนสาธารณะโล่งทันที ไม่มีแถบข้อความหรือปลดล็อคสกิล
+    // แตะหน้าฉากจบ Bad End -> แสดงแถบข้อความ Bad End อันที่ 1
     sceneEnd1.addEventListener('click', () => {
       if (isTransitioning) return;
       if (currentStep === 'SCENE_END1_READY') {
-        textbox.classList.remove('active');
-        triggerWhiteFlashTransition(() => {
-          sceneEnd1.classList.remove('active');
-          sceneLeft2.classList.add('active');
-          currentStep = 'POST_ENDING_DONE';
-        });
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/11WdiZgGjjNZL6kZwRsS_038jgamsO77E';
+        textbox.classList.add('active');
+        currentStep = 'TXT_END1_1';
+        resetIdleTimer();
       }
     });
 
@@ -1845,6 +1843,19 @@
           currentStep = 'SCENE_END1_READY';
         });
       }
+      // ----- แถบข้อความภายในฉาก Bad End 2 อัน แล้วข้ามไปฉากสวนโล่งทันที (ไม่มีปลดล็อคสกิล) -----
+      else if (currentStep === 'TXT_END1_1') {
+        textboxImg.src = 'https://lh3.googleusercontent.com/d/1TRqkXGiYZMDxEu_feTVjblu6mkpa6Yd4';
+        currentStep = 'TXT_END1_2';
+      }
+      else if (currentStep === 'TXT_END1_2') {
+        textbox.classList.remove('active');
+        triggerWhiteFlashTransition(() => {
+          sceneEnd1.classList.remove('active');
+          sceneLeft2.classList.add('active');
+          currentStep = 'POST_ENDING_DONE';
+        });
+      }
       // ----- เนื้อเรื่องส่วนตัวเลือกที่ 2 (ต่อสู้ -> มินิเกม) -----
       else if (currentStep === 'TXT_NEW_BRANCH_2_1') {
         textboxImg.src = 'https://lh3.googleusercontent.com/d/1PVTLSehn7PfIuaM9GB1jEflubF3U9z1V';
@@ -1878,7 +1889,7 @@
           currentStep = 'FINAL_CONCLUSION_REACHED';
         });
       }
-      // ----- ลำดับฉากหลังจบคัตซีนฝั่งซ้าย -----
+      // ----- ลำดับฉากหลังจบคัตซีนชนะชาย/หญิง (ปลดล็อคสกิล) -----
       else if (currentStep === 'TXT_POST_ENDING_1') {
         textbox.classList.remove('active');
         sceneLeft2.classList.remove('active');
