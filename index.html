@@ -521,6 +521,84 @@
       opacity: 1;
     }
 
+    /* ตัวละคร ณริน (960x1080 ชิดซ้าย) */
+    .character-narin {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      object-fit: fill;
+      z-index: 25;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .character-narin.active {
+      opacity: 1;
+    }
+
+    /* เลเยอร์แสดงภาพไอเทมกลางจอพร้อมแสงฟุ้งนวลด้านหลัง */
+    .item-receive-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 55;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, rgba(255, 250, 235, 0.38) 0%, rgba(255, 245, 220, 0.14) 36%, rgba(0, 0, 0, 0.42) 100%);
+      opacity: 0;
+      pointer-events: none;
+      cursor: pointer;
+      transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .item-receive-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .item-glow-aura {
+      position: absolute;
+      width: clamp(240px, 38vw, 560px);
+      height: clamp(240px, 38vw, 560px);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.78) 0%, rgba(253, 224, 71, 0.35) 38%, rgba(255, 255, 255, 0) 72%);
+      filter: blur(18px);
+      pointer-events: none;
+      animation: itemGlowPulse 2.8s infinite ease-in-out;
+    }
+
+    @keyframes itemGlowPulse {
+      0%, 100% { transform: scale(0.95); opacity: 0.72; }
+      50% { transform: scale(1.08); opacity: 0.98; }
+    }
+
+    .item-showcase-img {
+      position: relative;
+      z-index: 2;
+      max-width: 44%;
+      max-height: 60%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 16px;
+      filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.9)) drop-shadow(0 12px 28px rgba(0, 0, 0, 0.55));
+      transform: scale(0.88);
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: itemFloatAnim 3s infinite ease-in-out;
+    }
+
+    .item-receive-overlay.active .item-showcase-img {
+      transform: scale(1);
+    }
+
+    @keyframes itemFloatAnim {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-7px) scale(1.02); }
+    }
+
     /* จอมือถือทับฉาก */
     .phone-screen-overlay {
       position: absolute;
@@ -1178,6 +1256,12 @@
     <div id="popup-screen-1" class="popup-screen" style="background-image: url('https://lh3.googleusercontent.com/d/1LNkuEzI1QjwZ8nPo0H1sugzR-3-LN1LQ');" onclick="handlePopupClick(1)"></div>
     <div id="popup-screen-2" class="popup-screen" style="background-image: url('https://lh3.googleusercontent.com/d/1s-hsVrRE8J-Hu5XrZBzp39GLAyB7SNbr');" onclick="handlePopupClick(2)"></div>
 
+    <!-- ภาพไอเทมกลางจอพร้อมแสงจางๆ ด้านหลัง -->
+    <div id="item-receive-overlay" class="item-receive-overlay" onclick="handleItemReceiveClick(event)">
+      <div class="item-glow-aura"></div>
+      <img id="item-showcase-img" class="item-showcase-img" src="" alt="Item Showcase">
+    </div>
+
     <!-- กลุ่มปุ่มเลือกตัวเลือก ตล.1 และ ตล.2 -->
     <div id="tl-choices" class="choice-group-container">
       <img id="btn-tl1" class="choice-btn-item" src="https://lh3.googleusercontent.com/d/16fZtXZW9f00q5ykmcbPzbhVmqQksAzvp" alt="ปุ่ม ตล.1" onclick="handleChoiceTL(1)">
@@ -1190,8 +1274,11 @@
       <img class="choice-btn-item" src="https://lh3.googleusercontent.com/d/1pyKs58lssQ7SqmrWlAMfEBwkTH7domle" alt="ตัวเลือก 2 (ต่อสู้)" onclick="handleNewBranchChoice(2)">
     </div>
 
-    <!-- เลเยอร์ตัวละคร ปกรณ์ -->
+    <!-- เลเยอร์ตัวละคร ปกรณ์ (ชิดขวา) -->
     <img id="char-pakorn" class="character-pakorn" src="" alt="ปกรณ์">
+
+    <!-- เลเยอร์ตัวละคร ณริน (ชิดซ้าย) -->
+    <img id="char-narin" class="character-narin" src="" alt="ณริน">
 
     <!-- ปุ่มพูดคุย -->
     <img id="btn-talk" class="talk-btn" src="https://lh3.googleusercontent.com/d/1crku-NyMGhzzsVN8bSb8BoFs3RNaqXN4" alt="พูดคุย" onclick="handleTalkButtonClick(event)">
@@ -1259,6 +1346,7 @@
         <button type="button" class="debug-item-btn" onclick="jumpToShortcut('WIN_FEMALE')">9. คัตซีนชนะ (หญิง)</button>
         <button type="button" class="debug-item-btn" onclick="jumpToShortcut('BAD_END')">10. ฉากจบ Bad End</button>
         <button type="button" class="debug-item-btn" onclick="jumpToShortcut('RIGHT_NARIN')">11. ฝั่งขวา: เริ่มทางขวา (ณริน)</button>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('RIGHT_NARIN_CHAT')">12. ฝั่งขวา: คุยกับณรินหลังคัตซีน</button>
       </div>
     </div>
 
@@ -1340,6 +1428,8 @@
     const phoneScreen2 = document.getElementById('phone-screen-2');
     const popupScreen1 = document.getElementById('popup-screen-1');
     const popupScreen2 = document.getElementById('popup-screen-2');
+    const itemReceiveOverlay = document.getElementById('item-receive-overlay');
+    const itemShowcaseImg = document.getElementById('item-showcase-img');
 
     // Chat Battle UI
     const battleOverlay = document.getElementById('battle-overlay');
@@ -1356,6 +1446,7 @@
 
     // UI & Characters
     const charPakorn = document.getElementById('char-pakorn');
+    const charNarin = document.getElementById('char-narin');
     const btnTalk = document.getElementById('btn-talk');
     const btnHome = document.getElementById('btn-home');
     const genderSelect = document.getElementById('gender-select');
@@ -1366,14 +1457,26 @@
     const btnMiddle = document.getElementById('btn-middle');
     const btnRight = document.getElementById('btn-right');
 
-    // ฟังก์ชันโหลดรูปแถบข้อความพร้อมลิงก์สำรองอัตโนมัติ (ป้องกันรูปไม่ขึ้น)
-    function setTextboxImage(urlOrId) {
+    // ฟังก์ชันโหลดรูปพร้อมลิงก์สำรองอัตโนมัติ (ป้องกันรูปไม่ขึ้น)
+    function setImageWithFallback(imgEl, urlOrId) {
       const id = urlOrId.includes('/d/') ? urlOrId.split('/d/')[1].split('/')[0] : urlOrId;
-      textboxImg.onerror = function() {
+      imgEl.onerror = function() {
         this.onerror = null;
         this.src = 'https://drive.google.com/thumbnail?id=' + id + '&sz=w1920';
       };
-      textboxImg.src = 'https://lh3.googleusercontent.com/d/' + id;
+      imgEl.src = 'https://lh3.googleusercontent.com/d/' + id;
+    }
+
+    function setTextboxImage(urlOrId) {
+      setImageWithFallback(textboxImg, urlOrId);
+    }
+
+    function setNarinImage(urlOrId) {
+      setImageWithFallback(charNarin, urlOrId);
+    }
+
+    function setPakornImage(urlOrId) {
+      setImageWithFallback(charPakorn, urlOrId);
     }
 
     // กดติ่งลูกศรมินิมอลเพื่อดึงแถบลงมาหรือพับเก็บขึ้นไป
@@ -1479,7 +1582,18 @@
       'https://lh3.googleusercontent.com/d/1aRWypVJ1VPk3wNhXOnljlOgVZTtVPOH8',
       'https://lh3.googleusercontent.com/d/1eIDca9iZQgH56miSMP81_vSpcdLDtkh1',
       'https://lh3.googleusercontent.com/d/1-eW9DcsG_tlo-kixHc5-0m9KexivpUuL',
-      'https://lh3.googleusercontent.com/d/1vAu_k50ITmt94LWuS2H-2MhLLJto1cv9'
+      'https://lh3.googleusercontent.com/d/1vAu_k50ITmt94LWuS2H-2MhLLJto1cv9',
+      'https://lh3.googleusercontent.com/d/1ZZKjB_33BLPc5XbrW5LB-_x7MJ7bpeqz',
+      'https://lh3.googleusercontent.com/d/1wRS1wiVYigIS2ydf7GtByFrUKcz9oSP8',
+      'https://lh3.googleusercontent.com/d/1alVX04mFEjDurFDfXMM9pXQgl0RrHF2O',
+      'https://lh3.googleusercontent.com/d/1JR8pPyIv10Mtb61nFkgTe6-rYU75iDM9',
+      'https://lh3.googleusercontent.com/d/1_2TMWYBRKm2Dq24RxVW-FtSlx7t4kyll',
+      'https://lh3.googleusercontent.com/d/1YZHZR26cTdv6jOegKpnpRLiCa9SFfRyf',
+      'https://lh3.googleusercontent.com/d/195Ra30TqP7VAY23RsZEQIO55ltoKXnlj',
+      'https://lh3.googleusercontent.com/d/1FuTJs33s_z3MvOjpky1tOmQZReZsnwEV',
+      'https://lh3.googleusercontent.com/d/154aVGCxs3ButU4wIeixIWypG_x_ra67V',
+      'https://lh3.googleusercontent.com/d/1y5wBykqlioS-kFN6t_2OLC3EfVtIqUi7',
+      'https://lh3.googleusercontent.com/d/1e9RTp_FQdRbGKYeWrR9PRARwiawzBsYp'
     ];
 
     imageList.forEach(url => {
@@ -1500,6 +1614,7 @@
         currentStep !== 'TUTORIAL_STAGE' &&
         currentStep !== 'PREGAME_WARNING_STAGE' &&
         currentStep !== 'PREGAME_COUNTDOWN_STAGE' &&
+        currentStep !== 'RIGHT_NARIN_END_HOLD' &&
         !isBattleActive
       ) {
         idleTimer = setTimeout(() => {
@@ -1626,6 +1741,14 @@
         currentStep = 'TXT_RIGHT_1';
         resetIdleTimer();
       }
+      else if (currentStep === 'RIGHT_AFTER_CUTSCENE') {
+        setNarinImage('1ZZKjB_33BLPc5XbrW5LB-_x7MJ7bpeqz');
+        charNarin.classList.add('active');
+        setTextboxImage('1wRS1wiVYigIS2ydf7GtByFrUKcz9oSP8');
+        textbox.classList.add('active');
+        currentStep = 'TXT_NARIN_CHAT_1';
+        resetIdleTimer();
+      }
     });
 
     sceneRightCutscene.addEventListener('click', () => {
@@ -1637,6 +1760,26 @@
         resetIdleTimer();
       }
     });
+
+    // แตะภาพไอเทมกลางจอ -> ภาพเลือนหายไป กลับมาเป็นณรินหน้าปกติทางซ้าย + ข้อความต่อ
+    function handleItemReceiveClick(event) {
+      if (event) event.stopPropagation();
+      if (isTransitioning || currentStep !== 'SHOW_NARIN_ITEM_1') return;
+      isTransitioning = true;
+      resetIdleTimer();
+
+      itemReceiveOverlay.classList.remove('active');
+
+      setTimeout(() => {
+        setNarinImage('1ZZKjB_33BLPc5XbrW5LB-_x7MJ7bpeqz');
+        charNarin.classList.add('active');
+        setTextboxImage('1YZHZR26cTdv6jOegKpnpRLiCa9SFfRyf');
+        textbox.classList.add('active');
+        currentStep = 'TXT_NARIN_CHAT_4';
+        isTransitioning = false;
+        resetIdleTimer();
+      }, 450);
+    }
 
     scenePost1.addEventListener('click', () => {
       if (isTransitioning || currentStep !== 'POST_ENDING_SCENE_1') return;
@@ -1753,17 +1896,17 @@
       }
       else if (currentStep === 'TXT_LEFT_3') {
         textbox.classList.remove('active');
-        charPakorn.src = 'https://lh3.googleusercontent.com/d/1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA';
+        setPakornImage('1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA');
         currentStep = 'LEFT_BRANCH_PAKORN_NORMAL_1';
       }
       else if (currentStep === 'TXT_LEFT_4') {
         setTextboxImage('1AuQQJlo1B1og7hNEoUBFP5j0TzcanwBB');
-        charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm';
+        setPakornImage('1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm');
         currentStep = 'TXT_LEFT_5';
       }
       else if (currentStep === 'TXT_LEFT_5') {
         setTextboxImage('1uMBohQwM_n512oPv4hizsD0S7si7zYYi');
-        charPakorn.src = 'https://lh3.googleusercontent.com/d/1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA';
+        setPakornImage('1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA');
         currentStep = 'TXT_LEFT_6';
       }
       else if (currentStep === 'TXT_LEFT_6') {
@@ -1841,7 +1984,7 @@
       // ----- เนื้อเรื่องส่วนตัวเลือกที่ 1 (ยอมจำนน / Bad End) -----
       else if (currentStep === 'TXT_NEW_BRANCH_1_1') {
         setTextboxImage('1xoPS3J3vHigPjcIOouMo8zmUGc3hMIJZ');
-        charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm';
+        setPakornImage('1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm');
         currentStep = 'TXT_NEW_BRANCH_1_2';
       }
       else if (currentStep === 'TXT_NEW_BRANCH_1_2') {
@@ -1869,7 +2012,7 @@
       // ----- เนื้อเรื่องส่วนตัวเลือกที่ 2 (ต่อสู้ -> มินิเกม) -----
       else if (currentStep === 'TXT_NEW_BRANCH_2_1') {
         setTextboxImage('1PVTLSehn7PfIuaM9GB1jEflubF3U9z1V');
-        charPakorn.src = 'https://lh3.googleusercontent.com/d/1IlNHrs-Y3-KGzqYFLhPfrLsZsLrHlboy';
+        setPakornImage('1IlNHrs-Y3-KGzqYFLhPfrLsZsLrHlboy');
         currentStep = 'TXT_NEW_BRANCH_2_2';
       }
       else if (currentStep === 'TXT_NEW_BRANCH_2_2') {
@@ -1930,6 +2073,37 @@
         sceneRightCutscene.classList.remove('active');
         sceneRight1.classList.add('active');
         currentStep = 'RIGHT_AFTER_CUTSCENE';
+      }
+      // ----- บทสนทนาหลังคัตซีนเจอกับณริน -----
+      else if (currentStep === 'TXT_NARIN_CHAT_1') {
+        setTextboxImage('1alVX04mFEjDurFDfXMM9pXQgl0RrHF2O');
+        currentStep = 'TXT_NARIN_CHAT_2';
+      }
+      else if (currentStep === 'TXT_NARIN_CHAT_2') {
+        setTextboxImage('1JR8pPyIv10Mtb61nFkgTe6-rYU75iDM9');
+        currentStep = 'TXT_NARIN_CHAT_3';
+      }
+      else if (currentStep === 'TXT_NARIN_CHAT_3') {
+        textbox.classList.remove('active');
+        charNarin.classList.remove('active');
+        setImageWithFallback(itemShowcaseImg, '1_2TMWYBRKm2Dq24RxVW-FtSlx7t4kyll');
+        itemReceiveOverlay.classList.add('active');
+        currentStep = 'SHOW_NARIN_ITEM_1';
+      }
+      else if (currentStep === 'TXT_NARIN_CHAT_4') {
+        setTextboxImage('195Ra30TqP7VAY23RsZEQIO55ltoKXnlj');
+        currentStep = 'TXT_NARIN_CHAT_5';
+      }
+      else if (currentStep === 'TXT_NARIN_CHAT_5') {
+        setNarinImage('1FuTJs33s_z3MvOjpky1tOmQZReZsnwEV');
+        setTextboxImage('154aVGCxs3ButU4wIeixIWypG_x_ra67V');
+        currentStep = 'TXT_NARIN_CHAT_6';
+      }
+      else if (currentStep === 'TXT_NARIN_CHAT_6') {
+        setNarinImage('1y5wBykqlioS-kFN6t_2OLC3EfVtIqUi7');
+        setTextboxImage('1e9RTp_FQdRbGKYeWrR9PRARwiawzBsYp');
+        currentStep = 'RIGHT_NARIN_END_HOLD';
+        resetIdleTimer();
       }
       else if (currentStep === 'TXT_SCENE3_LAST_MSG') {
         textbox.classList.remove('active');
@@ -2373,7 +2547,7 @@
         triggerWhiteFlashTransition(() => {
           sceneBattle.classList.remove('active');
           sceneLeft2.classList.add('active');
-          charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm';
+          setPakornImage('1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm');
           charPakorn.classList.add('active');
 
           setTextboxImage('1AJHrpm0Qq1Muj4uTroYaDCAGDsDJRjUS');
@@ -2500,7 +2674,7 @@
       setTimeout(() => {
         sceneLeft2.classList.add('active');
 
-        charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm';
+        setPakornImage('1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm');
         charPakorn.classList.add('active');
 
         currentStep = 'LEFT_BRANCH_2_START';
@@ -2539,12 +2713,14 @@
       phoneScreen2.classList.remove('active');
       popupScreen1.classList.remove('active');
       popupScreen2.classList.remove('active');
+      itemReceiveOverlay.classList.remove('active');
       preTutorialOverlay.classList.remove('active');
       tutorialOverlay.classList.remove('active');
       pregameBlackScreen.classList.remove('active');
       battleOverlay.classList.remove('active');
       chatFeedArea.innerHTML = '';
       charPakorn.classList.remove('active');
+      charNarin.classList.remove('active');
       textbox.classList.remove('active');
       navButtons.classList.remove('active');
       btnTalk.classList.remove('interactive');
@@ -2608,13 +2784,13 @@
       } 
       else if (target === 'PAKORN_TALK') {
         sceneLeft2.classList.add('active');
-        charPakorn.src = 'https://lh3.googleusercontent.com/d/1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm';
+        setPakornImage('1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm');
         charPakorn.classList.add('active');
         currentStep = 'LEFT_BRANCH_2_START';
       } 
       else if (target === 'TL_CHOICES') {
         sceneLeft2.classList.add('active');
-        charPakorn.src = 'https://lh3.googleusercontent.com/d/1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA';
+        setPakornImage('1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA');
         charPakorn.classList.add('active');
         showTLChoices();
       } 
@@ -2623,7 +2799,7 @@
         completedChoice2 = true;
         updateKnowledgeBar(100, true);
         sceneLeft2.classList.add('active');
-        charPakorn.src = 'https://lh3.googleusercontent.com/d/1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA';
+        setPakornImage('1awrxzz7Xyd6VrOV8b2zoLBmz3o8OH_tA');
         charPakorn.classList.add('active');
         newBranchChoices.classList.add('active');
         currentStep = 'SHOW_NEW_BRANCH_CHOICES';
@@ -2665,6 +2841,14 @@
       else if (target === 'RIGHT_NARIN') {
         sceneRight1.classList.add('active');
         currentStep = 'RIGHT_BRANCH_START';
+      }
+      else if (target === 'RIGHT_NARIN_CHAT') {
+        sceneRight1.classList.add('active');
+        setNarinImage('1ZZKjB_33BLPc5XbrW5LB-_x7MJ7bpeqz');
+        charNarin.classList.add('active');
+        setTextboxImage('1wRS1wiVYigIS2ydf7GtByFrUKcz9oSP8');
+        textbox.classList.add('active');
+        currentStep = 'TXT_NARIN_CHAT_1';
       }
 
       resetIdleTimer();
