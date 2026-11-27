@@ -539,7 +539,7 @@
       opacity: 1;
     }
 
-    /* เลเยอร์แสดงภาพไอเทมกลางจอพร้อมแสงฟุ้งนวลด้านหลัง */
+    /* เลเยอร์แสดงภาพไอเทมกลางจอพร้อมแสงฟุ้งนวลด้านหลัง (ปรับขนาดใหญ่ขึ้น) */
     .item-receive-overlay {
       position: absolute;
       inset: 0;
@@ -547,7 +547,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: radial-gradient(circle at center, rgba(255, 250, 235, 0.38) 0%, rgba(255, 245, 220, 0.14) 36%, rgba(0, 0, 0, 0.42) 100%);
+      background: radial-gradient(circle at center, rgba(255, 250, 235, 0.44) 0%, rgba(255, 245, 220, 0.18) 42%, rgba(0, 0, 0, 0.45) 100%);
       opacity: 0;
       pointer-events: none;
       cursor: pointer;
@@ -561,30 +561,30 @@
 
     .item-glow-aura {
       position: absolute;
-      width: clamp(300px, 46vw, 680px);
-      height: clamp(300px, 46vw, 680px);
+      width: clamp(380px, 58vw, 860px);
+      height: clamp(380px, 58vw, 860px);
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.78) 0%, rgba(253, 224, 71, 0.35) 38%, rgba(255, 255, 255, 0) 72%);
-      filter: blur(18px);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.82) 0%, rgba(253, 224, 71, 0.4) 40%, rgba(255, 255, 255, 0) 74%);
+      filter: blur(20px);
       pointer-events: none;
       animation: itemGlowPulse 2.8s infinite ease-in-out;
     }
 
     @keyframes itemGlowPulse {
-      0%, 100% { transform: scale(0.95); opacity: 0.72; }
-      50% { transform: scale(1.08); opacity: 0.98; }
+      0%, 100% { transform: scale(0.96); opacity: 0.76; }
+      50% { transform: scale(1.07); opacity: 1; }
     }
 
     .item-showcase-img {
       position: relative;
       z-index: 2;
-      max-width: 58%;
-      max-height: 75%;
+      max-width: 76%;
+      max-height: 88%;
       width: auto;
       height: auto;
       object-fit: contain;
-      border-radius: 16px;
-      filter: drop-shadow(0 0 24px rgba(255, 255, 255, 0.9)) drop-shadow(0 12px 28px rgba(0, 0, 0, 0.55));
+      border-radius: 18px;
+      filter: drop-shadow(0 0 28px rgba(255, 255, 255, 0.95)) drop-shadow(0 14px 32px rgba(0, 0, 0, 0.6));
       transform: scale(0.92);
       transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
     }
@@ -665,6 +665,7 @@
       cursor: pointer;
     }
 
+    /* กลุ่มปุ่มเลือกตัวเลือก (กึ่งกลางจอ) */
     .choice-group-container {
       position: absolute;
       top: 52%;
@@ -819,7 +820,7 @@
     }
 
     /* =========================================================
-       มินิเกมใหม่: จับผิดสายปลอมเสียง AI (อิงตำแหน่งภาพ 1920x1080)
+       มินิเกม 1: จับผิดสายปลอมเสียง AI (ฝั่งปกรณ์ - ตำแหน่งเดิมเป๊ะ)
        ========================================================= */
     #battle-overlay {
       position: absolute;
@@ -1049,6 +1050,243 @@
     }
 
     /* =========================================================
+       มินิเกม 2: ช่วยณรินเรียงลำดับสิ่งที่ต้องทำ (ฝั่งณริน)
+       ========================================================= */
+    #narin-minigame-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 90;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    #narin-minigame-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .narin-hearts-panel {
+      position: absolute;
+      top: 6.5%;
+      left: 16.5%;
+      display: flex;
+      align-items: center;
+      gap: clamp(8px, 1.2vw, 14px);
+      background: rgba(15, 23, 42, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: clamp(5px, 0.9vh, 9px) clamp(14px, 1.8vw, 20px);
+      border-radius: 999px;
+      border: 1.5px solid rgba(255, 255, 255, 0.28);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      z-index: 95;
+    }
+
+    .narin-cards-pool-wrapper {
+      position: absolute;
+      top: 52%;
+      left: 51%;
+      transform: translate(-50%, -50%);
+      width: 28%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(10px, 1.8vh, 18px);
+      z-index: 94;
+    }
+
+    .narin-pool-hint {
+      background: rgba(15, 23, 42, 0.84);
+      color: #f8fafc;
+      font-size: clamp(11px, 1.25vw, 16px);
+      font-weight: 700;
+      padding: clamp(5px, 0.8vh, 8px) clamp(12px, 1.6vw, 18px);
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .narin-cards-list {
+      width: 100%;
+      min-height: clamp(160px, 34vh, 300px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: clamp(10px, 1.8vh, 16px);
+    }
+
+    .narin-drag-card {
+      width: 100%;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      color: #0f172a;
+      border: 2.5px solid #cbd5e1;
+      border-radius: clamp(12px, 1.6vw, 18px);
+      padding: clamp(10px, 1.5vh, 16px) clamp(12px, 1.5vw, 18px);
+      font-size: clamp(11.5px, 1.3vw, 17px);
+      font-weight: 700;
+      line-height: 1.35;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.38);
+      cursor: grab;
+      display: flex;
+      align-items: center;
+      gap: clamp(8px, 1vw, 12px);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .narin-drag-card:hover,
+    .narin-drag-card:active {
+      transform: scale(1.03);
+      border-color: #ec4899;
+      box-shadow: 0 10px 24px rgba(236, 72, 153, 0.45);
+    }
+
+    .narin-drag-card.dragging {
+      opacity: 0.45;
+      cursor: grabbing;
+    }
+
+    .card-grip-icon {
+      color: #94a3b8;
+      font-size: clamp(14px, 1.6vw, 20px);
+      flex-shrink: 0;
+    }
+
+    .narin-phone-panel {
+      position: absolute;
+      top: 13.5%;
+      right: 5.2%;
+      width: 25.2%;
+      height: 75.5%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(10px, 1.6vh, 18px) clamp(10px, 1.3vw, 16px);
+      z-index: 94;
+    }
+
+    .narin-phone-header {
+      text-align: center;
+      color: #0f172a;
+      font-size: clamp(12px, 1.45vw, 19px);
+      font-weight: 900;
+      padding-bottom: clamp(4px, 0.8vh, 8px);
+      border-bottom: 2px solid rgba(15, 23, 42, 0.14);
+    }
+
+    .narin-slots-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: clamp(8px, 1.4vh, 14px);
+      margin: clamp(6px, 1vh, 10px) 0;
+    }
+
+    .narin-drop-slot {
+      width: 100%;
+      min-height: clamp(54px, 11.5vh, 106px);
+      border: 2.5px dashed #94a3b8;
+      border-radius: clamp(12px, 1.5vw, 16px);
+      background: rgba(241, 245, 249, 0.72);
+      display: flex;
+      align-items: center;
+      padding: clamp(6px, 0.9vh, 10px) clamp(8px, 1.1vw, 12px);
+      gap: clamp(8px, 1vw, 12px);
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .narin-drop-slot.drag-over {
+      border-color: #ec4899;
+      background: rgba(253, 242, 248, 0.95);
+      transform: scale(1.02);
+    }
+
+    .narin-drop-slot.filled {
+      border-style: solid;
+      border-color: #3b82f6;
+      background: rgba(239, 246, 255, 0.95);
+    }
+
+    .slot-step-badge {
+      width: clamp(22px, 2.5vw, 30px);
+      height: clamp(22px, 2.5vw, 30px);
+      border-radius: 50%;
+      background: #ec4899;
+      color: #ffffff;
+      font-size: clamp(11px, 1.3vw, 16px);
+      font-weight: 900;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+      box-shadow: 0 3px 8px rgba(236, 72, 153, 0.45);
+    }
+
+    .slot-placeholder-text {
+      color: #64748b;
+      font-size: clamp(10.5px, 1.15vw, 15px);
+      font-weight: 600;
+    }
+
+    .slot-card-holder {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .narin-drag-card.in-slot {
+      padding: clamp(6px, 0.9vh, 10px) clamp(8px, 1vw, 12px);
+      font-size: clamp(10.5px, 1.15vw, 15px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+      border-width: 1.5px;
+    }
+
+    .narin-phone-feedback {
+      text-align: center;
+      font-size: clamp(10.5px, 1.15vw, 15px);
+      font-weight: 800;
+      color: #dc2626;
+      min-height: clamp(16px, 2.2vh, 22px);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .narin-phone-feedback.visible {
+      opacity: 1;
+    }
+
+    .narin-submit-btn {
+      width: 100%;
+      padding: clamp(8px, 1.3vh, 13px) 12px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ec4899, #8b5cf6);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: clamp(12px, 1.4vw, 18px);
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(236, 72, 153, 0.45);
+      transition: transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
+    }
+
+    .narin-submit-btn:hover:not(:disabled),
+    .narin-submit-btn:active:not(:disabled) {
+      transform: scale(1.03);
+      filter: brightness(1.08);
+    }
+
+    .narin-submit-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      filter: grayscale(0.7);
+    }
+
+    /* =========================================================
        DEBUG SHORTCUT MENU (ปุ่มทางลัดมุมล่างซ้าย - ลบออกได้เมื่อตรวจงานเสร็จ)
        ========================================================= */
     #debug-shortcut-wrapper {
@@ -1146,7 +1384,7 @@
 
   <div id="game-container">
     
-    <!-- แถบ HUD วัดความรู้สไตล์ iPhone (ซ่อนด้านบน + ติ่งลูกศรชี้ลง) -->
+    <!-- แถบ HUD วัดความรู้สไตล์ iPhone (ซ่อนด้านบน + ติ่งลูกศรมินิมอล) -->
     <div id="hud-header" class="hud-header" onclick="event.stopPropagation()">
       <div class="hud-icon">📖</div>
       <div class="progress-bar-container">
@@ -1172,11 +1410,14 @@
     <!-- เลเยอร์แสงสีขาวสลับฉาก -->
     <div id="white-flash" class="white-flash-layer"></div>
 
-    <!-- ฉากคั่นก่อนขึ้นหน้าแนะนำวิธีเล่น -->
+    <!-- ฉากคั่นก่อนขึ้นหน้าแนะนำวิธีเล่น (ฝั่งปกรณ์) -->
     <div id="pre-tutorial-overlay" class="tutorial-overlay" style="background-image: url('https://lh3.googleusercontent.com/d/1X2-OMpGqgU4ZTfjQSFmF2Ej50RLXRYml');" onclick="handlePreTutorialClick(event)"></div>
 
-    <!-- หน้าแนะนำวิธีเล่นก่อนเข้ามินิเกม -->
+    <!-- หน้าแนะนำวิธีเล่นก่อนเข้ามินิเกม (ฝั่งปกรณ์) -->
     <div id="tutorial-overlay" class="tutorial-overlay" style="background-image: url('https://lh3.googleusercontent.com/d/1kglHihqUsYYNJn4YsHWcyoYSXlNcO8ns');" onclick="handleTutorialClick(event)"></div>
+
+    <!-- ฉากคั่นก่อนเข้ามินิเกม (ฝั่งณริน) -->
+    <div id="narin-pre-tutorial-overlay" class="tutorial-overlay" style="background-image: url('https://lh3.googleusercontent.com/d/1V5U8cM-iNRu6ZRtoOhukvToi5L28w2W5');" onclick="handleNarinPreTutorialClick(event)"></div>
 
     <!-- จอดำเตือนหัวใจ 2 ดวง & นับถอยหลัง 3 2 1 เริ่ม! -->
     <div id="pregame-black-screen" class="pregame-black-screen" onclick="handlePregameBlackClick(event)">
@@ -1219,6 +1460,8 @@
     <div id="scene-right1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1gbYoJrTliezEEhAIdm3giNtEWyaICtDa'); cursor: pointer;"></div>
     <div id="scene-right-cutscene" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1-eW9DcsG_tlo-kixHc5-0m9KexivpUuL'); cursor: pointer;"></div>
     <div id="scene-right-cutscene2" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1fWt1Iv18hvQ4YhvkBaycUa7kEzIx8YYG'); cursor: pointer;"></div>
+    <div id="scene-narin-minigame" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1uTRp1QT-VHrznvsnkV_U0ip_dgy4D6v8');"></div>
+    <div id="scene-narin-gameover" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/19n7OJcBMCG4VCG9jjRj0_d_BnVbgEaMH'); cursor: pointer;"></div>
 
     <!-- ฉากเพิ่มเติมตามเนื้อเรื่อง -->
     <div id="scene-end1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1d09NSfEhvtgQNhvawJia8pnquEam6v9m'); cursor: pointer;"></div>
@@ -1297,7 +1540,7 @@
     </div>
 
     <!-- =========================================================
-         มินิเกมใหม่: แชตจับผิดสาย AI (Chat Sequence Battle Overlay)
+         มินิเกม 1: แชตจับผิดสาย AI (ฝั่งปกรณ์)
          ========================================================= -->
     <div id="battle-overlay">
       <div id="chat-feed-area" class="chat-feed-area"></div>
@@ -1323,6 +1566,54 @@
     </div>
 
     <!-- =========================================================
+         มินิเกม 2: ช่วยณรินเรียงลำดับสิ่งที่ต้องทำ (ฝั่งณริน)
+         ========================================================= -->
+    <div id="narin-minigame-overlay">
+      <!-- หัวใจ 2 ดวงบนหัวของณริน -->
+      <div id="narin-hearts-panel" class="narin-hearts-panel">
+        <span id="narin-heart-1" class="battle-heart-icon">❤️</span>
+        <span id="narin-heart-2" class="battle-heart-icon">❤️</span>
+      </div>
+
+      <!-- การ์ดข้อความตรงกลางสำหรับลากหรือแตะ -->
+      <div class="narin-cards-pool-wrapper">
+        <div class="narin-pool-hint">ลากหรือแตะเรียงลำดับ 1 → 3 ในมือถือ</div>
+        <div id="narin-cards-pool" class="narin-cards-list"></div>
+      </div>
+
+      <!-- พื้นที่จอมือถือทางขวามือ -->
+      <div id="narin-phone-panel" class="narin-phone-panel">
+        <div>
+          <div class="narin-phone-header">สิ่งที่ณรินต้องทำตามลำดับ</div>
+          <div id="narin-phone-feedback" class="narin-phone-feedback">ลำดับยังไม่ถูกต้อง ลองเรียงใหม่อีกครั้ง!</div>
+        </div>
+
+        <div class="narin-slots-container">
+          <div class="narin-drop-slot" data-slot="0" onclick="handleNarinSlotClick(0)">
+            <div class="slot-step-badge">1</div>
+            <div class="slot-card-holder" id="narin-slot-holder-0">
+              <span class="slot-placeholder-text">วางขั้นตอนที่ 1 ที่นี่</span>
+            </div>
+          </div>
+          <div class="narin-drop-slot" data-slot="1" onclick="handleNarinSlotClick(1)">
+            <div class="slot-step-badge">2</div>
+            <div class="slot-card-holder" id="narin-slot-holder-1">
+              <span class="slot-placeholder-text">วางขั้นตอนที่ 2 ที่นี่</span>
+            </div>
+          </div>
+          <div class="narin-drop-slot" data-slot="2" onclick="handleNarinSlotClick(2)">
+            <div class="slot-step-badge">3</div>
+            <div class="slot-card-holder" id="narin-slot-holder-2">
+              <span class="slot-placeholder-text">วางขั้นตอนที่ 3 ที่นี่</span>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" id="narin-submit-btn" class="narin-submit-btn" disabled onclick="submitNarinOrder()">ส่งคำตอบ</button>
+      </div>
+    </div>
+
+    <!-- =========================================================
          ปุ่มทางลัดสำหรับตรวจงาน (มุมล่างซ้าย - ลบออกได้เมื่อตรวจงานเสร็จ)
          ========================================================= -->
     <div id="debug-shortcut-wrapper" onclick="event.stopPropagation()">
@@ -1336,12 +1627,14 @@
         <button type="button" class="debug-item-btn" onclick="jumpToShortcut('TL_CHOICES')">4. เลือกภารกิจมือถือ (ตล.1/2)</button>
         <button type="button" class="debug-item-btn" onclick="jumpToShortcut('DECISION')">5. เลือก ยอมจำนน / ต่อสู้</button>
         <button type="button" class="debug-item-btn" onclick="jumpToShortcut('PRE_MINIGAME')">6. ก่อนเข้ามินิเกม (ฉากคั่น)</button>
-        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('MINIGAME_NOW')">7. เล่นมินิเกมทันที</button>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('MINIGAME_NOW')">7. เล่นมินิเกมปกรณ์ทันที</button>
         <button type="button" class="debug-item-btn" onclick="jumpToShortcut('WIN_MALE')">8. คัตซีนชนะ (ชาย)</button>
         <button type="button" class="debug-item-btn" onclick="jumpToShortcut('WIN_FEMALE')">9. คัตซีนชนะ (หญิง)</button>
         <button type="button" class="debug-item-btn" onclick="jumpToShortcut('BAD_END')">10. ฉากจบ Bad End</button>
         <button type="button" class="debug-item-btn" onclick="jumpToShortcut('RIGHT_NARIN')">11. ฝั่งขวา: เริ่มทางขวา (ณริน)</button>
         <button type="button" class="debug-item-btn" onclick="jumpToShortcut('RIGHT_NARIN_CHAT')">12. ฝั่งขวา: คุยกับณรินหลังคัตซีน</button>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('NARIN_PRE_MINIGAME')">13. ฝั่งขวา: ก่อนเข้ามินิเกมณริน</button>
+        <button type="button" class="debug-item-btn" onclick="jumpToShortcut('NARIN_MINIGAME_NOW')">14. ฝั่งขวา: เล่นมินิเกมณรินทันที</button>
       </div>
     </div>
 
@@ -1365,7 +1658,7 @@
     let hudAutoHideTimer = null;
     let hudBarAnimTimer = null;
 
-    // ตัวแปรสำหรับมินิเกมแชตจับผิดสาย AI
+    // ตัวแปรสำหรับมินิเกมแชตจับผิดสาย AI (ปกรณ์)
     let isBattleActive = false;
     let battleHearts = 2; // ตอบผิดได้แค่ 2 ครั้ง
     let currentChatRound = 0;
@@ -1375,6 +1668,12 @@
     let isWaitingNextRound = false;
     let battleFinishTimer = null;
 
+    // ตัวแปรสำหรับมินิเกมเรียงลำดับ (ณริน)
+    let isNarinMinigameActive = false;
+    let narinHearts = 2;
+    let narinSlots = [null, null, null];
+    let draggedNarinStepId = null;
+
     const gameContainer = document.getElementById('game-container');
     const centerTapHint = document.getElementById('center-tap-hint');
     const hudHeader = document.getElementById('hud-header');
@@ -1382,6 +1681,7 @@
     const whiteFlash = document.getElementById('white-flash');
     const preTutorialOverlay = document.getElementById('pre-tutorial-overlay');
     const tutorialOverlay = document.getElementById('tutorial-overlay');
+    const narinPreTutorialOverlay = document.getElementById('narin-pre-tutorial-overlay');
     const pregameBlackScreen = document.getElementById('pregame-black-screen');
     const warningContentBox = document.getElementById('warning-content-box');
     const tapToStartBlink = document.getElementById('tap-to-start-blink');
@@ -1405,6 +1705,8 @@
     const sceneRight1 = document.getElementById('scene-right1');
     const sceneRightCutscene = document.getElementById('scene-right-cutscene');
     const sceneRightCutscene2 = document.getElementById('scene-right-cutscene2');
+    const sceneNarinMinigame = document.getElementById('scene-narin-minigame');
+    const sceneNarinGameover = document.getElementById('scene-narin-gameover');
 
     // Endings & Battle Scenes
     const sceneEnd1 = document.getElementById('scene-end1');
@@ -1439,6 +1741,16 @@
     const battleTimerFill = document.getElementById('battle-timer-fill');
     const chatChoiceBtn0 = document.getElementById('chat-choice-0');
     const chatChoiceBtn1 = document.getElementById('chat-choice-1');
+
+    // Narin Minigame UI
+    const narinMinigameOverlay = document.getElementById('narin-minigame-overlay');
+    const narinHeartsPanel = document.getElementById('narin-hearts-panel');
+    const narinHeart1 = document.getElementById('narin-heart-1');
+    const narinHeart2 = document.getElementById('narin-heart-2');
+    const narinCardsPool = document.getElementById('narin-cards-pool');
+    const narinPhonePanel = document.getElementById('narin-phone-panel');
+    const narinPhoneFeedback = document.getElementById('narin-phone-feedback');
+    const narinSubmitBtn = document.getElementById('narin-submit-btn');
 
     // UI & Characters
     const charPakorn = document.getElementById('char-pakorn');
@@ -1594,7 +1906,12 @@
       'https://lh3.googleusercontent.com/d/1fWt1Iv18hvQ4YhvkBaycUa7kEzIx8YYG',
       'https://lh3.googleusercontent.com/d/1AOVtA0DC6pb08LJaqx3qIh7pyr0MP236',
       'https://lh3.googleusercontent.com/d/1XyQmz0MkyB137V33_BBsYEdXRu4r5oq4',
-      'https://lh3.googleusercontent.com/d/1SNjGUMk1mobViuXXOH16iShZOMsW2dKq'
+      'https://lh3.googleusercontent.com/d/1SNjGUMk1mobViuXXOH16iShZOMsW2dKq',
+      'https://lh3.googleusercontent.com/d/1V5U8cM-iNRu6ZRtoOhukvToi5L28w2W5',
+      'https://lh3.googleusercontent.com/d/1uTRp1QT-VHrznvsnkV_U0ip_dgy4D6v8',
+      'https://lh3.googleusercontent.com/d/19n7OJcBMCG4VCG9jjRj0_d_BnVbgEaMH',
+      'https://lh3.googleusercontent.com/d/11Rv9AY3CKlnLmBNFAYVFBQxpMPLJ21rM',
+      'https://lh3.googleusercontent.com/d/1llS10pfi4SYf-SbFiWv8b1qwS2b1NoKV'
     ];
 
     imageList.forEach(url => {
@@ -1613,10 +1930,12 @@
         currentStep !== 'SHOW_NEW_BRANCH_CHOICES' &&
         currentStep !== 'PRE_TUTORIAL_STAGE' &&
         currentStep !== 'TUTORIAL_STAGE' &&
+        currentStep !== 'NARIN_PRE_TUTORIAL_STAGE' &&
         currentStep !== 'PREGAME_WARNING_STAGE' &&
         currentStep !== 'PREGAME_COUNTDOWN_STAGE' &&
         currentStep !== 'RIGHT_NARIN_END_HOLD' &&
-        !isBattleActive
+        !isBattleActive &&
+        !isNarinMinigameActive
       ) {
         idleTimer = setTimeout(() => {
           centerTapHint.classList.add('active');
@@ -1768,6 +2087,16 @@
         setTextboxImage('1AOVtA0DC6pb08LJaqx3qIh7pyr0MP236');
         textbox.classList.add('active');
         currentStep = 'TXT_RIGHT_CUTSCENE2_1';
+        resetIdleTimer();
+      }
+    });
+
+    sceneNarinGameover.addEventListener('click', () => {
+      if (isTransitioning) return;
+      if (currentStep === 'NARIN_GAMEOVER_READY') {
+        setTextboxImage('11Rv9AY3CKlnLmBNFAYVFBQxpMPLJ21rM');
+        textbox.classList.add('active');
+        currentStep = 'TXT_NARIN_GAMEOVER_1';
         resetIdleTimer();
       }
     });
@@ -2035,7 +2364,7 @@
         charPakorn.classList.remove('active');
         showBattleTutorial();
       }
-      // ----- เนื้อเรื่องกรณีชนะมินิเกม -----
+      // ----- เนื้อเรื่องกรณีชนะมินิเกม (ปกรณ์) -----
       else if (currentStep === 'TXT_CUTSCENE_1') {
         setTextboxImage('1JFrkUBuNVi3stpA73362NLLVSHwuZakT');
         currentStep = 'TXT_CUTSCENE_2';
@@ -2136,8 +2465,36 @@
       }
       else if (currentStep === 'TXT_NARIN_CHAT_9') {
         setTextboxImage('1SNjGUMk1mobViuXXOH16iShZOMsW2dKq');
-        currentStep = 'RIGHT_NARIN_END_HOLD';
-        resetIdleTimer();
+        currentStep = 'TXT_NARIN_CHAT_10';
+      }
+      else if (currentStep === 'TXT_NARIN_CHAT_10') {
+        textbox.classList.remove('active');
+        charNarin.classList.remove('active');
+        showNarinPreTutorial();
+      }
+      // หยุดค้างไว้ที่ฉากพูดคุยกับณรินข้อความ 1llS10pfi4SYf-SbFiWv8b1qwS2b1NoKV
+      else if (currentStep === 'RIGHT_NARIN_END_HOLD') {
+        return;
+      }
+      // กรณีแพ้มินิเกมณริน -> ข้อความ Game Over
+      else if (currentStep === 'TXT_NARIN_GAMEOVER_1') {
+        setTextboxImage('1TRqkXGiYZMDxEu_feTVjblu6mkpa6Yd4');
+        currentStep = 'TXT_NARIN_GAMEOVER_2';
+      }
+      else if (currentStep === 'TXT_NARIN_GAMEOVER_2') {
+        textbox.classList.remove('active');
+        updateKnowledgeBar(-50);
+        triggerWhiteFlashTransition(() => {
+          sceneNarinGameover.classList.remove('active');
+          scene6.classList.add('active');
+
+          btnLeft.style.display = 'block';
+          btnRight.style.display = 'block';
+          btnMiddle.style.display = 'none';
+          navButtons.classList.add('active');
+
+          currentStep = 'SCENE_6_BRANCH';
+        });
       }
       else if (currentStep === 'TXT_SCENE3_LAST_MSG') {
         textbox.classList.remove('active');
@@ -2177,7 +2534,7 @@
     }
 
     /* =========================================================
-       ลำดับก่อนเข้ามินิเกม
+       ลำดับก่อนเข้ามินิเกม (ฝั่งปกรณ์)
        ========================================================= */
     function showBattleTutorial() {
       currentStep = 'PRE_TUTORIAL_STAGE';
@@ -2251,6 +2608,248 @@
           }, 250);
         }
       }, 900);
+    }
+
+    /* =========================================================
+       ลำดับก่อนเข้ามินิเกม & ระบบมินิเกมเรียงลำดับ (ฝั่งณริน)
+       ========================================================= */
+    const narinStepsData = [
+      { id: 1, text: "แคปแชทบทสนทนาและเก็บสลิปโอนเงินไว้เป็นหลักฐาน" },
+      { id: 2, text: "รีบติดต่อธนาคารเพื่อแจ้งอายัดบัญชีปลายทางทันที" },
+      { id: 3, text: "นำหลักฐานทั้งหมดไปแจ้งความลงบันทึกประจำวัน" }
+    ];
+
+    function showNarinPreTutorial() {
+      currentStep = 'NARIN_PRE_TUTORIAL_STAGE';
+      resetIdleTimer();
+      narinPreTutorialOverlay.classList.add('active');
+    }
+
+    function handleNarinPreTutorialClick(event) {
+      if (event) event.stopPropagation();
+      if (currentStep !== 'NARIN_PRE_TUTORIAL_STAGE' || isTransitioning) return;
+
+      narinPreTutorialOverlay.classList.remove('active');
+      sceneRight1.classList.remove('active');
+      sceneNarinMinigame.classList.add('active');
+      startNarinOrderMinigame();
+    }
+
+    function startNarinOrderMinigame() {
+      isNarinMinigameActive = true;
+      currentStep = 'NARIN_MINIGAME_ACTIVE';
+      resetIdleTimer();
+
+      narinHearts = 2;
+      narinHeart1.classList.remove('lost');
+      narinHeart2.classList.remove('lost');
+      narinPhoneFeedback.classList.remove('visible');
+
+      narinSlots = [null, null, null];
+      draggedNarinStepId = null;
+
+      let shuffledIds = [2, 3, 1];
+      if (Math.random() > 0.5) {
+        shuffledIds = [3, 1, 2];
+      }
+
+      renderNarinMinigameUI(shuffledIds);
+      narinMinigameOverlay.classList.add('active');
+    }
+
+    function createNarinCardElement(stepId, isInSlot) {
+      const stepObj = narinStepsData.find(s => s.id === stepId);
+      const card = document.createElement('div');
+      card.className = 'narin-drag-card' + (isInSlot ? ' in-slot' : '');
+      card.draggable = true;
+      card.dataset.stepId = stepId;
+      card.innerHTML = `<span class="card-grip-icon">☰</span><span>${stepObj.text}</span>`;
+
+      card.addEventListener('dragstart', (e) => {
+        draggedNarinStepId = stepId;
+        card.classList.add('dragging');
+        if (e.dataTransfer) {
+          e.dataTransfer.setData('text/plain', String(stepId));
+        }
+      });
+
+      card.addEventListener('dragend', () => {
+        card.classList.remove('dragging');
+        draggedNarinStepId = null;
+      });
+
+      if (!isInSlot) {
+        card.addEventListener('click', (e) => {
+          e.stopPropagation();
+          placeNarinStepInFirstEmptySlot(stepId);
+        });
+      }
+
+      return card;
+    }
+
+    function renderNarinMinigameUI(poolOrderIds) {
+      narinPhoneFeedback.classList.remove('visible');
+
+      for (let i = 0; i < 3; i++) {
+        const slotEl = document.querySelector(`.narin-drop-slot[data-slot="${i}"]`);
+        const holder = document.getElementById(`narin-slot-holder-${i}`);
+        holder.innerHTML = '';
+
+        const stepId = narinSlots[i];
+        if (stepId !== null) {
+          slotEl.classList.add('filled');
+          const cardEl = createNarinCardElement(stepId, true);
+          holder.appendChild(cardEl);
+        } else {
+          slotEl.classList.remove('filled');
+          const placeholder = document.createElement('span');
+          placeholder.className = 'slot-placeholder-text';
+          placeholder.innerText = `วางขั้นตอนที่ ${i + 1} ที่นี่`;
+          holder.appendChild(placeholder);
+        }
+      }
+
+      const remainingIds = poolOrderIds
+        ? poolOrderIds.filter(id => !narinSlots.includes(id))
+        : narinStepsData.map(s => s.id).filter(id => !narinSlots.includes(id));
+
+      narinCardsPool.innerHTML = '';
+      remainingIds.forEach(id => {
+        narinCardsPool.appendChild(createNarinCardElement(id, false));
+      });
+
+      const allFilled = narinSlots.every(val => val !== null);
+      narinSubmitBtn.disabled = !allFilled;
+    }
+
+    function assignNarinStepToSlot(stepId, targetSlotIdx) {
+      if (!isNarinMinigameActive) return;
+
+      const existingSlotIdx = narinSlots.indexOf(stepId);
+      const displacedStepId = narinSlots[targetSlotIdx];
+
+      if (existingSlotIdx !== -1) {
+        narinSlots[existingSlotIdx] = displacedStepId;
+        narinSlots[targetSlotIdx] = stepId;
+      } else {
+        narinSlots[targetSlotIdx] = stepId;
+      }
+
+      renderNarinMinigameUI();
+    }
+
+    function placeNarinStepInFirstEmptySlot(stepId) {
+      if (!isNarinMinigameActive) return;
+      const emptyIdx = narinSlots.indexOf(null);
+      if (emptyIdx !== -1) {
+        assignNarinStepToSlot(stepId, emptyIdx);
+      }
+    }
+
+    function handleNarinSlotClick(slotIdx) {
+      if (!isNarinMinigameActive) return;
+      if (narinSlots[slotIdx] !== null) {
+        narinSlots[slotIdx] = null;
+        renderNarinMinigameUI();
+      }
+    }
+
+    document.querySelectorAll('.narin-drop-slot').forEach(slotEl => {
+      const slotIdx = parseInt(slotEl.dataset.slot, 10);
+
+      slotEl.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        slotEl.classList.add('drag-over');
+      });
+
+      slotEl.addEventListener('dragleave', () => {
+        slotEl.classList.remove('drag-over');
+      });
+
+      slotEl.addEventListener('drop', (e) => {
+        e.preventDefault();
+        slotEl.classList.remove('drag-over');
+        const stepId = draggedNarinStepId || parseInt(e.dataTransfer.getData('text/plain'), 10);
+        if (stepId) {
+          assignNarinStepToSlot(stepId, slotIdx);
+        }
+      });
+    });
+
+    narinCardsPool.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    });
+
+    narinCardsPool.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const stepId = draggedNarinStepId || parseInt(e.dataTransfer.getData('text/plain'), 10);
+      if (stepId) {
+        const slotIdx = narinSlots.indexOf(stepId);
+        if (slotIdx !== -1) {
+          narinSlots[slotIdx] = null;
+          renderNarinMinigameUI();
+        }
+      }
+    });
+
+    function submitNarinOrder() {
+      if (!isNarinMinigameActive) return;
+      if (narinSlots.some(val => val === null)) return;
+
+      const isCorrect = narinSlots[0] === 1 && narinSlots[1] === 2 && narinSlots[2] === 3;
+
+      if (isCorrect) {
+        finishNarinMinigame(true);
+      } else {
+        narinHearts--;
+        if (narinHearts === 1) {
+          narinHeart2.classList.add('lost');
+        } else if (narinHearts <= 0) {
+          narinHeart1.classList.add('lost');
+          narinHeart2.classList.add('lost');
+        }
+
+        narinHeartsPanel.classList.remove('shake-anim');
+        narinPhonePanel.classList.remove('shake-anim');
+        void narinHeartsPanel.offsetWidth;
+        narinHeartsPanel.classList.add('shake-anim');
+        narinPhonePanel.classList.add('shake-anim');
+        narinPhoneFeedback.classList.add('visible');
+
+        if (narinHearts <= 0) {
+          narinSubmitBtn.disabled = true;
+          setTimeout(() => {
+            finishNarinMinigame(false);
+          }, 850);
+        }
+      }
+    }
+
+    function finishNarinMinigame(isWin) {
+      isNarinMinigameActive = false;
+      narinMinigameOverlay.classList.remove('active');
+
+      if (isWin) {
+        updateKnowledgeBar(50);
+
+        triggerWhiteFlashTransition(() => {
+          sceneNarinMinigame.classList.remove('active');
+          sceneRight1.classList.add('active');
+          setNarinImage('1ZZKjB_33BLPc5XbrW5LB-_x7MJ7bpeqz');
+          charNarin.classList.add('active');
+          setTextboxImage('1llS10pfi4SYf-SbFiWv8b1qwS2b1NoKV');
+          textbox.classList.add('active');
+          currentStep = 'RIGHT_NARIN_END_HOLD';
+          resetIdleTimer();
+        });
+      } else {
+        triggerWhiteFlashTransition(() => {
+          sceneNarinMinigame.classList.remove('active');
+          sceneNarinGameover.classList.add('active');
+          currentStep = 'NARIN_GAMEOVER_READY';
+        });
+      }
     }
 
     function showTLChoices() {
@@ -2733,6 +3332,10 @@
       isBattleActive = false;
       battleHearts = 2;
       isWaitingNextRound = false;
+      isNarinMinigameActive = false;
+      narinHearts = 2;
+      narinSlots = [null, null, null];
+      draggedNarinStepId = null;
       clearInterval(roundTimerInterval);
       clearTimeout(battleFinishTimer);
       clearTimeout(wrongAppTimer);
@@ -2750,9 +3353,12 @@
       itemReceiveOverlay.classList.remove('active');
       preTutorialOverlay.classList.remove('active');
       tutorialOverlay.classList.remove('active');
+      narinPreTutorialOverlay.classList.remove('active');
       pregameBlackScreen.classList.remove('active');
       battleOverlay.classList.remove('active');
+      narinMinigameOverlay.classList.remove('active');
       chatFeedArea.innerHTML = '';
+      narinCardsPool.innerHTML = '';
       charPakorn.classList.remove('active');
       charNarin.classList.remove('active');
       textbox.classList.remove('active');
@@ -2767,6 +3373,7 @@
       const allScenes = [
         scene0, sceneSp1, sceneSp2, scene1, scene2, scene3, scene4, scene6,
         sceneLeft1, sceneLeft2, sceneRight1, sceneRightCutscene, sceneRightCutscene2,
+        sceneNarinMinigame, sceneNarinGameover,
         sceneEnd1, scenePost1, scenePost2, sceneBattle, sceneCutsceneMale, sceneCutsceneFemale
       ];
       allScenes.forEach(sc => {
@@ -2883,6 +3490,14 @@
         setTextboxImage('1wRS1wiVYigIS2ydf7GtByFrUKcz9oSP8');
         textbox.classList.add('active');
         currentStep = 'TXT_NARIN_CHAT_1';
+      }
+      else if (target === 'NARIN_PRE_MINIGAME') {
+        sceneRight1.classList.add('active');
+        showNarinPreTutorial();
+      }
+      else if (target === 'NARIN_MINIGAME_NOW') {
+        sceneNarinMinigame.classList.add('active');
+        startNarinOrderMinigame();
       }
 
       resetIdleTimer();
