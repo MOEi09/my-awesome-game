@@ -1218,6 +1218,7 @@
     <!-- ฉากทางฝั่งขวา (ณริน) -->
     <div id="scene-right1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1gbYoJrTliezEEhAIdm3giNtEWyaICtDa'); cursor: pointer;"></div>
     <div id="scene-right-cutscene" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1-eW9DcsG_tlo-kixHc5-0m9KexivpUuL'); cursor: pointer;"></div>
+    <div id="scene-right-cutscene2" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1fWt1Iv18hvQ4YhvkBaycUa7kEzIx8YYG'); cursor: pointer;"></div>
 
     <!-- ฉากเพิ่มเติมตามเนื้อเรื่อง -->
     <div id="scene-end1" class="scene-bg" style="background-image: url('https://lh3.googleusercontent.com/d/1d09NSfEhvtgQNhvawJia8pnquEam6v9m'); cursor: pointer;"></div>
@@ -1403,6 +1404,7 @@
     // Right Branch Scenes (Narin)
     const sceneRight1 = document.getElementById('scene-right1');
     const sceneRightCutscene = document.getElementById('scene-right-cutscene');
+    const sceneRightCutscene2 = document.getElementById('scene-right-cutscene2');
 
     // Endings & Battle Scenes
     const sceneEnd1 = document.getElementById('scene-end1');
@@ -1587,7 +1589,12 @@
       'https://lh3.googleusercontent.com/d/1FuTJs33s_z3MvOjpky1tOmQZReZsnwEV',
       'https://lh3.googleusercontent.com/d/154aVGCxs3ButU4wIeixIWypG_x_ra67V',
       'https://lh3.googleusercontent.com/d/1y5wBykqlioS-kFN6t_2OLC3EfVtIqUi7',
-      'https://lh3.googleusercontent.com/d/1e9RTp_FQdRbGKYeWrR9PRARwiawzBsYp'
+      'https://lh3.googleusercontent.com/d/1e9RTp_FQdRbGKYeWrR9PRARwiawzBsYp',
+      'https://lh3.googleusercontent.com/d/1WPPABOlIXp22APv3kPVukSTIMqp9_IXq',
+      'https://lh3.googleusercontent.com/d/1fWt1Iv18hvQ4YhvkBaycUa7kEzIx8YYG',
+      'https://lh3.googleusercontent.com/d/1AOVtA0DC6pb08LJaqx3qIh7pyr0MP236',
+      'https://lh3.googleusercontent.com/d/1XyQmz0MkyB137V33_BBsYEdXRu4r5oq4',
+      'https://lh3.googleusercontent.com/d/1SNjGUMk1mobViuXXOH16iShZOMsW2dKq'
     ];
 
     imageList.forEach(url => {
@@ -1751,6 +1758,16 @@
         setTextboxImage('1vAu_k50ITmt94LWuS2H-2MhLLJto1cv9');
         textbox.classList.add('active');
         currentStep = 'TXT_RIGHT_CUTSCENE_1';
+        resetIdleTimer();
+      }
+    });
+
+    sceneRightCutscene2.addEventListener('click', () => {
+      if (isTransitioning) return;
+      if (currentStep === 'RIGHT_CUTSCENE2_READY') {
+        setTextboxImage('1AOVtA0DC6pb08LJaqx3qIh7pyr0MP236');
+        textbox.classList.add('active');
+        currentStep = 'TXT_RIGHT_CUTSCENE2_1';
         resetIdleTimer();
       }
     });
@@ -2096,6 +2113,29 @@
       else if (currentStep === 'TXT_NARIN_CHAT_6') {
         setNarinImage('1y5wBykqlioS-kFN6t_2OLC3EfVtIqUi7');
         setTextboxImage('1e9RTp_FQdRbGKYeWrR9PRARwiawzBsYp');
+        currentStep = 'TXT_NARIN_CHAT_7';
+      }
+      else if (currentStep === 'TXT_NARIN_CHAT_7') {
+        setTextboxImage('1WPPABOlIXp22APv3kPVukSTIMqp9_IXq');
+        currentStep = 'TXT_NARIN_CHAT_8';
+      }
+      else if (currentStep === 'TXT_NARIN_CHAT_8') {
+        textbox.classList.remove('active');
+        charNarin.classList.remove('active');
+        sceneRight1.classList.remove('active');
+        sceneRightCutscene2.classList.add('active');
+        currentStep = 'RIGHT_CUTSCENE2_READY';
+      }
+      else if (currentStep === 'TXT_RIGHT_CUTSCENE2_1') {
+        sceneRightCutscene2.classList.remove('active');
+        sceneRight1.classList.add('active');
+        setNarinImage('1y5wBykqlioS-kFN6t_2OLC3EfVtIqUi7');
+        charNarin.classList.add('active');
+        setTextboxImage('1XyQmz0MkyB137V33_BBsYEdXRu4r5oq4');
+        currentStep = 'TXT_NARIN_CHAT_9';
+      }
+      else if (currentStep === 'TXT_NARIN_CHAT_9') {
+        setTextboxImage('1SNjGUMk1mobViuXXOH16iShZOMsW2dKq');
         currentStep = 'RIGHT_NARIN_END_HOLD';
         resetIdleTimer();
       }
@@ -2726,7 +2766,7 @@
 
       const allScenes = [
         scene0, sceneSp1, sceneSp2, scene1, scene2, scene3, scene4, scene6,
-        sceneLeft1, sceneLeft2, sceneRight1, sceneRightCutscene,
+        sceneLeft1, sceneLeft2, sceneRight1, sceneRightCutscene, sceneRightCutscene2,
         sceneEnd1, scenePost1, scenePost2, sceneBattle, sceneCutsceneMale, sceneCutsceneFemale
       ];
       allScenes.forEach(sc => {
