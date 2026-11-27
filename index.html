@@ -1,6 +1,3 @@
-โค้ดรอบก่อนส่วนหัวด้านบนขาดหายไปครับ นี่คือ **ส่วนที่ 1 / 2 (ครึ่งแรก: โครงสร้างหน้าเว็บและ CSS ส่วนหลัก)** พิมพ์ `"ต่อ"` มาได้เลย เดี๋ยวส่ง **ส่วนที่ 2 / 2** ให้เอาไปวางต่อท้ายบรรทัดสุดท้ายทันทีครับ
-
-```html
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -909,7 +906,8 @@
       display: flex;
       align-items: center;
     }
-.chat-choice-btn:hover,
+
+    .chat-choice-btn:hover,
     .chat-choice-btn:active {
       transform: scale(1.03);
       background: #ffffff;
@@ -2858,7 +2856,13 @@
     /* =========================================================
        ข้อมูลบทสนทนา 5 รอบ มินิเกมจับผิดสายปลอมเสียง AI (ปกรณ์)
        ========================================================= */
-    const chatRoundsData = [      {        callerMsg: "ปกรณ์! มือถือแม่พัง นี่เบอร์ใหม่ รีบโอนเงินใช้จ่ายให้แม่ 50,000 ด่วน!",        choices: [          { text: "ใจเย็นครับหม่อมแม่ เกิดอะไรขึ้นครับ?", correct: true },          { text: "ได้ครับหม่อมแม่! ส่งเลขบัญชีมาเลยครับ", correct: false }        ]
+    const chatRoundsData = [
+      {
+        callerMsg: "ปกรณ์! มือถือแม่พัง นี่เบอร์ใหม่ รีบโอนเงินใช้จ่ายให้แม่ 50,000 ด่วน!",
+        choices: [
+          { text: "ใจเย็นครับหม่อมแม่ เกิดอะไรขึ้นครับ?", correct: true },
+          { text: "ได้ครับหม่อมแม่! ส่งเลขบัญชีมาเลยครับ", correct: false }
+        ]
       },
       {
         callerMsg: "แม่มาซื้อของแต่โอนไม่ได้ โอนจ่ายบัญชีร้านค้าแทนให้แม่หน่อยนะปกรณ์!",
@@ -3266,7 +3270,12 @@
       countdownNum.style.display = 'none';
       infoBtnWrapper.classList.remove('show-tip');
 
-      const allScenes = [        scene0, sceneSp1, sceneSp2, scene1, scene2, scene3, scene4, scene6,        sceneLeft1, sceneLeft2, sceneRight1, sceneRightCutscene, sceneRightCutscene2,        sceneNarinMinigame, sceneNarinGameover,        sceneEnd1, scenePost1, scenePost2, sceneBattle, sceneCutsceneMale, sceneCutsceneFemale      ];
+      const allScenes = [
+        scene0, sceneSp1, sceneSp2, scene1, scene2, scene3, scene4, scene6,
+        sceneLeft1, sceneLeft2, sceneRight1, sceneRightCutscene, sceneRightCutscene2,
+        sceneNarinMinigame, sceneNarinGameover,
+        sceneEnd1, scenePost1, scenePost2, sceneBattle, sceneCutsceneMale, sceneCutsceneFemale
+      ];
       allScenes.forEach(sc => {
         sc.classList.remove('active', 'zoom-out-fade', 'instant-change');
       });
