@@ -1566,42 +1566,42 @@
     </div>
 
     <!-- =========================================================
-         มินิเกม 2: ช่วยณรินเรียงลำดับสิ่งที่ต้องทำ (ฝั่งณริน)
+         มินิเกม 2: ช่วยณรินเรียงลำดับสิ่งที่ต้องทำ (ฝั่งณริน - ปรับตำแหน่งให้ตรงพื้นหลัง)
          ========================================================= -->
     <div id="narin-minigame-overlay">
-      <!-- หัวใจ 2 ดวงบนหัวของณริน -->
-      <div id="narin-hearts-panel" class="narin-hearts-panel">
+      <!-- หัวใจ 2 ดวง วางไว้ด้านบนตรงกลางค่อนไปทางซ้าย ไม่ทับคำว่า "ช่วยณริน" -->
+      <div id="narin-hearts-panel" class="narin-hearts-panel" style="top: 4.5%; left: 31%;">
         <span id="narin-heart-1" class="battle-heart-icon">❤️</span>
         <span id="narin-heart-2" class="battle-heart-icon">❤️</span>
       </div>
 
       <!-- การ์ดข้อความตรงกลางสำหรับลากหรือแตะ -->
-      <div class="narin-cards-pool-wrapper">
+      <div class="narin-cards-pool-wrapper" style="top: 53%; left: 48.5%; width: 27%;">
         <div class="narin-pool-hint">ลากหรือแตะเรียงลำดับ 1 → 3 ในมือถือ</div>
         <div id="narin-cards-pool" class="narin-cards-list"></div>
       </div>
 
-      <!-- พื้นที่จอมือถือทางขวามือ -->
-      <div id="narin-phone-panel" class="narin-phone-panel">
+      <!-- พื้นที่จอมือถือทางขวามือ ปรับตำแหน่งหัวข้อและช่องวางให้อยู่ในกรอบจอพอดี -->
+      <div id="narin-phone-panel" class="narin-phone-panel" style="top: 18%; right: 6.2%; width: 25.5%; height: 70%;">
         <div>
-          <div class="narin-phone-header">สิ่งที่ณรินต้องทำตามลำดับ</div>
-          <div id="narin-phone-feedback" class="narin-phone-feedback">ลำดับยังไม่ถูกต้อง ลองเรียงใหม่อีกครั้ง!</div>
+          <div class="narin-phone-header" style="color: #ffffff; border-bottom-color: rgba(255, 255, 255, 0.25); text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);">สิ่งที่ณรินต้องทำตามลำดับ</div>
+          <div id="narin-phone-feedback" class="narin-phone-feedback" style="color: #fca5a5;">ลำดับยังไม่ถูกต้อง ลองเรียงใหม่อีกครั้ง!</div>
         </div>
 
-        <div class="narin-slots-container">
-          <div class="narin-drop-slot" data-slot="0" onclick="handleNarinSlotClick(0)">
+        <div class="narin-slots-container" style="gap: clamp(6px, 1.1vh, 11px); margin: clamp(4px, 0.8vh, 8px) 0;">
+          <div class="narin-drop-slot" data-slot="0" onclick="handleNarinSlotClick(0)" style="min-height: clamp(46px, 9.5vh, 88px); background: rgba(255, 255, 255, 0.92); border-color: #cbd5e1;">
             <div class="slot-step-badge">1</div>
             <div class="slot-card-holder" id="narin-slot-holder-0">
               <span class="slot-placeholder-text">วางขั้นตอนที่ 1 ที่นี่</span>
             </div>
           </div>
-          <div class="narin-drop-slot" data-slot="1" onclick="handleNarinSlotClick(1)">
+          <div class="narin-drop-slot" data-slot="1" onclick="handleNarinSlotClick(1)" style="min-height: clamp(46px, 9.5vh, 88px); background: rgba(255, 255, 255, 0.92); border-color: #cbd5e1;">
             <div class="slot-step-badge">2</div>
             <div class="slot-card-holder" id="narin-slot-holder-1">
               <span class="slot-placeholder-text">วางขั้นตอนที่ 2 ที่นี่</span>
             </div>
           </div>
-          <div class="narin-drop-slot" data-slot="2" onclick="handleNarinSlotClick(2)">
+          <div class="narin-drop-slot" data-slot="2" onclick="handleNarinSlotClick(2)" style="min-height: clamp(46px, 9.5vh, 88px); background: rgba(255, 255, 255, 0.92); border-color: #cbd5e1;">
             <div class="slot-step-badge">3</div>
             <div class="slot-card-holder" id="narin-slot-holder-2">
               <span class="slot-placeholder-text">วางขั้นตอนที่ 3 ที่นี่</span>
@@ -1614,7 +1614,7 @@
     </div>
 
     <!-- =========================================================
-         ปุ่มทางลัดสำหรับตรวจงาน (มุมล่างซ้าย - ลบออกได้เมื่อตรวจงานเสร็จ)
+         ปุ่มทางลัดสำหรับตรวจงาน (มุมล่างซ้าย - ลบออกได้เมื่อเสร็จงาน)
          ========================================================= -->
     <div id="debug-shortcut-wrapper" onclick="event.stopPropagation()">
       <button type="button" class="debug-toggle-btn" onclick="toggleDebugMenu(event)">🛠️ ทางลัดฉาก</button>
@@ -2101,7 +2101,6 @@
       }
     });
 
-    // แตะภาพไอเทมกลางจอ -> ภาพเลือนหายไป กลับมาเป็นณรินหน้าปกติทางขวา + ข้อความต่อ
     function handleItemReceiveClick(event) {
       if (event) event.stopPropagation();
       if (isTransitioning || currentStep !== 'SHOW_NARIN_ITEM_1') return;
@@ -2137,7 +2136,6 @@
       resetIdleTimer();
     });
 
-    // แตะหน้าฉากจบ Bad End -> แสดงแถบข้อความ Bad End อันที่ 1
     sceneEnd1.addEventListener('click', () => {
       if (isTransitioning) return;
       if (currentStep === 'SCENE_END1_READY') {
@@ -2223,7 +2221,6 @@
         scene3.classList.add('active');
         currentStep = 'WAIT_TAP_FOR_SCENE3_RETURN';
       }
-      // ทางฝั่งซ้าย (ปกรณ์)
       else if (currentStep === 'TXT_LEFT_1') {
         setTextboxImage('1RxIsG2xfq7nR9bM4Zz5dsKjmgL_In1rE');
         currentStep = 'TXT_LEFT_2';
@@ -2321,7 +2318,6 @@
         newBranchChoices.classList.add('active');
         currentStep = 'SHOW_NEW_BRANCH_CHOICES';
       }
-      // ----- เนื้อเรื่องส่วนตัวเลือกที่ 1 (ยอมจำนน / Bad End) -----
       else if (currentStep === 'TXT_NEW_BRANCH_1_1') {
         setTextboxImage('1xoPS3J3vHigPjcIOouMo8zmUGc3hMIJZ');
         setPakornImage('1yVHMdPfZKDjswa0kHjVTQ3qlunJtsyjm');
@@ -2336,7 +2332,6 @@
           currentStep = 'SCENE_END1_READY';
         });
       }
-      // ----- แถบข้อความภายในฉาก Bad End 2 อัน แล้วข้ามไปฉากสวนโล่งทันที (ไม่มีปลดล็อคสกิล) -----
       else if (currentStep === 'TXT_END1_1') {
         setTextboxImage('1TRqkXGiYZMDxEu_feTVjblu6mkpa6Yd4');
         currentStep = 'TXT_END1_2';
@@ -2349,7 +2344,6 @@
           currentStep = 'POST_ENDING_DONE';
         });
       }
-      // ----- เนื้อเรื่องส่วนตัวเลือกที่ 2 (ต่อสู้ -> มินิเกม) -----
       else if (currentStep === 'TXT_NEW_BRANCH_2_1') {
         setTextboxImage('1PVTLSehn7PfIuaM9GB1jEflubF3U9z1V');
         setPakornImage('1IlNHrs-Y3-KGzqYFLhPfrLsZsLrHlboy');
@@ -2364,7 +2358,6 @@
         charPakorn.classList.remove('active');
         showBattleTutorial();
       }
-      // ----- เนื้อเรื่องกรณีชนะมินิเกม (ปกรณ์) -----
       else if (currentStep === 'TXT_CUTSCENE_1') {
         setTextboxImage('1JFrkUBuNVi3stpA73362NLLVSHwuZakT');
         currentStep = 'TXT_CUTSCENE_2';
@@ -2382,7 +2375,6 @@
           currentStep = 'FINAL_CONCLUSION_REACHED';
         });
       }
-      // ----- ลำดับฉากหลังจบคัตซีนชนะชาย/หญิง (ปลดล็อคสกิล) -----
       else if (currentStep === 'TXT_POST_ENDING_1') {
         textbox.classList.remove('active');
         sceneLeft2.classList.remove('active');
@@ -2395,7 +2387,6 @@
         sceneLeft2.classList.add('active');
         currentStep = 'POST_ENDING_DONE';
       }
-      // ----- ทางฝั่งขวา (ณริน) -----
       else if (currentStep === 'TXT_RIGHT_1') {
         setTextboxImage('1eIDca9iZQgH56miSMP81_vSpcdLDtkh1');
         currentStep = 'TXT_RIGHT_2';
@@ -2414,7 +2405,6 @@
         sceneRight1.classList.add('active');
         currentStep = 'RIGHT_AFTER_CUTSCENE';
       }
-      // ----- บทสนทนาหลังคัตซีนเจอกับณริน -----
       else if (currentStep === 'TXT_NARIN_CHAT_1') {
         setTextboxImage('1alVX04mFEjDurFDfXMM9pXQgl0RrHF2O');
         currentStep = 'TXT_NARIN_CHAT_2';
@@ -2472,11 +2462,9 @@
         charNarin.classList.remove('active');
         showNarinPreTutorial();
       }
-      // หยุดค้างไว้ที่ฉากพูดคุยกับณรินข้อความ 1llS10pfi4SYf-SbFiWv8b1qwS2b1NoKV
       else if (currentStep === 'RIGHT_NARIN_END_HOLD') {
         return;
       }
-      // กรณีแพ้มินิเกมณริน -> ข้อความ Game Over
       else if (currentStep === 'TXT_NARIN_GAMEOVER_1') {
         setTextboxImage('1TRqkXGiYZMDxEu_feTVjblu6mkpa6Yd4');
         currentStep = 'TXT_NARIN_GAMEOVER_2';
@@ -2510,7 +2498,6 @@
       }
     }
 
-    // แตะฉากสวนสาธารณะเมื่อสลับกลับมาจากจอดำ
     scene3.addEventListener('click', () => {
       if (currentStep === 'WAIT_TAP_FOR_SCENE3_RETURN' && !isTransitioning) {
         setTextboxImage('1UejuctKbYKqiwwDNj-95z4ObYyp3kR_U');
@@ -2533,9 +2520,6 @@
       }, 700);
     }
 
-    /* =========================================================
-       ลำดับก่อนเข้ามินิเกม (ฝั่งปกรณ์)
-       ========================================================= */
     function showBattleTutorial() {
       currentStep = 'PRE_TUTORIAL_STAGE';
       resetIdleTimer();
@@ -2610,9 +2594,6 @@
       }, 900);
     }
 
-    /* =========================================================
-       ลำดับก่อนเข้ามินิเกม & ระบบมินิเกมเรียงลำดับ (ฝั่งณริน)
-       ========================================================= */
     const narinStepsData = [
       { id: 1, text: "แคปแชทบทสนทนาและเก็บสลิปโอนเงินไว้เป็นหลักฐาน" },
       { id: 2, text: "รีบติดต่อธนาคารเพื่อแจ้งอายัดบัญชีปลายทางทันที" },
@@ -2956,9 +2937,6 @@
       }
     }
 
-    /* =========================================================
-       ข้อมูลบทสนทนา 5 รอบ มินิเกมจับผิดสายปลอมเสียง AI
-       ========================================================= */
     const chatRoundsData = [
       {
         callerMsg: "ปกรณ์! มือถือแม่พัง นี่เบอร์ใหม่ รีบโอนเงินใช้จ่ายให้แม่ 50,000 ด่วน!",
@@ -3190,9 +3168,6 @@
       }
     }
 
-    /* =========================================================
-       อัปเดตแถบวัดความรู้ + แอนิเมชันเด้งลงสไตล์ iPhone
-       ========================================================= */
     function updateKnowledgeBar(deltaPercent, silent = false) {
       const prevScore = knowledgeScore;
       if (deltaPercent === -50) {
@@ -3273,7 +3248,6 @@
       }, 700);
     }
 
-    // กดปุ่มลูกศรขวา (เข้าสู่เส้นทางณริน)
     function handleRightButtonClick(event) {
       event.stopPropagation();
       if (isTransitioning || currentStep !== 'SCENE_6_BRANCH') return;
@@ -3316,7 +3290,6 @@
       }, 600);
     }
 
-    /* ปุ่ม Home กลับหน้าเริ่มเกม */
     function handleHomeButtonClick(event) {
       if (event) event.stopPropagation();
       
@@ -3385,9 +3358,6 @@
       resetIdleTimer();
     }
 
-    /* =========================================================
-       ฟังก์ชันทางลัดตรวจงาน (ลบออกได้เมื่อเสร็จงาน)
-       ========================================================= */
     function toggleDebugMenu(event) {
       if (event) event.stopPropagation();
       debugMenuPanel.classList.toggle('open');
